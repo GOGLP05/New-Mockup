@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知設定</title>
+    <style>
+        /* 全体のリセットと基本スタイル */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* サイドメニューのスタイル */
+        .sidebar {
+            width: 250px; /* サイドメニューの幅 */
+            background-color: #2c3e50; /* 背景色 */
+            position: fixed; /* 固定表示 */
+            height: 100%; /* 画面全体の高さ */
+            padding-top: 20px; /* 上部の余白 */
+            left: 0; /* 左端に配置 */
+        }
+
+        .sidebar ul {
+            list-style-type: none; /* リストマーカーを無効に */
+            padding-left: 0; /* 左の余白を無効に */
+        }
+
+        .sidebar ul li {
+            padding: 15px; /* リスト項目の余白 */
+            text-align: center; /* テキストを中央寄せ */
+        }
+
+        .sidebar ul li a {
+            color: white; /* リンクの文字色 */
+            text-decoration: none; /* 下線をなくす */
+            display: block; /* ブロック表示 */
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #34495e; /* ホバー時の背景色 */
+        }
+
+        /* スイッチ全体のスタイル */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* 隠すために通常のチェックボックスは非表示 */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* スイッチの背景のスタイル */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 50px;
+        }
+
+        /* スライダーの丸い部分 */
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            border-radius: 50px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+        }
+
+        /* チェックボックスがONのときのスタイル */
+        input:checked+.slider {
+            background-color: #4CAF50;
+        }
+
+        /* チェックボックスがONのときの丸い部分の位置 */
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        /* メインコンテンツのスタイル */
+        .content {
+            margin-left: 270px; /* サイドメニューの幅だけ右にずらす */
+            padding: 20px; /* メインコンテンツの余白 */
+            font-family: Arial, sans-serif; /* フォントを指定 */
+        }
+
+        h3, h4 {
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #34495e;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- サイドメニュー -->
+    <div class="sidebar">
+        <ul>
+            <li><a href="TOP.html">TOP</a></li>
+            <li><a href="Settei5.html">設定</a></li>
+            <li><a href="syokuhinko.html">食品庫</a></li>
+            <li><a href="syokuhintouroku.html">食品登録</a></li>
+        </ul>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="content">
+        <h3>設定</h3>
+
+        <!-- 通知設定 -->
+        <h4>通知設定</h4>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+        </label>
+        <p>使い切り期限3日前に通知します</p>
+
+        <!-- アカウント関連 -->
+        <a href="Settei.html">アカウント</a>
+    </div>
+</body>
+
+</html>
