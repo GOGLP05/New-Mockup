@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会員登録</title>
+    <link rel="stylesheet" href="member_registration2.css">
+</head>
+<body>
+
+    <h1>会員登録フォーム</h1>
+
+    <div class="container">
+        <label for="user_id">メールアドレス</label>
+        <input type="text" id="user_id" name="admin_id"
+        placeholder="メールアドレスを入力してください" required>
+
+        <label for="password">パスワード</label>
+        <input type="password" id="password" name="password"
+        placeholder="パスワードを入力してください" required>
+
+        <label for="sex">性別</label>
+       <td>男 <input type="radio" id="sex1" name="sex1"></td>
+       <td>女 <input type="radio" id="sex2" name="sex2"></td>
+
+       <label></label>
+       
+        <label for="date">生年月日
+        <input type="date" id="date" name="date"></label>
+
+        <button onclick="Rougin.html">登録</button>
+    </div>
+
+
+    <script>
+        function login() {
+            var user_id = document.getElementById('user_id').value;
+            var password = document.getElementById('password').value;
+
+            // 入力値が空でないかチェック
+            if(user_id === "" || password === "") {
+                alert("メールアドレスとパスワードを入力してください。");
+            } else {
+                alert("ログイン成功！\nID: " + user_id + "\nパスワード: " + password);
+            }
+        }
+    </script>
+
+</body>
+</html>

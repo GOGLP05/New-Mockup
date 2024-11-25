@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOP</title>
+    <style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .grid-item {
+        width: 100%;
+        padding: 20px;
+        border: 1px solid #ddd;
+        text-align: center;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    .grid-item a{
+        color: blue; 
+        text-decoration: none;
+    }
+</style>
+    <link rel="stylesheet" href="TOP.css">
+</head>
+<body>
+
+    <div class="sidebar">
+        <ul>
+            <li><a href="TOP.html">TOP</a></li>
+            <li><a href="Settei5.html">設定</a></li>
+            <li><a href="syokuhinko.html">食品庫</a></li>
+            <li><a href="syokuhintouroku.html">食品登録</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <h1>作れる料理</h1>
+        <div class="grid">
+            <div class="grid-item"><a href="#">食品のアイコンと名前</a></div>
+            <div class="grid-item"><a href="#">食品のアイコンと名前</a></div>
+            <div class="grid-item"><a href="#">食品のアイコンと名前</a></div>
+            <div class="grid-item"><a href="#">食品のアイコンと名前</a></div>
+            <div class="grid-item"><a href="#">食品のアイコンと名前</a></div>
+            <div class="grid-item"><a href="#">食品のアイコンと名前</a></div>
+        </div>
+
+        <h1>使い切り期限が近い食材</h1>
+        <table>
+            <thead>
+                <tr>
+                    <td>データ0-1</td>
+                    <td>データ0-2</td>
+                    <td>データ0-3</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>データ1-1</td>
+                    <td>データ1-2</td>
+                    <td>データ1-3</td>
+                </tr>
+                <tr>
+                    <td>データ2-1</td>
+                    <td>データ2-2</td>
+                    <td>データ2-3</td>
+                </tr>
+                <tr>
+                    <td>データ3-1</td>
+                    <td>データ3-2</td>
+                    <td>データ3-3</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h1>使い切り期限が過ぎた食材</h1>
+        <table>
+            <thead>
+                <tr>
+                    <td>データ0-1</td>
+                    <td>データ0-2</td>
+                    <td>データ0-3</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>データ1-1</td>
+                    <td>データ1-2</td>
+                    <td>データ1-3</td>
+                </tr>
+                <tr>
+                    <td>データ2-1</td>
+                    <td>データ2-2</td>
+                    <td>データ2-3</td>
+                </tr>
+                <tr>
+                    <td>データ3-1</td>
+                    <td>データ3-2</td>
+                    <td>データ3-3</td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+
+</body>
+</html>
