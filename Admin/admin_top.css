@@ -1,0 +1,36 @@
+.breadcrumb {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin: 20px 0;
+    list-style: none;
+    display: inline-block;
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+}
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;  /* ボタンを中央揃えにする */
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    width: 100%;  /* 横幅を100%に設定（親要素に合わせる） */
+    min-width: 250px;  /* 最小横幅を250pxに設定 */
+}
+button:hover {
+    background-color: #45a049;
+}

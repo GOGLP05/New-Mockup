@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <link rel="stylesheet" href="admin_food_categories_registration.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食品カテゴリ登録/編集</title>
+</head>
+<body>
+    <ul class="breadcrumb">
+        <a href="kanrisyaTOP.html">管理者TOP</a> >
+        <a href="syokuhincategoriesitiran.html">カテゴリ一覧</a> >
+        <span>食品カテゴリ登録/編集</span>
+    </ul>
+
+    <h1>食品カテゴリ登録/編集</h1>
+
+    <div class="container">
+        <label for="categoriesid">カテゴリID:</label>
+        <div class="masked-text" id="categoriesid">******</div>
+
+        <label for="categoriesname">カテゴリ名:</label>
+        <input type="text" id="categoriesname" name="categoriesname" placeholder="">
+
+        <button class="delete">削除</button>
+        <button class="update">更新</button>
+    </div>
+
+    <script>
+        // カテゴリIDの実際の値
+        const actualCategoryId = "123456";
+
+        // 伏字用にマスキングする
+        const maskedCategoryId = actualCategoryId.replace(/./g, "*");
+
+        // ページ読み込み時に伏字を表示
+        document.getElementById("categoriesid").textContent = maskedCategoryId;
+    </script>
+</body>
+</html>

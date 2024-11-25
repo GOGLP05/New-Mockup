@@ -1,0 +1,108 @@
+/* 全体のリセットと基本スタイル */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* サイドメニューのスタイル */
+.sidebar {
+    width: 250px; /* サイドメニューの幅 */
+    background-color: #2c3e50; /* 背景色 */
+    position: fixed; /* 固定表示 */
+    height: 100%; /* 画面全体の高さ */
+    padding-top: 20px; /* 上部の余白 */
+    left: 0; /* 左端に配置 */
+}
+
+.sidebar ul {
+    list-style-type: none; /* リストマーカーを無効に */
+    padding-left: 0; /* 左の余白を無効に */
+}
+
+.sidebar ul li {
+    padding: 15px; /* リスト項目の余白 */
+    text-align: center; /* テキストを中央寄せ */
+}
+
+.sidebar ul li a {
+    color: white; /* リンクの文字色 */
+    text-decoration: none; /* 下線をなくす */
+    display: block; /* ブロック表示 */
+}
+
+.sidebar ul li a:hover {
+    background-color: #34495e; /* ホバー時の背景色 */
+}
+
+/* メインコンテンツのスタイル */
+.content {
+    margin-left: 270px; /* サイドメニューの幅だけ右にずらす */
+    padding: 20px; /* メインコンテンツの余白 */
+    font-family: Arial, sans-serif; /* フォントを指定 */
+}
+
+/* ヘッダーのスタイル */
+h1 {
+    font-size: 24px; /* 見出しのフォントサイズ */
+    color: #333; /* 見出しの文字色 */
+}
+
+/* テーブルのスタイル */
+table {
+    width: 100%; /* テーブルが親要素の幅に合わせる */
+    border-collapse: collapse; /* ボーダーが重ならないように */
+    margin-top: 20px; /* 上に余白を追加 */
+}
+
+
+/* メインコンテンツのスタイル */
+.content {
+    margin-left: 270px; /* サイドメニューの幅だけ右にずらす */
+    padding: 20px; /* メインコンテンツの余白 */
+    font-family: Arial, sans-serif; /* フォントを指定 */
+}
+
+
+.content {
+    width: 80%;
+    padding: 20px;
+}
+
+.header {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.recent-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    text-align:center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+.recent-button a {
+    color: white; 
+    text-decoration: none;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.grid-item {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ddd;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+.grid-item a{
+    color: blue; 
+    text-decoration: none;
+}

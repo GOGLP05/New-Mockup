@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ログイン</title>
+        <link rel="stylesheet" href="login.css">
+    </head>
+    <body>
+        <h1>ログイン</h1>  
+    </head>
+    <body>
+        <form action="" method="POST">
+            <table>
+               <div class="container">
+                <label for="user_id">メールアドレス</label>
+                <input type="text" id="user_id" name="admin_id" 
+                placeholder="メールアドレスを入力してください"required>
+
+                <label for="password">パスワード</label>
+                <input type="password" id="password" name="password"
+                placeholder="パスワードを入力してください"required>
+
+              <button onclick="Rougin.html">ログイン</button>
+               </div>
+
+
+               <script>
+                function login() {
+                    var admin_id = document.getElementById('admin_id').value;
+                    var password = document.getElementById('password').value;
+        
+                    // 入力値が空でないかチェック
+                    if(admin_id === "" || password === "") {
+                        alert("メールアドレスとパスワードを入力してください。");
+                    } else {
+                        alert("ログイン成功！\nID: " + admin_id + "\nパスワード: " + password);
+                    }
+                }
+            </script>
+        
+        </body>
+        </html>
