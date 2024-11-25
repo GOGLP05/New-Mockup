@@ -1,0 +1,25 @@
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;  /* ボタンを中央揃えにする */
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            width: 100%;  /* 横幅を100%に設定（親要素に合わせる） */
+            max-width: 250px;  /* 最大横幅を250pxに設定 */
+        }
+        button:hover {
+            background-color: #45a049;
+        }
