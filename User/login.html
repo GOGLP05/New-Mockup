@@ -15,20 +15,23 @@
             <div class="container">
                 <label for="user_id">メールアドレス</label>
                 <input type="text" id="user_id" name="admin_id" 
-                placeholder="メールアドレスを入力してください"required>
+                placeholder="メールアドレスを入力してください">
 
                 <label for="password">パスワード</label>
                 <input type="password" id="password" name="password"
-                placeholder="パスワードを入力してください"required>
+                placeholder="パスワードを入力してください">
 
-                <button onclick="Rougin.html">ログイン</button>
+                <input type="button" onclick="location.href='top.html'" value="ログイン">
+
+
                 <p><a class="links" href="change_password_email.html">パスワードを忘れた方はこちら</a></p>
 
                 <p><a class="links" href="member_registration.html">会員登録はこちら</a></p>
             </div>
 
 
-               <script>
+              <!--
+            <script>
                 function login() {
                     var admin_id = document.getElementById('admin_id').value;
                     var password = document.getElementById('password').value;
@@ -41,6 +44,7 @@
                     }
                 }
             </script>
-        
+            -->
+        </form>
         </body>
         </html>
