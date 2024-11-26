@@ -5,13 +5,13 @@ body {
 }
 .container {
     margin-bottom: 20px;
-    text-align: left;
     max-width: 300px;
     margin: 0 auto;
 }
 label {
     font-size: 16px;
     margin-bottom: 8px;
+    text-align: left;
     display: block;
 }
 input[type="text"], input[type="password"] {
@@ -35,6 +35,6 @@ button {
 button:hover {
     background-color: #45a049;
 }
-#links {
+.links {
     text-align: center;
 }
