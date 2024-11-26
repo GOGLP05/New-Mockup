@@ -28,7 +28,7 @@ input[type="date"] {
     border-radius: 5px;
 }
 
-button {
+input[type="button"] {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
@@ -39,6 +39,6 @@ button {
     width: 100%;
 }
 
-button:hover {
+input[type="button"]:hover {
     background-color: #45a049;
 }
