@@ -77,7 +77,56 @@ table {
     margin-bottom: 20px;
 }
 
+
 .details h1{
     margin-top: 0;
 }
+.servings{
+    text-align: right;
+}
 
+.ingredients ul{
+    list-style: none;
+    padding: 0;
+}
+
+.ingredients li{
+    display: flex;
+    margin: 5px 0;
+}
+
+.ingredients-name{
+    flex-grow: 1;
+}
+
+.ingredients-quantity{
+    text-align: right;
+}
+
+.steps h2{
+    text-align: center;
+}
+
+.steps ol{
+    padding-left: 20px;
+}
+
+.steps li{
+    margin: 50px 0;
+}
+
+.make{
+    margin-top: 20px;
+    padding: 20px 35px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+}
+
+.make a{
+    color: white; 
+    text-decoration: none;
+}
