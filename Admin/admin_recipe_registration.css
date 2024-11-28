@@ -4,10 +4,39 @@ body {
     margin: 20px;
     background-color: #f4f4f4;
 }
+
+/* パンくずリストのスタイル */
+.breadcrumb {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin: 20px 0;
+    list-style: none;
+    display: inline-block;
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #007bff;
+    padding: 5px;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb span {
+    padding: 5px;
+    color: #6c757d;
+}
+
 h1 {
     text-align: center;
     color: #333;
 }
+
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -16,16 +45,20 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
 .recipe-form {
     margin-bottom: 20px;
 }
-.recipe-form input, .recipe-form textarea {
+
+.recipe-form input,
+.recipe-form textarea {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
     border-radius: 4px;
     border: 1px solid #ccc;
 }
+
 .recipe-form button {
     padding: 10px 20px;
     background-color: #4CAF50;
@@ -35,23 +68,78 @@ h1 {
     cursor: pointer;
     float: right;
 }
+
 .recipe-form button:hover {
     background-color: #45a049;
 }
+
 .recipe-list {
     margin-top: 20px;
 }
+
 .recipe-item {
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 4px;
 }
+
 .recipe-item h3 {
     margin: 0;
     font-size: 1.2em;
     color: #333;
 }
+
 .recipe-item p {
     margin: 5px 0;
+}
+
+/* 削除ボタン */
+button.delete {
+    background-color: #f44336; /* 赤色 */
+    color: white;
+}
+button.delete:hover {
+    background-color: #d32f2f; /* 少し濃い赤 */
+}
+
+/* 更新ボタン */
+button.update {
+    background-color: #4CAF50; /* 緑色 */
+    color: white;
+}
+button.update:hover {
+    background-color: #45a049;
+}
+/* テーブル共通スタイル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+table thead {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* 利用食品テーブル */
+.ingredients-table th {
+    background-color: #e6f7ff;
+}
+
+/* 利用調味料テーブル */
+.seasonings-table th {
+    background-color: #ffe6e6;
 }

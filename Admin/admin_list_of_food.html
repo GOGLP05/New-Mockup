@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <link rel="stylesheet" href="admin_list_of_food.css">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>食品一覧</title>
+    <link rel="stylesheet" href="admin_list_of_food.css">
 </head>
 <body>
 
     <!-- パンくずリスト -->
     <ul class="breadcrumb">
-        <a href="admin_top.html">管理者TOP</a>>
+        <a href="admin_top.html">管理者TOP</a> >
         <span>食品一覧</span>
     </ul>
 
     <h1>食品一覧</h1>
 
-    <buttun>新規登録</buttun>
+    <!-- 新規登録ボタン -->
+    <div class="button-container">
+        <a href="admin_food_registration.html">
+            <button>新規登録</button>
+        </a>
+    </div>
 
+    <!-- 食品テーブル -->
     <table>
         <thead>
             <tr>
@@ -29,7 +35,6 @@
                 <th>使い切り期限</th>
                 <th>食品写真ファイルパス</th>
                 <th>操作</th>
-
             </tr>
         </thead>
         <tbody>
@@ -42,7 +47,6 @@
                 <td>データ1-6</td>
                 <td>データ1-7</td>
                 <td>データ1-8</td>
-
             </tr>
             <tr>
                 <td>データ2-1</td>
@@ -53,7 +57,6 @@
                 <td>データ2-6</td>
                 <td>データ2-7</td>
                 <td>データ2-8</td>
-
             </tr>
             <tr>
                 <td>データ3-1</td>
@@ -64,7 +67,6 @@
                 <td>データ3-6</td>
                 <td>データ3-7</td>
                 <td>データ3-8</td>
-
             </tr>
         </tbody>
     </table>
