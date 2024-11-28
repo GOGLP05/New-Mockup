@@ -39,6 +39,7 @@ table {
 }
 
 th, td {
+    width: 33.33%; /* 3列のセル幅を均等に分割 */
     padding: 12px;
     text-align: left;
     border: 1px solid #ddd;

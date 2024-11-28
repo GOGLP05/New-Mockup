@@ -76,3 +76,16 @@ button {
 button:hover {
     background-color: #45a049;
 }
+input[type="button"] {
+    padding: 5px 10px;
+    background-color: #28a745; /* ボタンの背景色（緑） */
+    color: white; /* 文字色（白） */
+    border: none;
+    border-radius: 5px; /* 角を丸くする */
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="button"]:hover {
+    background-color: #218838; /* ホバー時の背景色（少し暗い緑） */
+}
