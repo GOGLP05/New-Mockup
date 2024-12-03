@@ -1,9 +1,7 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
-    // パスワードの処理（例えば、データベースに保存する等）
-    // ここでパスワードを処理した後、リダイレクトなどが可能です。
-    // header("Location: login.php");
+
 }
 ?>
 <!DOCTYPE html>
