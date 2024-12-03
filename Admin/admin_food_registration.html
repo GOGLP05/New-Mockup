@@ -31,11 +31,13 @@
         <label for="deadline">使い切り期限:</label>
         <input type="text" id="deadline" name="deadline" placeholder="">
 
-        <label for="unit">単位:</label>
-        <input type="text" id="unit" name="unit" placeholder="">
-
+        <label for="unit">単位(g):</label>
+        <input type="number" id="unit" name="unit" placeholder="" 
+        value="1" min="0" max="2000">
+<!--  <input type="number" id="number-of-unit" name="unit" value="1" min="0" max="10">-->
         <label for="foodphoto">食品写真:</label>
         <button id="foodphoto" name="foodphoto">アップロード</button>
+<!--<img src="User\img\nikujaga.jpg" alt="肉じゃがの写真">-->
 
         <button class="delete">削除</button>
         <button class="update">更新</button>
