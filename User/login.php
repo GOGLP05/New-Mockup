@@ -2,7 +2,7 @@
 session_start();
 
 // データベース接続設定
-$host = "10.32.97.1";
+$host = "10.32.97.1\sotu";
 $dbname = "UserTable";
 $username = "23jn03_G5";
 $password = "23jn03_G5";
