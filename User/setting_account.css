@@ -91,9 +91,14 @@
 /* content */
 
 .content{
+  margin-top: 58px;
   margin-left: 15%;
   margin-right: 15%;
   text-align: center;
+}
+
+h1{
+
 }
 
 .sub_content{
