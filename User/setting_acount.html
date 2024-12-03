@@ -24,17 +24,18 @@
         </ul>
     </div>
 
-  <div class="content">
 
     <!-- メインコンテンツ -->
     <div class="content">
         <h1>アカウント</h1>
-        <label for="user_id">メールアドレス</label>
-        <input type="email" id="user_id" name="user_id" placeholder="example@example.com">
+        <p class="sub_content">メールアドレス:　example@example.com</p>
 
-        <p><a href="change_password.html">パスワードの変更</a></p>
-        <p><a href="setting.html">戻る</a></p>
-        <p><a href="login.html">ログアウト</a></p>
+        <input type="button" class="sub_content" onclick="location.href='loged_in_change_password.html'" value="パスワードの変更">
+        <div class="bottom">
+            <input type="button" class="sub_content" onclick="history.back()" value="戻る">
+            <input type="button" class="sub_content" onclick="location.href='login.html'" value="ログアウト">
+        </div>
     </div>
+
 </body>
 </html>
