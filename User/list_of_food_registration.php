@@ -15,16 +15,16 @@
     </label>
 
     <ul class="menu__box">
-      <li><a class="menu__item" href="setting.html">設定</a></li>
-      <li><a class="menu__item" href="list_of_food.html">食品庫</a></li>
-      <li><a class="menu__item" href="list_of_food_registration.html">食品登録</a></li>
-      <li><a class="menu__item" href="top.html">TOP</a></li>
+      <li><a class="menu__item" href="setting.php">設定</a></li>
+      <li><a class="menu__item" href="list_of_food.php">食品庫</a></li>
+      <li><a class="menu__item" href="list_of_food_registration.php">食品登録</a></li>
+      <li><a class="menu__item" href="top.php">TOP</a></li>
     </ul>
   </div>
 
         <div class="content">
             <div class="header"><h3>食品登録</h3></div>
-            <div class="recent-button"><a href="food_registration.html">最近登録した食品</a></div>
+            <div class="recent-button"><a href="food_registration.php">最近登録した食品</a></div>
             <div class="grid">
                 <div class="grid-item"><a href="#">牛乳</a></div>
                 <div class="grid-item"><a href="#">卵</a></div>
