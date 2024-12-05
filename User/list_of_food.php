@@ -15,10 +15,10 @@
     </label>
 
     <ul class="menu__box">
-      <li><a class="menu__item" href="setting.html">設定</a></li>
-      <li><a class="menu__item" href="list_of_food.html">食品庫</a></li>
-      <li><a class="menu__item" href="list_of_food_registration.html">食品登録</a></li>
-      <li><a class="menu__item" href="top.html">TOP</a></li>
+      <li><a class="menu__item" href="setting.php">設定</a></li>
+      <li><a class="menu__item" href="list_of_food.php">食品庫</a></li>
+      <li><a class="menu__item" href="list_of_food_registration.php">食品登録</a></li>
+      <li><a class="menu__item" href="top.php">TOP</a></li>
     </ul>
   </div>
 
@@ -35,13 +35,13 @@
           </thead>
           <tbody>
               <tr>
-                  <td><a href="food_detail.html">じゃがいも</a></td>
+                  <td><a href="food_detail.php">じゃがいも</a></td>
                   <td>2024/09/26</td>
                   <td>2024/10/12</td>
                   <td>5個</td>
               </tr>
               <tr>
-                  <td><a href="food_detail.html">牛乳</a></td>
+                  <td><a href="food_detail.php">牛乳</a></td>
                   <td>2024/10/02</td>
                   <td>2024/10/09</td>
                   <td>6本</td>
