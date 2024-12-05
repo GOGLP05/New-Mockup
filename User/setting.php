@@ -19,17 +19,17 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
     </label>
 
     <ul class="menu__box">
-      <li><a class="menu__item" href="setting.html">設定</a></li>
-      <li><a class="menu__item" href="list_of_food.html">食品庫</a></li>
-      <li><a class="menu__item" href="food_registration.html">食品登録</a></li>
-      <li><a class="menu__item" href="top.html">TOP</a></li>
+      <li><a class="menu__item" href="setting.php">設定</a></li>
+      <li><a class="menu__item" href="list_of_food.php">食品庫</a></li>
+      <li><a class="menu__item" href="food_registration.php">食品登録</a></li>
+      <li><a class="menu__item" href="top.php">TOP</a></li>
     </ul>
   </div>
 
 
   <div class="content">
     <h1>設定</h1>
-    <input type="button" class="sub_content" onclick="location.href='setting_account.html'" value="アカウント">
+    <input type="button" class="sub_content" onclick="location.href='setting_account.php'" value="アカウント">
     <div  class="notification">
         <div class="notification-button">
           <input type="button" class="sub_content" onclick="" value="通知">

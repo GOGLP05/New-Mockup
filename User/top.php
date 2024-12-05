@@ -24,7 +24,9 @@
     </div>
 
     <div class="content">
+        <div class="tape">
         <h1>作れる料理</h1>
+        </div>
         <div class="dishes_can_make">
             <a href="recipe_detail.php"><img src="img/nikujaga.jpg" alt="肉じゃが"></a>
             <a href="recipe_detail.php"><img src="img/hamburg steak.jpg" alt="ハンバーグ"></a>

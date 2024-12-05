@@ -70,6 +70,18 @@
   background-color: #CFD8DC;
 }
 
+body{
+    padding: 1em 1.5em;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 5%), 0 2px 3px -2px rgb(0 0 0 / 1%);
+    background-image: linear-gradient(transparent calc(100% - 1px), #e6edf3 50%, #e6edf3), linear-gradient(90deg, transparent calc(100% - 1px), #e6edf3 50%, #e6edf3);
+    background-size: 15px 15px;
+    background-repeat: repeat;
+    background-color: #ffffff;
+    color: #333;
+}
+
+
+
 .content{
   margin-left: 15%;
   margin-right: 15%;
@@ -89,6 +101,7 @@ img {
   flex-wrap: wrap;
   justify-content: space-between; 
   gap: 10px;
+  background-color: white;
 }
 
 .dishes_can_make a {
@@ -113,6 +126,7 @@ td{
 }
 
 .expiring_soon,.expired{
+  background-color: white;
   padding: 10px;
   border: 1px solid black;
   border-radius: 15px; 
