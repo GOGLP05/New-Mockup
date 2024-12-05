@@ -1,7 +1,16 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
+    $result = "";
 
+    if (isset($_POST['post'])) {
+        $result = "登録しました";
+        echo "<script>
+                alert('パスワードが変更されました。');
+                window.location.href = 'login.php';
+            </script>";
+        exit;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -16,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <h1>パスワード設定</h1>
     <div class="container">
-        <form action="" method="POST">
+        <form action="change_password.php" method="POST">
             <label for="password">パスワード</label>
             <input type="password" id="password" name="password" placeholder="パスワードを入力してください。">
-            <button type="submit">送信</button>
+            <button type="submit" name="post">送信</button>
         </form>
     </div>
 
