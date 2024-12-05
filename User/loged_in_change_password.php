@@ -4,6 +4,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $password1 = $_POST['password1'];
 }
+$alert = "<script type='text/javascript'>
+alert('パスワードが変更されました');</script>";
+echo $alert;
+
 ?>
 
 <!DOCTYPE html>

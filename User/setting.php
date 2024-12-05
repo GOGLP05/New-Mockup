@@ -37,7 +37,21 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
       </div>
     
     <div class="notification">
-      スイッチ
+  <form method="post" action="">
+    <label for="switch">ON/OFF:</label>
+    <input type="checkbox" id="switch" name="switch" <?php if(isset($_POST['switch'])) echo 'checked'; ?>>
+    <input type="submit" value="変更">
+  </form>
+
+    <?php
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['switch'])) {
+            echo "<p>スイッチはONです</p>";
+        } else {
+            echo "<p>スイッチはOFFです</p>";
+        }
+      }
+    ?>
     </div>
     <p>使い切り期限 3日前に 通知します</p>
     
