@@ -88,19 +88,19 @@ img {
   border: solid black;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* 各行の間隔を調整 */
-  gap: 10px; /* アイテム間の余白を追加 */
+  justify-content: space-between; 
+  gap: 10px;
 }
 
 .dishes_can_make a {
-  flex-basis: calc(33.333% - 10px); /* 横幅を3分割し、余白を考慮 */
-  box-sizing: border-box; /* パディングやボーダーを幅に含める */
-  margin-bottom: 10px; /* 各行間の余白を調整 */
+  flex-basis: calc(33.333% - 10px);
+  box-sizing: border-box; 
+  margin-bottom: 10px;
 }
 
 .dishes_can_make img {
-  width: 100%; /* 親要素の幅に合わせる */
-  height: 300px; /* 固定の高さを指定して統一 */
-  border-radius: 15px; /* 角を丸める */
-  object-fit: cover; /* アスペクト比を維持しながら収める */
+  width: 100%; 
+  height: 300px; 
+  border-radius: 15px; 
+  object-fit: cover; 
 }
