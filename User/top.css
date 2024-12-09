@@ -1,90 +1,10 @@
-#menu__toggle {
-  opacity: 0;
-}
-#menu__toggle:checked + .menu__btn > span {
-  transform: rotate(45deg);
-}
-#menu__toggle:checked + .menu__btn > span::before {
-  top: 0;
-  transform: rotate(0deg);
-}
-#menu__toggle:checked + .menu__btn > span::after {
-  top: 0;
-  transform: rotate(90deg);
-}
-#menu__toggle:checked ~ .menu__box {
-  left: 0 !important;
-}
-.menu__btn {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 26px;
-  height: 26px;
-  cursor: pointer;
-  z-index: 1;
-}
-.menu__btn > span,
-.menu__btn > span::before,
-.menu__btn > span::after {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 5px;
-  background-color: #616161;
-  transition-duration: .25s;
-}
-.menu__btn > span::before {
-  content: '';
-  top: -8px;
-}
-.menu__btn > span::after {
-  content: '';
-  top: 8px;
-}
-.menu__box {
-  display: block;
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 300px;
-  height: 100%;
-  margin: 0;
-  padding: 80px 0;
-  list-style: none;
-  background-color: #ECEFF1;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
-  transition-duration: .25s;
-}
-.menu__item {
-  display: block;
-  padding: 12px 24px;
+body {
+  box-shadow: 0 4px 4px rgb(0 0 0 / 5%), 0 2px 3px -2px rgb(0 0 0 / 1%);
+  background-image: linear-gradient(transparent calc(100% - 1px), #e6edf3 50%, #e6edf3), linear-gradient(90deg, transparent calc(100% - 1px), #e6edf3 50%, #e6edf3);
+  background-size: 15px 15px;
+  background-repeat: repeat;
+  background-color: #ffffff;
   color: #333;
-  font-family: 'Roboto', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  text-decoration: none;
-  transition-duration: .25s;
-}
-.menu__item:hover {
-  background-color: #CFD8DC;
-}
-
-body{
-    padding: 1em 1.5em;
-    box-shadow: 0 4px 4px rgb(0 0 0 / 5%), 0 2px 3px -2px rgb(0 0 0 / 1%);
-    background-image: linear-gradient(transparent calc(100% - 1px), #e6edf3 50%, #e6edf3), linear-gradient(90deg, transparent calc(100% - 1px), #e6edf3 50%, #e6edf3);
-    background-size: 15px 15px;
-    background-repeat: repeat;
-    background-color: #ffffff;
-    color: #333;
-}
-
-
-
-.content{
-  margin-left: 15%;
-  margin-right: 15%;
 }
 
 img {
@@ -99,39 +19,71 @@ img {
   border: 1px solid black;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; 
+  justify-content: space-between;
   gap: 10px;
   background-color: white;
 }
 
 .dishes_can_make a {
   flex-basis: calc(33.333% - 10px);
-  box-sizing: border-box; 
+  box-sizing: border-box;
   margin-bottom: 10px;
 }
 
-.dishes_can_make img {
-  width: 100%; 
-  height: 300px; 
-  border-radius: 15px; 
-  object-fit: cover; 
+.dishes_can_make a:hover {
+  transform: scale(1.02);
+  /* ホバー時に画像を拡大 */
 }
-table{
+
+.dishes_can_make img {
+  width: 100%;
+  height: 300px;
+  border-radius: 15px;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+  /* アニメーション追加 */
+}
+
+.dishes_can_make img:hover {
+  transform: scale(1.02);
+  /* 画像を拡大 */
+}
+
+table {
   width: 100%;
 }
-td{
+
+td {
   text-align: center;
   font-size: 20px;
   margin: 100px;
 }
 
-.expiring_soon,.expired{
+.expiring_soon,
+.expired {
   background-color: white;
   padding: 10px;
   border: 1px solid black;
-  border-radius: 15px; 
+  border-radius: 15px;
 }
 
-.expired{
+.expired {
   color: red;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  z-index: 0;
+}
+
+.image-text {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px 10px;
+  border-radius: 5px;
 }
