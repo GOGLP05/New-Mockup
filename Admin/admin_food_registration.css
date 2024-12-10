@@ -49,30 +49,48 @@ input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+/* ボタンの横並び */
+.button-container {
+    display: flex;
+    gap: 10px; /* ボタン間に隙間を作る */
+    justify-content: space-between;
+}
+
+/* ボタン共通のスタイル */
 button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
+    padding: 10px 20px; /* ボタンの内側の余白 */
+    border-radius: 4px; /* 角を丸くする */
+    font-size: 14px;
+    border:none;
 }
-button:hover {
-    opacity: 0.9;
-}
+
 /* 削除ボタン */
-button.delete {
+button.btn-danger {
     background-color: #f44336; /* 赤色 */
     color: white;
 }
-button.delete:hover {
+
+button.btn-danger:hover {
     background-color: #d32f2f; /* 少し濃い赤 */
 }
+
 /* 更新ボタン */
 button.update {
     background-color: #4CAF50; /* 緑色 */
     color: white;
+    border-radius: 4px; /* 角を丸くする */
+
 }
+
 button.update:hover {
-    background-color: #45a049;
+    background-color: #45a049; /* 少し濃い緑 */
+}
+/* モーダルボディ内のコンテンツを中央揃え */
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
 }
