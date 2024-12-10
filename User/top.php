@@ -1,12 +1,3 @@
-
-<?php
-
-// セッションの開始
-session_start();
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -19,8 +10,6 @@ session_start();
 </head>
 
 <body>
-
-
     <div class="hamburger-menu">
         <input id="menu__toggle" type="checkbox" />
         <label class="menu__btn" for="menu__toggle">
@@ -40,12 +29,42 @@ session_start();
             <h1>作れる料理</h1>
         </div>
         <div class="dishes_can_make">
-            <a href="recipe_detail.html"><img src="img/nikujaga.jpg" alt="肉じゃが"></a>
-            <a href="recipe_detail.html"><img src="img/hamburg steak.jpg" alt="ハンバーグ"></a>
-            <a href="recipe_detail.html"><img src="img/spaghetti.jpg" alt="ミートスパゲティ"></a>
-            <a href="recipe_detail.html"><img src="img/potato gratin.jpg" alt="じゃがいもグラタン"></a>
-            <a href="recipe_detail.html"><img src="img/candied_sweet potato.jpg" alt="大学芋"></a>
-            <a href="recipe_detail.html"><img src="img/simmered.jpg" alt="煮物"></a>
+            <a href="recipe_detail.php">
+                <div class="image-container">
+                    <img src="img/nikujaga.jpg" alt="肉じゃが">
+                    <div class="image-text">肉じゃが</div>
+                </div>
+            </a>
+            <a href="recipe_detail.php">
+                <div class="image-container">
+                    <img src="img/hamburg steak.jpg" alt="ハンバーグ">
+                    <div class="image-text">ハンバーグ</div>
+                </div>
+            </a>
+            <a href="recipe_detail.php">
+                <div class="image-container">
+                    <img src="img/spaghetti.jpg" alt="ミートスパゲティ">
+                    <div class="image-text">ミートスパゲティ</div>
+                </div>
+            </a>
+            <a href="recipe_detail.php">
+                <div class="image-container">
+                    <img src="img/potato gratin.jpg" alt="じゃがいもグラタン">
+                    <div class="image-text">じゃがいもグラタン</div>
+                </div>
+            </a>
+            <a href="recipe_detail.php">
+                <div class="image-container">
+                    <img src="img/candied_sweet potato.jpg" alt="大学芋">
+                    <div class="image-text">大学芋</div>
+                </div>
+            </a>
+            <a href="recipe_detail.php">
+                <div class="image-container">
+                    <img src="img/simmered.jpg" alt="煮物">
+                    <div class="image-text">煮物</div>
+                </div>
+            </a>
         </div>
 
         <div>
@@ -121,7 +140,3 @@ session_start();
 </body>
 
 </html>
-<<<<<<< HEAD
-=======
->>>>>>>> b5c14d6fc7fabe36f77b2d53bcd90ddef1e60c03:User/top.php
->>>>>>> b5c14d6fc7fabe36f77b2d53bcd90ddef1e60c03
