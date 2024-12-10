@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="recipe_detail.css">
     <title>レシピ</title>
-    <link rel="stylesheet" href="recipe_detail.css"> <!-- 外部CSSファイルをリンク -->
 </head>
+
 <body>
+    <div class="hamburger-menu">
+        <input id="menu__toggle" type="checkbox" />
+        <label class="menu__btn" for="menu__toggle">
+            <span></span>
+        </label>
 
-    <div class="hamburger-menu"></div>
-    <input id="menu__toggle" type="checkbox" />
-    <label class="menu__btn" for="menu__toggle">
-      <span></span>
-    </label>
-
-    <ul class="menu__box">
-      <li><a class="menu__item" href="setting.html">設定</a></li>
-      <li><a class="menu__item" href="list_of_food.html">食品庫</a></li>
-      <li><a class="menu__item" href="list_of_food_registration.html">食品登録</a></li>
-      <li><a class="menu__item" href="top.html">TOP</a></li>
-    </ul>
-  </div>
+        <ul class="menu__box">
+            <li><a class="menu__item" href="top.php">TOP</a></li>
+            <li><a class="menu__item" href="list_of_food.php">食品庫</a></li>
+            <li><a class="menu__item" href="food_registration.php">食品登録</a></li>
+            <li><a class="menu__item" href="setting.php">設定</a></li>
+        </ul>
+    </div>
 
     <div class="content">
         <div class="photo">
-            <img src="User\img\nikujaga.jpg" alt="肉じゃがの写真">
+            <img src="img/nikujaga.jpg" alt="肉じゃが">
         </div>
         <div class="details">
             <h1>肉じゃが</h1>
@@ -54,7 +56,7 @@
             </div>
             <!--<button type="button" aria-label="減らす" aria-describedby="label-number-of-unit">-</button>-->
             <input type="number" id="number-of-unit" name="unit" value="1" min="0" max="10">人前
-           
+
             <!-- <button type="button" aria-label="増やす" aria-describedby="label-number-of-unit">+</button>人前-->
             <!--<div class="visually-hidden" role="status" aria-live="polite">{input 要素内の値がここに代入される。}</div>-->
 
@@ -62,7 +64,8 @@
 
             <button class="make"><a href="#">作った</a></button>
         </div>
-    </main>
-</div>
+        </main>
+    </div>
 </body>
+
 </html>
