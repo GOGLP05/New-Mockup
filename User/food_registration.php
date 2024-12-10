@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <script src="pop_up.js"></script>
 </head>
 <body>
+<?php include "header.php"; ?>
   <div class="content">
     <h1>食品登録</h1>
     <div class="foods">

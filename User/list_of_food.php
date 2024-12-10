@@ -11,7 +11,7 @@
 </head>
 
 <body>
-
+<?php include "header.php"; ?>
   <div class="hamburger-menu"></div>
   <input id="menu__toggle" type="checkbox" />
   <label class="menu__btn" for="menu__toggle">
