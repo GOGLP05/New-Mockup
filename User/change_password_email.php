@@ -15,7 +15,7 @@
         <input type="text" id="user_id" name="user_id"
         placeholder="メールアドレスを入力してください。">
 
-        <a href="change_password.html"><button onclick="PasswordSettei.html">メールを送信</button></a>
+        <a href="change_password.php"><button onclick="PasswordSettei.php">メールを送信</button></a>
     </div>
     <script>
         function login() {

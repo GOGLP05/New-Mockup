@@ -2,7 +2,7 @@
 <header>
     <div>
         <a href="index.php">
-            <img src="New-Mockup/images/いただきますlogo.png" alt="いただきます">
+            <img src="New-Mockup/images/いただきます.png" alt="いただきます">
         </a>
     </div>
     <hr>
