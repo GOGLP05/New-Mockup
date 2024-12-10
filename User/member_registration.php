@@ -2,9 +2,9 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>会員登録</title>
-        <!-- CSSファイルをリンク -->
         <link rel="stylesheet" href="member_registration.css">
+        <title>会員登録</title>
+        
     </head>
     <body>
         <h1>会員登録フォーム</h1>
@@ -23,7 +23,6 @@
                 <label for="date">生年月日</label>
                 <input type="date" id="date" name="date">
                 
-                <!-- 登録ボタン -->
                 <input type="button" onclick="location.href='login.html'" value="登録">
             </div>
         </form>
