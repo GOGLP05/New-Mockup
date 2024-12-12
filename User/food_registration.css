@@ -1,6 +1,29 @@
-.foods {
-    margin-top: 150px;
-    border-top: solid black;
+.recent_registration{
+    text-align: right;
+    margin-right: 20px;
+}
+input[type="button"]{
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    width: 20%;
+}
+
+hr{
+    width: 100%;
+    background-color: black;
+    margin-top: 50px;
+    height: 3px;
+}
+
+.foods{
+    border: solid 1px black;
+    margin-top: 80px;
+    background-color: #fff;
     display: flex;
     flex-wrap: wrap; /* 折り返しを有効にする */
     gap: 10px; /* ボタン間のスペース */
