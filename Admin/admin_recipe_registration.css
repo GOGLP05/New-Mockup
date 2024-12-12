@@ -104,12 +104,27 @@ button.delete:hover {
 }
 
 /* 更新ボタン */
+/* ボタンのサイズを調整するためにBootstrapのスタイルを追加 */
 button.update {
-    background-color: #4CAF50; /* 緑色 */
-    color: white;
+    display: inline-block; /* Bootstrapボタンのインライン設定 */
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #4CAF50;
+    border: none;
+    padding: 0.375rem 0.75rem; /* Bootstrapボタンと同じ余白 */
+    font-size: 1rem; /* フォントサイズを統一 */
+    border-radius: 0.25rem; /* Bootstrapの角丸 */
+    transition: all 0.15s ease-in-out; /* トランジション効果 */
 }
 button.update:hover {
-    background-color: #45a049;
+    background-color: #45a049; /* 濃い緑色 */
+}
+button.update:focus, button.update:hover {
+    text-decoration: none;
+    outline: none;
 }
 /* テーブル共通スタイル */
 table {
@@ -143,3 +158,57 @@ table tbody tr:nth-child(even) {
 .seasonings-table th {
     background-color: #ffe6e6;
 }
+/* モーダル内の中央揃え */
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* テキストの中央揃え */
+}
+/* ボタンの横並び */
+.button-container {
+    display: flex;
+    gap: 10px; /* ボタン間に隙間を作る */
+    justify-content: space-between;
+}
+
+/* ボタン共通のスタイル */
+button {
+    padding: 10px 20px; /* ボタンの内側の余白 */
+    border-radius: 4px; /* 角を丸くする */
+    font-size: 14px;
+    border:none;
+}
+
+/* 削除ボタン */
+button.btn-danger {
+    background-color: #f44336; /* 赤色 */
+    color: white;
+}
+
+button.btn-danger:hover {
+    background-color: #d32f2f; /* 少し濃い赤 */
+}
+
+/* 更新ボタン */
+button.update {
+    background-color: #4CAF50; /* 緑色 */
+    color: white;
+    border-radius: 4px; /* 角を丸くする */
+
+}
+
+button.update:hover {
+    background-color: #45a049; /* 少し濃い緑 */
+}
+/* モーダルボディ内のコンテンツを中央揃え */
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
