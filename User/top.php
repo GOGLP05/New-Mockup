@@ -32,37 +32,37 @@
         <div class="dishes_can_make">
             <a href="recipe_detail.php">
                 <div class="image-container">
-                    <img src="img/nikujaga.jpg" alt="肉じゃが">
+                    <img src="img/recipe/nikujaga.jpg" alt="肉じゃが">
                     <div class="image-text">肉じゃが</div>
                 </div>
             </a>
             <a href="recipe_detail.php">
                 <div class="image-container">
-                    <img src="img/hamburg steak.jpg" alt="ハンバーグ">
+                    <img src="img/recipe/hamburg steak.jpg" alt="ハンバーグ">
                     <div class="image-text">ハンバーグ</div>
                 </div>
             </a>
             <a href="recipe_detail.php">
                 <div class="image-container">
-                    <img src="img/spaghetti.jpg" alt="ミートスパゲティ">
+                    <img src="img/recipe/spaghetti.jpg" alt="ミートスパゲティ">
                     <div class="image-text">ミートスパゲティ</div>
                 </div>
             </a>
             <a href="recipe_detail.php">
                 <div class="image-container">
-                    <img src="img/potato gratin.jpg" alt="じゃがいもグラタン">
+                    <img src="img/recipe/potato gratin.jpg" alt="じゃがいもグラタン">
                     <div class="image-text">じゃがいもグラタン</div>
                 </div>
             </a>
             <a href="recipe_detail.php">
                 <div class="image-container">
-                    <img src="img/candied_sweet potato.jpg" alt="大学芋">
+                    <img src="img/recipe/candied_sweet potato.jpg" alt="大学芋">
                     <div class="image-text">大学芋</div>
                 </div>
             </a>
             <a href="recipe_detail.php">
                 <div class="image-container">
-                    <img src="img/simmered.jpg" alt="煮物">
+                    <img src="img/recipe/simmered.jpg" alt="煮物">
                     <div class="image-text">煮物</div>
                 </div>
             </a>
