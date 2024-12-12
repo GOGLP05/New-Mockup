@@ -1,8 +1,8 @@
 <?php
-require_once 'test/test3.php';
+require_once 'test_adminDAO.php';
 
-$test3 = new test3();
-$food_list = $test3->get_foodmaster();
+$adminDAO = new test_adminDAO();
+$user_list = $adminDAO->get_admin();
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,10 +14,10 @@ $food_list = $test3->get_foodmaster();
     <?php include 'header.php' ?>
 
     <table>
-        <?php foreach($food_list as $food_master) : ?>
+        <?php foreach($user_list as $admin) : ?>
             <tr>
                 <td>
-                    <?=$food_list->$food_name ?>
+                    <?=$user_list->$user_id ?>
                 </td>
             </tr>
         <?php endforeach; ?>
