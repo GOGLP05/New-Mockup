@@ -1,3 +1,11 @@
+<?php
+require_once 'helpers/DAO.php';
+
+
+$FoodMasterDAO = new FoodMasterDAO();
+
+$foodmaster_list = $FoodMasterDAO->get_name_and_path();
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -30,51 +38,11 @@
     <hr>
     <div class="content">
         <div class="foods">
-            <button class="button" onclick="showPopup('牛肉')" title="牛肉">
-                <img src="img/foods/20000001.jpg" alt="牛肉" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('鶏肉')" title="鶏肉">
-                <img src="img/foods/20000002.jpg" alt="鶏肉" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('豚肉')" title="豚肉">
-                <img src="img/foods/20000002.jpg" alt="豚肉" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('野菜')" title="野菜">
-                <img src="img/foods/20000002.jpg" alt="野菜" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('魚')" title="魚">
-                <img src="img/foods/20000002.jpg" alt="魚" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('卵')" title="卵">
-                <img src="img/foods/20000002.jpg" alt="卵" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('米')" title="米">
-                <img src="img/foods/20000002.jpg" alt="米" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('小麦')" title="小麦">
-                <img src="img/foods/20000002.jpg" alt="小麦" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('豆腐')" title="豆腐">
-                <img src="img/foods/20000002.jpg" alt="豆腐" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('じゃがいも')" title="じゃがいも">
-                <img src="img/foods/20000002.jpg" alt="じゃがいも" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('りんご')" title="りんご">
-                <img src="img/foods/20000002.jpg" alt="りんご" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('バナナ')" title="バナナ">
-                <img src="img/foods/20000002.jpg" alt="バナナ" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('みかん')" title="みかん">
-                <img src="images/mikan.jpg" alt="みかん" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('トマト')" title="トマト">
-                <img src="images/tomato.jpg" alt="トマト" class="food-image">
-            </button>
-            <button class="button" onclick="showPopup('レタス')" title="レタス">
-                <img src="images/lettuce.jpg" alt="レタス" class="food-image">
-            </button>
+            <?php foreach ($foods as $food): ?>
+                <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food['food_name']); ?>')" title="<?php echo htmlspecialchars($food['food_name']); ?>">
+                    <img src="<?php echo htmlspecialchars($food['food_file_path']); ?>" alt="<?php echo htmlspecialchars($food['food_name']); ?>" class="food-image">
+                </button>
+            <?php endforeach; ?>
         </div>
     </div>
 
