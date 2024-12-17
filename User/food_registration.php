@@ -4,8 +4,11 @@ require_once 'helpers/DAO.php';
 
 $FoodMasterDAO = new FoodMasterDAO();
 
-$foodmaster_list = $FoodMasterDAO->get_name_and_path();
+$foodmaster_list = $FoodMasterDAO->get_foods();
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>

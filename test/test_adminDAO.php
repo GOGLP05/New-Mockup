@@ -8,7 +8,7 @@ class test_adminDAO{
 }
 
 class adminDAO{
-   
+
     public function get_admin()
     {
         $dbh = DAO::get_db_connect();
