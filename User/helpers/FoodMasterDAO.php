@@ -31,8 +31,9 @@ class FoodMasterDAO
     }
 
     public function get_food_by_category{
-        
+        //食品カテゴリーで並びかえ
     }
+
 
 
 
