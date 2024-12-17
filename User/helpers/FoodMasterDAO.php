@@ -27,7 +27,7 @@ class FoodMasterDAO
     }
 
     public function get_food_by_recent{
-        //最近登録した食品
+        //最近登録した食
     }
 
     public function get_food_by_category{
