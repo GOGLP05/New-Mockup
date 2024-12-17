@@ -1,5 +1,6 @@
 <?php
 require_once 'helpers/DAO.php';
+require_once 'helpers/FoodMasterDAO.php';
 
 
 $FoodMasterDAO = new FoodMasterDAO();

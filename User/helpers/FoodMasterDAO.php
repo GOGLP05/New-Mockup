@@ -8,7 +8,7 @@ class FoodMasterDAO
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
         $data = []; 
-        while($row = $stmt->fetchObject('FoodMaster')){
+        while($row = $stmt->fetchObject('FoodMasterDAO')){
             $data[] = $row;
         } 
         return $data; 
