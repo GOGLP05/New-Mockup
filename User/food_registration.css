@@ -10,7 +10,7 @@ input[type="button"]{
     background-color: #4CAF50;
     color: white;
     border-radius: 5px;
-    width: 20%;
+    width: 30%;
 }
 
 hr{
@@ -30,7 +30,6 @@ hr{
 }
 
 .button {
-    background-image: url('img/nikujaga.jpg'); /* 画像パスを指定 */
     background-size: cover;
     background-position: center;
     color: white;
@@ -41,7 +40,7 @@ hr{
     border-radius: 8px;
     cursor: pointer;
     text-align: center;
-    width: calc(25% - 30px); /* 横4つ並べるための設定（間隔分を差し引く） */
+    width: calc(30% - 30px); /* 横4つ並べるための設定（間隔分を差し引く） */
     box-sizing: border-box; /* パディングとボーダーを含めて幅を計算 */
 }
 
@@ -83,3 +82,25 @@ hr{
 .popup .popup-close:hover {
     background: #d32f2f;
 }
+.foods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+}
+
+.food-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
