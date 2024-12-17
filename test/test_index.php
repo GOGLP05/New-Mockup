@@ -1,7 +1,7 @@
 <?php
 require_once 'test_adminDAO.php';
 
-$adminDAO = new test_adminDAO();
+$adminDAO = new adminDAO();
 $user_list = $adminDAO->get_admin();
 ?>
 <!DOCTYPE html>

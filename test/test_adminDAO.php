@@ -19,7 +19,7 @@ class adminDAO{
         $stmt->execute();
 
         $data = [];
-        while($row = $stmt->fetchObject('dbo.admin')){
+        while($row = $stmt->fetchObject('test_adminDAO')){
             $data[] = $row;
         }
 
