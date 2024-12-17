@@ -26,16 +26,6 @@ class FoodMasterDAO
         return $data; 
     }
 
-    public function get_food_by_recent{
-        //最近登録した食
-    }
-
-    public function get_food_by_category{
-        //食品カテゴリーで並びかえ
-    }
-
-
-
 
 
 }
