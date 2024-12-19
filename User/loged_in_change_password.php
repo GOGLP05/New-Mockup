@@ -3,11 +3,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $_POST['user_id'];
     $password = $_POST['password'];
     $password1 = $_POST['password1'];
-}
-$alert = "<script type='text/javascript'>
-alert('パスワードが変更されました');</script>";
-echo $alert;
 
+    // パスワード変更処理をここに追加
+    // 例: データベースで現在のパスワードを確認し、新しいパスワードを保存する
+
+    // パスワードが正常に変更された場合
+    $isPasswordChanged = true; // 実際の処理結果に基づく条件に変更してください
+    if ($isPasswordChanged) {
+        echo "<script type='text/javascript'>
+            alert('パスワードが変更されました');
+            window.location.href = 'login.php'; // 遷移先URLを指定
+        </script>";
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>

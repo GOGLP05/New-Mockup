@@ -1,33 +1,24 @@
 <?php
-require_once 'helpers/DAO.php';
+require_once 'helpers/FoodMasterDAO.php';
 
-try {
-    // DB接続を取得
-    $dbh = DAO::get_db_connect();
-
-    // データ取得クエリ
-    $sql = "SELECT food_name, food_file_path FROM food_master";
-    $stmt = $dbh->prepare($sql);
-    $stmt->execute();
-
-    // 取得データを配列に格納
-    $foods = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("データ取得エラー: " . $e->getMessage());
-}
+$FoodMasterDAO = new FoodMasterDAO();
+$foodmaster_list = $FoodMasterDAO->get_name_and_path();
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="food_registration.css">
     <title>最近登録した食品</title>
-    <script src="pop_up.js"></script>
+    <script src="pop_up.js" defer></script>
 </head>
+
 <body>
-    <input id="menu__toggle" type="checkbox" />
+    <input id="menu__toggle" type="checkbox">
     <label class="menu__btn" for="menu__toggle">
         <span></span>
     </label>
@@ -45,32 +36,32 @@ try {
     <hr>
     <div class="content">
         <div class="foods">
-            <?php foreach ($foods as $food): ?>
-                <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food['food_name']); ?>')" title="<?php echo htmlspecialchars($food['food_name']); ?>">
-                    <img src="<?php echo htmlspecialchars($food['food_file_path']); ?>" alt="<?php echo htmlspecialchars($food['food_name']); ?>" class="food-image">
-                </button>
+            <?php foreach ($foodmaster_list as $food): ?>
+                <div class="button-container">
+                    <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
+                        <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
+                    </button>
+                    <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
+                </div>
             <?php endforeach; ?>
         </div>
     </div>
 
-    <div class="popup" id="popup">
+    <div id="popup" class="popup" style="display: none;">
         <div class="popup-content">
-            <h3 id="popup-food-title">食品情報を入力</h3>
-            <form id="pop_up_foodregistration" method="POST" action="food_registration.php">
-                <input type="hidden" id="food-name" name="food">
-                <label for="quantity">グラム:</label>
-                <input type="number" id="quantity" name="quantity" min="1" required><br><br>
-
+            <span id="popup-close" class="popup-close" onclick="closePopup()">×</span>
+            <h2 id="popup-food-title"></h2>
+            <form onsubmit="event.preventDefault(); submitForm();">
+                <label for="quantity">数量:</label>
+                <input type="text" id="quantity" name="quantity" required><br><br>
                 <label for="count">個数:</label>
-                <input type="number" id="count" name="count" min="1" required><br><br>
-
-                <label for="date">登録日:</label>
+                <input type="text" id="count" name="count" required><br><br>
+                <label for="date">日付:</label>
                 <input type="date" id="date" name="date" required><br><br>
-
-                <button type="submit">追加</button>
-                <button type="button" onclick="closePopup()">閉じる</button>
+                <button type="submit">登録</button>
             </form>
         </div>
     </div>
 </body>
+
 </html>
