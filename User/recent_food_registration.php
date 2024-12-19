@@ -2,7 +2,7 @@
 require_once 'helpers/FoodMasterDAO.php';
 
 $FoodMasterDAO = new FoodMasterDAO();
-$foodmaster_list = $FoodMasterDAO->get_name_and_path();
+$foodmaster_list = $FoodMasterDAO->get_name_and_path_paginated();
 ?>
 
 <!DOCTYPE html>
