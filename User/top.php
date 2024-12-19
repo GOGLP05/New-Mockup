@@ -1,3 +1,10 @@
+<?php
+require_once 'helpers/RecipeMasterDAO.php';
+
+// RecipeMasterDAOのインスタンスを作成し、データを取得
+$recipeMasterDAO = new Recipe_MasterDAO();
+$recipes = $recipeMasterDAO->get_recipes();
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -15,7 +22,6 @@
         <label class="menu__btn" for="menu__toggle">
             <span></span>
         </label>
-
         <ul class="menu__box">
             <li><a class="menu__item" href="top.php">TOP</a></li>
             <li><a class="menu__item" href="list_of_food.php">食品庫</a></li>
@@ -29,45 +35,21 @@
             <h1>作れる料理</h1>
         </div>
         <div class="dishes_can_make">
-            <a href="recipe_detail.php">
+    <?php if (!empty($recipes)) : ?>
+        <?php foreach ($recipes as $recipe) : ?>
+            <a href="recipe_detail.php?id=<?= htmlspecialchars($recipe->recipe_id, ENT_QUOTES, 'UTF-8') ?>">
                 <div class="image-container">
-                    <img src="img/recipe/nikujaga.jpg" alt="肉じゃが">
-                    <div class="image-text">肉じゃが</div>
+                    <img src="<?= htmlspecialchars($recipe->recipe_file_path1, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?>">
+                    <div class="image-text"><?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?></div>
                 </div>
             </a>
-            <a href="recipe_detail.php">
-                <div class="image-container">
-                    <img src="img/recipe/hamburg steak.jpg" alt="ハンバーグ">
-                    <div class="image-text">ハンバーグ</div>
-                </div>
-            </a>
-            <a href="recipe_detail.php">
-                <div class="image-container">
-                    <img src="img/recipe/spaghetti.jpg" alt="ミートスパゲティ">
-                    <div class="image-text">ミートスパゲティ</div>
-                </div>
-            </a>
-            <a href="recipe_detail.php">
-                <div class="image-container">
-                    <img src="img/recipe/potato gratin.jpg" alt="じゃがいもグラタン">
-                    <div class="image-text">じゃがいもグラタン</div>
-                </div>
-            </a>
-            <a href="recipe_detail.php">
-                <div class="image-container">
-                    <img src="img/recipe/candied_sweet potato.jpg" alt="大学芋">
-                    <div class="image-text">大学芋</div>
-                </div>
-            </a>
-            <a href="recipe_detail.php">
-                <div class="image-container">
-                    <img src="img/recipe/simmered.jpg" alt="煮物">
-                    <div class="image-text">煮物</div>
-                </div>
-            </a>
-        </div>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <p>表示できる料理がありません。</p>
+    <?php endif; ?>
+</div>
 
-        <div>
+<div>
             <h1>使い切り期限が近い食材</h1>
             <table class="expiring_soon">
                 <thead>
