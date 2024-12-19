@@ -1,7 +1,7 @@
 <?php
 require_once 'test_adminDAO.php';
 
-$adminDAO = new adminDAO();
+$adminDAO = new test_adminDAO();
 $user_list = $adminDAO->get_admin();
 ?>
 <!DOCTYPE html>
@@ -24,3 +24,5 @@ $user_list = $adminDAO->get_admin();
     </table>
 </body>
 </html>
+
+DELETE

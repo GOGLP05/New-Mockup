@@ -2,7 +2,7 @@
     require_once 'Food_MasterDAO.php';
 
 
-    $FoodMasterDAO = new Food_MasterDAO();
+    $FoodMasterDAO = new FoodMasterDAO();
 
     $foodmaster_list = $FoodMasterDAO->get_foods();
 ?>
