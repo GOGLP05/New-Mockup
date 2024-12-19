@@ -26,7 +26,7 @@
 
     <div class="content">
         <div class="photo">
-            <img src="img/nikujaga.jpg" alt="肉じゃが">
+            <img src="img/recipe/40000001.jpg" alt="肉じゃが">
         </div>
         <div class="details">
             <h1>肉じゃが</h1>
