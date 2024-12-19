@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <link rel="stylesheet" href="admin_list_of_food_categories.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食品カテゴリー一覧</title>
+</head>
+<body>
+
+    <!-- パンくずリスト -->
+    <ul class="breadcrumb">
+        <a href="admin_top.php">管理者TOP</a>>
+        <span>食品カテゴリー一覧</span>
+    </ul>
+
+    <h1>食品カテゴリー一覧</h1>
+
+    <div class="button-container">
+        <a href="admin_food_categories_registration.php">
+            <button>新規登録</button>
+        </a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>カテゴリーID</th>
+                <th>カテゴリー名</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>4001</td>
+                <td>牛乳</td>
+                <td><input type="button" onclick="location.href='admin_food_categories_registration.html'" value="編集"></td>
+            </tr>
+            <tr>
+                <td>4002</td>
+                <td>卵</td>
+                <td><input type="button" onclick="location.href='admin_food_categories_registration.html'" value="編集"></td>     
+            </tr>
+            <tr>
+                <td>4003</td>
+                <td>大豆</td>
+                <td><input type="button" onclick="location.href='admin_food_categories_registration.html'" value="編集"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
