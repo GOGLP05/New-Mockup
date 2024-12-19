@@ -11,8 +11,8 @@
     <body>
         <!-- パンくずリスト -->
         <ul class="breadcrumb">
-            <a href="admin_top.html">管理者TOP</a> >
-            <a href="syokuhincategoriesitiran.html">カテゴリ一覧</a> >
+            <a href="admin_top.php">管理者TOP</a> >
+            <a href="admin_list_of_food_categories.php">カテゴリ一覧</a> >
             <span>食品カテゴリ登録/編集</span>
         </ul>
 

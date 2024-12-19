@@ -15,7 +15,7 @@
 
     <!-- パンくずリスト -->
     <ul class="breadcrumb">
-        <a href="admin_top.html">管理者TOP</a>>
+        <a href="admin_top.php">管理者TOP</a>>
         <span>会員一覧</span>
     </ul>
 

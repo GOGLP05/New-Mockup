@@ -29,7 +29,7 @@
             if(kanrisyaid === "" || password === "") {
                 alert("管理者IDとパスワードを入力してください。");   
             } else {
-                window.location.href = 'admin_top.html';
+                window.location.href = 'admin_top.php';
             }
         }
     </script>
