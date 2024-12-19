@@ -1,3 +1,11 @@
+<?php
+    require_once 'helpers\CategoryDAO.php';
+
+    $CategoryDAO = new CategoryDAO();
+
+    $category_list = $CategoryDAO->get_categories();
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
     <link rel="stylesheet" href="admin_list_of_food_categories.css">
@@ -28,21 +36,14 @@
                 <th>カテゴリー名</th>
                 <th>操作</th>
             </tr>
+            <?php foreach ($category_list as $category) : ?>
             <tr>
-                <td>4001</td>
-                <td>牛乳</td>
-                <td><input type="button" onclick="location.href='admin_food_categories_registration.html'" value="編集"></td>
+                <td><?= htmlspecialchars($category->category_id, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($category->category_name, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><input type="button" onclick="location.href='admin_food_categories_registration.php'" value="編集"></td>
             </tr>
-            <tr>
-                <td>4002</td>
-                <td>卵</td>
-                <td><input type="button" onclick="location.href='admin_food_categories_registration.html'" value="編集"></td>     
-            </tr>
-            <tr>
-                <td>4003</td>
-                <td>大豆</td>
-                <td><input type="button" onclick="location.href='admin_food_categories_registration.html'" value="編集"></td>
-            </tr>
+        <?php endforeach; ?>
+
     </table>
 
 </body>

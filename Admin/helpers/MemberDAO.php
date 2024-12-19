@@ -10,7 +10,7 @@ class Member{
     public bool $message;
 }
 
-    class member_DAO 
+    class Member_DAO
     {
         public function get_members() { 
             $dbh = DAO::get_db_connect(); 

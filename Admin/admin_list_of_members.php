@@ -1,9 +1,9 @@
 <?php
-    require_once 'helpers\Member_DAO.php';
+    require_once 'helpers\MemberDAO.php';
 
-    $Member_DAO = new Member_DAO();
+    $MemberDAO = new Member_DAO();
 
-    $member_list = $Member_DAO->get_members();
+    $member_list = $MemberDAO->get_members();
 
 ?>
 <!DOCTYPE html>
@@ -37,7 +37,7 @@
             </tr>
             <?php foreach ($member_list as $member) : ?>
             <tr>
-            <td><?= htmlspecialchars($member->member_id, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($member->member_id, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($member->email, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($member->password, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($member->sex, ENT_QUOTES, 'UTF-8') ?></td>

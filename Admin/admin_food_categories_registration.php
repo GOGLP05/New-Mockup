@@ -1,3 +1,11 @@
+<?php
+    require_once 'helpers\CategoryDAO.php';
+
+    $CategoryDAO = new CategoryDAO();
+
+    $category_list = $CategoryDAO->get_categories();
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
     <head>

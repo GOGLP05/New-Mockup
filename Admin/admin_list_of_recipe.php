@@ -1,3 +1,14 @@
+<?php
+    require_once 'helpers\RecipeDAO.php';
+
+    $RecipeDAO = new RecipeDAO();
+
+    $recipe_list = $RecipeDAO->get_recipes();
+
+
+    $count=0;
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
     <link rel="stylesheet" href="admin_list_of_recipe.css">
@@ -22,32 +33,29 @@
         </a>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <td><a href="admin_recipe_registration.php">ハンバーグ</a></td>
-                <td><a href="admin_recipe_registration.php">オムライス</a></td>
-                <td><a href="admin_recipe_registration.php">カレー</a></td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><a href="admin_recipe_registration.php">シチュー</a></td>
-                <td><a href="admin_recipe_registration.php">焼きそば</a></td>
-                <td><a href="admin_recipe_registration.php">肉じゃが</a></td>
-            </tr>
-            <tr>
-                <td><a href="admin_recipe_registration.php">ミートソーススパゲッティ</a></td>
-                <td><a href="admin_recipe_registration.php">グラタン</a></td>
-                <td><a href="admin_recipe_registration.php">ドリア</a></td>
-            </tr>
-            <tr>
-                <td><a href="admin_recipe_registration.php">ピーマンの肉詰め</a></td>
-                <td><a href="admin_recipe_registration.php">餃子</a></td>
-                <td><a href="admin_recipe_registration.php">チャーハン</a></td>
-            </tr>
-        </tbody>
-    </table>
 
+    <table border="1">
+    <?php foreach ($recipe_list as $recipe) : ?>
+        <?php if ($count % 3 === 0) : // 3つごとに新しい行を開始 ?>
+            <tr>
+        <?php endif; ?>
+
+        <td>
+            <a href="admin_recipe_registration.php?id=<?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?>">
+                <?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?>
+            </a>
+        </td>
+
+        <?php $count++; // カウンターをインクリメント ?>
+
+        <?php if ($count % 3 === 0) : // 行を閉じる ?>
+            </tr>
+        <?php endif; ?>
+    <?php endforeach; ?>
+
+    <?php if ($count % 3 !== 0) : // 最後の行が埋まっていない場合、行を閉じる ?>
+        </tr>
+    <?php endif; ?>
+</table>
 </body>
 </html>
