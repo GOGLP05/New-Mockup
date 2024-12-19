@@ -25,11 +25,15 @@ class Recipe_MasterDAO{
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
         $data = [];
-        // In Recipe_MasterDAO class
-while ($row = $stmt->fetchObject('recipeMaster')) {
-    $data[] = $row;
-}
-
+    
+        while ($row = $stmt->fetchObject('recipeMaster')) {
+            $data[] = $row;
+        }
+    
+        // デバッグ: 取得したデータを確認
+        var_dump($data);  // ここでデータが正しく取得されているか確認
+    
         return $data;
     }
+    
 }
