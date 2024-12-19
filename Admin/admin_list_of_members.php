@@ -1,4 +1,9 @@
 <?php
+    require_once 'helpers\Member_DAO.php';
+
+    $Member_DAO = new Member_DAO();
+
+    $member_list = $Member_DAO->get_members();
 
 ?>
 <!DOCTYPE html>
@@ -22,7 +27,6 @@
     <h1>会員一覧</h1>
 
     <table>
-        <thead>
             <tr>
                 <th>会員ID</th>
                 <th>メールアドレス</th>
@@ -31,36 +35,19 @@
                 <th>生年月日</th>
                 <th>操作</th>
             </tr>
-        </thead>
-        <tbody>
+            <?php foreach ($member_list as $member) : ?>
             <tr>
-                <td>1001</td>
-                <td>23jn0340</td>
-                <td>23jn0340</td>
-                <td>男</td>
-                <td>2004/09/26</td>
+            <td><?= htmlspecialchars($member->member_id, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($member->email, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($member->password, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($member->sex, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($member->birthdate, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">
                     削除</button>
                 </td>
-                
             </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
+            <?php endforeach; ?>
+
     </table>
         <!-- モーダル -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">

@@ -41,11 +41,15 @@ $foodmaster_list = $FoodMasterDAO->get_name_and_path();
         <div class="foods">
             <?php foreach ($foodmaster_list as $food): ?>
                 <div class="button-container">
-                    <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
-                        <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
-                    </button>
-                    <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
-                </div>
+                <button class="button" 
+onclick="showPopup('<?php echo htmlspecialchars($food->food_name, ENT_QUOTES, 'UTF-8'); ?>', <?php echo (int)$food->use_unit; ?>)" 
+    title="<?php echo htmlspecialchars($food->food_name, ENT_QUOTES, 'UTF-8'); ?>">
+    <img src="<?php echo htmlspecialchars($food->food_file_path, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($food->food_name, ENT_QUOTES, 'UTF-8'); ?>" class="food-image">
+</button>
+
+    <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
+</div>
+
             <?php endforeach; ?>
         </div>
     </div>

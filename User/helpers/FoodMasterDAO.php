@@ -37,6 +37,18 @@ class FoodMasterDAO
         return $data; 
     }
 
+    public function get_use_unit() {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT food_name, food_file_path FROM food_master";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        $data = [];
+        while($row = $stmt->fetchObject('foodMaster')) {
+            $data[] = $row;
+        } 
+        return $data; 
+    }
+
     public function get_name_and_path_paginated($page = 1, $perPage = 50) {
 
         $offset = ($page - 1) * $perPage;
@@ -63,6 +75,12 @@ class FoodMasterDAO
 
         return $data;
     }
+
+    public function get_name_and_path_sort_by_registration_date($page = 1, $perPage = 50) {
+
+//登録された順で表示
+    }
+
 
 
 

@@ -13,6 +13,15 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="setting_account.css">
     <title>設定</title>
+    <script>
+        function confirmLogout() {
+            // 確認ダイアログを表示
+            if (confirm("ログアウトしますか？")) {
+                // "OK"が押された場合はログアウトページへ遷移
+                window.location.href = 'login.php';
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="hamburger-menu">
@@ -37,7 +46,7 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
         <input type="button" class="sub_content" onclick="location.href='loged_in_change_password.php'" value="パスワードの変更">
         <div class="bottom">
             <input type="button" class="sub_content" onclick="history.back()" value="戻る">
-            <input type="button" class="sub_content" onclick="location.href='login.php'" value="ログアウト">
+            <input type="button" class="sub_content" onclick="confirmLogout()" value="ログアウト">
         </div>
     </div>
 </body>
