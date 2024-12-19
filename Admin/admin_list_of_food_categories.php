@@ -23,14 +23,11 @@
     </div>
 
     <table>
-        <thead>
             <tr>
                 <th>カテゴリーID</th>
                 <th>カテゴリー名</th>
                 <th>操作</th>
             </tr>
-        </thead>
-        <tbody>
             <tr>
                 <td>4001</td>
                 <td>牛乳</td>
@@ -46,7 +43,6 @@
                 <td>大豆</td>
                 <td><input type="button" onclick="location.href='admin_food_categories_registration.html'" value="編集"></td>
             </tr>
-        </tbody>
     </table>
 
 </body>
