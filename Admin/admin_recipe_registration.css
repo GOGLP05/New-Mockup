@@ -31,6 +31,23 @@ body {
     padding: 5px;
     color: #6c757d;
 }
+/* アップロードボタンのスタイル */
+.upload-button {
+    display: inline-block; /* ボタンをインラインブロック表示 */
+    margin: 10px 0; /* 上下の余白を追加 */
+    padding: 8px 16px; /* 内側の余白 */
+    background-color: #007bff; /* 青色 */
+    color: white; /* 文字色 */
+    border: none; /* ボーダーを削除 */
+    border-radius: 4px; /* 角を丸くする */
+    cursor: pointer; /* カーソルをポインタに変更 */
+    text-align: center; /* テキスト中央揃え */
+}
+
+.upload-button:hover {
+    background-color: #0056b3; /* 濃い青色 */
+}
+
 
 h1 {
     text-align: center;

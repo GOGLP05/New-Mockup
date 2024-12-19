@@ -11,8 +11,8 @@
 </head>
 <body>
     <ul class="breadcrumb">
-        <a href="admin_top.html">管理者TOP</a> >
-        <a href="admin_list_of_seasonings.html">調味料一覧</a> >
+        <a href="admin_top.php">管理者TOP</a> >
+        <a href="admin_list_of_seasonings.php">調味料一覧</a> >
         <span>食品カテゴリー一覧</span>
     </ul>
 

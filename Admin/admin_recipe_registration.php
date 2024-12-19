@@ -12,8 +12,8 @@
 <body>
     <!-- パンくずリスト -->
     <ul class="breadcrumb">
-        <a href="admin_top.html">管理者TOP</a> >
-        <a href="admin_list_of_recipe.html">登録レシピ一覧</a> >
+        <a href="admin_top.php">管理者TOP</a> >
+        <a href="admin_list_of_recipe.php">登録レシピ一覧</a> >
         <span>レシピ登録/編集</span>
     </ul>    
 
@@ -29,13 +29,13 @@
                 <input type="text" id="recipe_name" required>
 
                 <p><label for="recipe_file_path1">レシピ写真1</label>
-                <button type="button">アップロード</button></p> 
+                <button type="button"class="upload-button">アップロード</button></p> 
 
                 <p><label for="recipe_file_path2">レシピ写真2</label>
-                <button type="button">アップロード</button></p>
+                <button type="button"class="upload-button">アップロード</button></p>
 
                 <p><label for="recipe_file_path3">レシピ写真3</label>
-                <button type="button">アップロード</button></p>
+                <button type="button"class="upload-button">アップロード</button></p>
 <!--
                 <label for="process_1">手順1</label>
                 <textarea id="process_1" rows="6" required></textarea>
