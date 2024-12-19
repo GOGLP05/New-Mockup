@@ -49,6 +49,75 @@ $recipes = $recipeMasterDAO->get_recipes();
     <?php endif; ?>
 </div>
 
+<div>
+            <h1>使い切り期限が近い食材</h1>
+            <table class="expiring_soon">
+                <thead>
+                    <tr>
+                        <th>食材名</th>
+                        <th>数量</th>
+                        <th>残り日数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>じゃがいも</td>
+                        <td>3個</td>
+                        <td>あと3日</td>
+                    </tr>
+                    <tr>
+                        <td>さつまいも</td>
+                        <td>5個</td>
+                        <td>あと4日</td>
+                    </tr>
+                    <tr>
+                        <td>里芋</td>
+                        <td>3個</td>
+                        <td>あと4日</td>
+                    </tr>
+                    <tr>
+                        <td>玉ねぎ</td>
+                        <td>2個</td>
+                        <td>あと6日</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <h1>使い切り期限が過ぎた食材</h1>
+            <table class="expired">
+                <thead>
+                    <tr>
+                        <th>食材名</th>
+                        <th>数量</th>
+                        <th>経過日数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>牛乳</td>
+                        <td>1本</td>
+                        <td>3日</td>
+                    </tr>
+                    <tr>
+                        <td>木綿豆腐</td>
+                        <td>1丁</td>
+                        <td>3日</td>
+                    </tr>
+                    <tr>
+                        <td>みょうが</td>
+                        <td>1個</td>
+                        <td>4日</td>
+                    </tr>
+                    <tr>
+                        <td>納豆</td>
+                        <td>3個</td>
+                        <td>6日</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 

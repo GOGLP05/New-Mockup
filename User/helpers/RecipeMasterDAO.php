@@ -21,7 +21,7 @@ class recipeMaster {
 class Recipe_MasterDAO{
     public function get_recipes() {
         $dbh = DAO::get_db_connect();
-        $sql = "SELECT * FROM recipe";
+        $sql = "SELECT recipe_id,recipe_name,recipe_file_path1 FROM recipe";
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
         $data = [];
@@ -29,9 +29,6 @@ class Recipe_MasterDAO{
         while ($row = $stmt->fetchObject('recipeMaster')) {
             $data[] = $row;
         }
-    
-        // デバッグ: 取得したデータを確認
-        var_dump($data);  // ここでデータが正しく取得されているか確認
     
         return $data;
     }
