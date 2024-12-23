@@ -31,6 +31,7 @@ $foodmaster_list = $FoodMasterDAO->get_name_and_path_paginated();
 
     <div class="content">
         <h1>最近登録した食品</h1>
+        <div class="recent_registration"> <button onclick="location.href='food_registration.php'">戻る</button> </div>
     </div>
 
     <hr>
@@ -52,14 +53,13 @@ $foodmaster_list = $FoodMasterDAO->get_name_and_path_paginated();
             <span id="popup-close" class="popup-close" onclick="closePopup()">×</span>
             <h2 id="popup-food-title"></h2>
             <form onsubmit="event.preventDefault(); submitForm();">
-                <label for="quantity">数量:</label>
-                <input type="text" id="quantity" name="quantity" required><br><br>
-                <label for="count">個数:</label>
-                <input type="text" id="count" name="count" required><br><br>
-                <label for="date">日付:</label>
-                <input type="date" id="date" name="date" required><br><br>
-                <button type="submit">登録</button>
-            </form>
+    <label for="count">個数:</label>
+    <input type="text" id="count" name="count" required><br><br>
+    <label for="date">日付:</label>
+    <input type="date" id="date" name="date" required><br><br>
+    <button type="submit">登録</button>
+</form>
+
         </div>
     </div>
 </body>

@@ -2,7 +2,7 @@
 require_once 'helpers/FoodMasterDAO.php';
 
 $FoodMasterDAO = new FoodMasterDAO();
-$foodmaster_list = $FoodMasterDAO->get_name_and_path();
+$foodmaster_list = $FoodMasterDAO->get_foods();
 ?>
 
 <!DOCTYPE html>
@@ -31,9 +31,7 @@ $foodmaster_list = $FoodMasterDAO->get_name_and_path();
 
     <div class="content">
         <h1>食品登録</h1>
-        <div class="recent_registration">
-            <button onclick="location.href='recent_food_registration.php'">最近登録した食品</button>
-        </div>
+        <div class="recent_registration"> <button onclick="location.href='recent_food_registration.php'">食品登録</button> </div>
     </div>
 
     <hr>
@@ -41,15 +39,11 @@ $foodmaster_list = $FoodMasterDAO->get_name_and_path();
         <div class="foods">
             <?php foreach ($foodmaster_list as $food): ?>
                 <div class="button-container">
-                <button class="button" 
-onclick="showPopup('<?php echo htmlspecialchars($food->food_name, ENT_QUOTES, 'UTF-8'); ?>', <?php echo (int)$food->use_unit; ?>)" 
-    title="<?php echo htmlspecialchars($food->food_name, ENT_QUOTES, 'UTF-8'); ?>">
-    <img src="<?php echo htmlspecialchars($food->food_file_path, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($food->food_name, ENT_QUOTES, 'UTF-8'); ?>" class="food-image">
-</button>
-
-    <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
-</div>
-
+                    <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
+                        <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
+                    </button>
+                    <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
+                </div>
             <?php endforeach; ?>
         </div>
     </div>
@@ -59,14 +53,13 @@ onclick="showPopup('<?php echo htmlspecialchars($food->food_name, ENT_QUOTES, 'U
             <span id="popup-close" class="popup-close" onclick="closePopup()">×</span>
             <h2 id="popup-food-title"></h2>
             <form onsubmit="event.preventDefault(); submitForm();">
-                <label for="quantity">数量</label>
-                <input type="text" id="quantity" name="quantity" required><br><br>
-                <label for="count">個数</label>
-                <input type="text" id="count" name="count" required><br><br>
-                <label for="date">日付</label>
-                <input type="date" id="date" name="date" required><br><br>
-                <button type="submit">登録</button>
-            </form>
+    <label for="count">個数:</label>
+    <input type="text" id="count" name="count" required><br><br>
+    <label for="date">日付:</label>
+    <input type="date" id="date" name="date" required><br><br>
+    <button type="submit">登録</button>
+</form>
+
         </div>
     </div>
 </body>

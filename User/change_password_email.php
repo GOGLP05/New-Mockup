@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
-<link rel="stylesheet" href="change_password.css">
+<link rel="stylesheet" href="change_password_email.css">
 
 <head>
     <meta charset="UTF-8">

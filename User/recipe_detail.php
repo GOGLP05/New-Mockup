@@ -1,3 +1,19 @@
+<?php
+require_once 'helpers/RecipeMasterDAO.php';
+
+// レシピIDを取得
+$recipeId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// DAOから該当レシピを取得
+$recipeMasterDAO = new Recipe_MasterDAO();
+$recipe = $recipeMasterDAO->get_recipe_by_id($recipeId);
+
+// 該当レシピが存在しない場合の処理
+if (!$recipe) {
+    echo "指定されたレシピは存在しません。";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -6,7 +22,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="recipe_detail.css">
-    <title>レシピ</title>
+    <title><?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?></title>
 </head>
 
 <body>
@@ -15,7 +31,6 @@
         <label class="menu__btn" for="menu__toggle">
             <span></span>
         </label>
-
         <ul class="menu__box">
             <li><a class="menu__item" href="top.php">TOP</a></li>
             <li><a class="menu__item" href="list_of_food.php">食品庫</a></li>
@@ -26,51 +41,63 @@
 
     <div class="content">
         <div class="photo">
-            <img src="img/recipe/40000001.jpg" alt="肉じゃが">
+            <img src="<?= htmlspecialchars($recipe->recipe_file_path1, ENT_QUOTES, 'UTF-8') ?>" 
+                alt="<?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?>">
         </div>
         <div class="details">
-            <h1>肉じゃが</h1>
-            <p class="servings">1人分</p>
-            <div class="ingredients">
-                <h2>材料</h2>
-                <ul>
-                    <li><span class="ingredients-name">じゃがいも</span><span class="ingredients-quantity">3個(2個不足)</span></li>
-                    <li><span class="ingredients-name">玉ねぎ</span><span class="ingredients-quantity">1/2個</span></li>
-                    <li><span class="ingredients-name">にんじん</span><span class="ingredients-quantity">1/2本</span></li>
-                    <li><span class="ingredients-name">牛肉</span><span class="ingredients-quantity">100g</span></li>
-                    <li><span class="ingredients-name">しらたき</span><span class="ingredients-quantity">100g</span></li>
-                    <li><span class="ingredients-name">サラダ油</span><span class="ingredients-quantity">小さじ2</span></li>
-                    <li><span class="ingredients-name">かつおだし</span><span class="ingredients-quantity">1と1/2カップ</span></li>
-                    <li><span class="ingredients-name">しょうゆ</span><span class="ingredients-quantity">大さじ2</span></li>
-                    <li><span class="ingredients-name">みりん</span><span class="ingredients-quantity">大さじ2</span></li>
-                </ul>
-            </div>
+            <h1><?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?></h1>
             <div class="steps">
                 <h2>手順</h2>
-
-
-
-                <?php
-                    echo nl2br("じゃがいもは\nひと口大に切って水にさらし、水気をきる。玉ねぎはくし形切り、にんじんは乱切りにする。牛肉はひと口大に切る。しらたきはゆでて食べやすく切る。鍋に油を熱して（１）の玉ねぎを炒め、牛肉を加えてさらに炒める。にんじん、じゃがいも、しらたきも入れて炒め合わせる。かつおだしを注ぎ、沸騰したらアクを取り、しょうゆ、みりんを加えて落しぶたをする。沸騰したら弱火で１５分くらい煮る。");
-                ?>
-                <p class="url">URL</p>
-
-
-
-                
+                <ol>
+                    <?php foreach ($recipe->processes as $process): ?>
+                        <p><?= nl2br(htmlspecialchars(str_replace("\\n", "\n", $process), ENT_QUOTES, 'UTF-8')) ?></p>
+                    <?php endforeach; ?>
+                </ol>
             </div>
-            <!--<button type="button" aria-label="減らす" aria-describedby="label-number-of-unit">-</button>-->
-            <input type="number" id="number-of-unit" name="unit" value="1" min="0" max="10">人前
 
-            <!-- <button type="button" aria-label="増やす" aria-describedby="label-number-of-unit">+</button>人前-->
-            <!--<div class="visually-hidden" role="status" aria-live="polite">{input 要素内の値がここに代入される。}</div>-->
+            <!-- 何人前選択カウンター -->
+            <div class="serving-counter">
+                <label for="serving-number">何人前:</label>
+                <input type="number" id="serving-number" name="serving-number" value="1" min="1" max="20">
+            </div>
 
-
-
-            <button class="make"><a href="#">作った</a></button>
+            <button class="make" id="make-button">作った</button>
         </div>
-        </main>
     </div>
 </body>
+
+<script>
+    document.getElementById('make-button').addEventListener('click', function () {
+        // 選択した人数を取得
+        const servingNumber = document.getElementById('serving-number').value;
+
+        // ポップアップ表示
+        if (confirm("使った食材が食品庫から消費されます。よろしいですか？")) {
+            // 食品庫の更新処理
+            fetch('update_food_stock.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    recipeId: <?= $recipeId ?>, 
+                    servings: servingNumber 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("食品庫を更新しました！");
+                } else {
+                    alert("更新に失敗しました。");
+                }
+            })
+            .catch(error => {
+                console.error('エラー:', error);
+                alert("エラーが発生しました。");
+            });
+        }
+    });
+</script>
 
 </html>

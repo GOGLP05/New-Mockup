@@ -34,22 +34,25 @@ $recipes = $recipeMasterDAO->get_recipes();
         <div class="tape">
             <h1>作れる料理</h1>
         </div>
-        <div class="dishes_can_make">
-    <?php if (!empty($recipes)) : ?>
-        <?php foreach ($recipes as $recipe) : ?>
-            <a href="recipe_detail.php?id=<?= htmlspecialchars($recipe->recipe_id, ENT_QUOTES, 'UTF-8') ?>">
-                <div class="image-container">
-                    <img src="<?= htmlspecialchars($recipe->recipe_file_path1, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?>">
-                    <div class="image-text"><?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?></div>
-                </div>
-            </a>
-        <?php endforeach; ?>
-    <?php else : ?>
-        <p>表示できる料理がありません。</p>
-    <?php endif; ?>
-</div>
+        <div class="dishes_can_make" id="dishes-container">
+            <?php if (!empty($recipes)) : ?>
+                <?php foreach ($recipes as $index => $recipe) : ?>
+                    <a href="recipe_detail.php?id=<?= htmlspecialchars($recipe->recipe_id, ENT_QUOTES, 'UTF-8') ?>"
+                        class="image-container <?= $index >= 6 ? 'hidden' : '' ?>">
+                        <img src="<?= htmlspecialchars($recipe->recipe_file_path1, ENT_QUOTES, 'UTF-8') ?>"
+                            alt="<?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?>">
+                        <div class="image-text"><?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?></div>
+                    </a>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <p>表示できる料理がありません。</p>
+            <?php endif; ?>
+        </div>
+        <?php if (count($recipes) > 6): ?>
+            <button id="toggle-btn">すべて表示</button>
+        <?php endif; ?>
 
-<div>
+        <div>
             <h1>使い切り期限が近い食材</h1>
             <table class="expiring_soon">
                 <thead>
@@ -119,6 +122,39 @@ $recipes = $recipeMasterDAO->get_recipes();
             </table>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const toggleBtn = document.getElementById("toggle-btn");
+            const hiddenItems = document.querySelectorAll(".dishes_can_make .hidden");
+            let isExpanded = false; // 初期状態は折り畳み
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener("click", () => {
+                    if (isExpanded) {
+                        hiddenItems.forEach(item => {
+                            item.style.maxHeight = "0"; // 高さを0に設定
+                            item.style.opacity = "0"; // 不透明度を0に設定
+                            setTimeout(() => {
+                                item.style.display = "none"; // トランジション後に非表示
+                            }, 500); // トランジションの時間に合わせる
+                        });
+                        toggleBtn.textContent = "すべて表示";
+                    } else {
+                        hiddenItems.forEach(item => {
+                            item.style.display = "block"; // 表示に戻す
+                            setTimeout(() => {
+                                item.style.maxHeight = item.scrollHeight + "px"; // 自然な高さを設定
+                                item.style.opacity = "1"; // 不透明度を1に設定
+                            }, 0); // レイアウトの再計算を待つ
+                        });
+                        toggleBtn.textContent = "折り畳む";
+                    }
+                    isExpanded = !isExpanded;
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

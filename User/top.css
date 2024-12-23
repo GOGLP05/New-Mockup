@@ -1,6 +1,7 @@
 body {
   box-shadow: 0 4px 4px rgb(0 0 0 / 5%), 0 2px 3px -2px rgb(0 0 0 / 1%);
-  background-image: linear-gradient(transparent calc(100% - 1px), #e6edf3 50%, #e6edf3), linear-gradient(90deg, transparent calc(100% - 1px), #e6edf3 50%, #e6edf3);
+  background-image: linear-gradient(transparent calc(100% - 1px), #e6edf3 50%, #e6edf3),
+      linear-gradient(90deg, transparent calc(100% - 1px), #e6edf3 50%, #e6edf3);
   background-size: 15px 15px;
   background-repeat: repeat;
   background-color: #ffffff;
@@ -32,7 +33,6 @@ img {
 
 .dishes_can_make a:hover {
   transform: scale(1.02);
-  /* ホバー時に画像を拡大 */
 }
 
 .dishes_can_make img {
@@ -41,12 +41,10 @@ img {
   border-radius: 15px;
   object-fit: cover;
   transition: transform 0.3s ease-in-out;
-  /* アニメーション追加 */
 }
 
 .dishes_can_make img:hover {
   transform: scale(1.02);
-  /* 画像を拡大 */
 }
 
 table {
@@ -71,11 +69,21 @@ td {
   color: red;
 }
 
+.image-container.hidden {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  display: none; /* 初期状態では非表示 */
+}
+
 .image-container {
   position: relative;
   width: 100%;
-  z-index: 0;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  display: block; /* 表示状態 */
 }
+
 
 .image-text {
   position: absolute;
@@ -85,5 +93,22 @@ td {
   font-size: 16px;
   background-color: rgba(0, 0, 0, 0.6);
   padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.hidden {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+button {
+  margin-top: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
   border-radius: 5px;
 }

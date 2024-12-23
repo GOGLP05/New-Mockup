@@ -23,7 +23,7 @@
                 <label for="date">生年月日</label>
                 <input type="date" id="date" name="date">
                 
-                <input type="button" onclick="location.href='login.html'" value="登録">
+                <input type="button" onclick="location.href='login.php'" value="登録">
             </div>
         </form>
     </body>
