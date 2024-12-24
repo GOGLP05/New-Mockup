@@ -31,9 +31,8 @@ body {
     padding: 5px;
     color: #6c757d;
 }
-/* アップロードボタンのスタイル */
 .upload-button {
-    display: inline-block; /* ボタンをインラインブロック表示 */
+    display: block; /* ボタンをブロック表示に変更 */
     margin: 10px 0; /* 上下の余白を追加 */
     padding: 8px 16px; /* 内側の余白 */
     background-color: #007bff; /* 青色 */
@@ -229,3 +228,17 @@ button.update:hover {
     padding: 20px;
 }
 
+.upload-row {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.upload-row label {
+    margin-right: 10px;
+    flex: 1; /* ラベルが幅を均等に取る */
+}
+
+.upload-button {
+    flex-shrink: 0; /* ボタンは縮小しない */
+}
