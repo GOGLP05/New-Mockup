@@ -15,6 +15,9 @@ class recipeMaster {
     public ?string $process_8;
     public ?string $process_9;
     public ?string $process_10;
+
+    // 修正: プロパティ $processes を追加
+    public array $processes = [];
 }
 
 class Recipe_MasterDAO {
