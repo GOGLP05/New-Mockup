@@ -1,3 +1,12 @@
+<?php
+    require_once 'helpers\SeasoningMasterDAO.php';
+
+    $SeasoningMasterDAO = new SeasoningMasterDAO();
+
+    $seasoning_list = $SeasoningMasterDAO->get_seasonings();
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
     <link rel="stylesheet" href="admin_list_of_seasonings.css">
@@ -27,31 +36,17 @@
     </div>
 
     <table>
-        <thead>
             <tr>
                 <th>調味料ID</th>
                 <th>調味料名</th>
-                <th>操作</th>
             </tr>
-        </thead>
-        <tbody>
+        <?php foreach ($seasoning_list as $seasoningMaster) : ?>
             <tr>
-                <td>5001</td>
-                <td>だし</td>
-                <td><input type="button" onclick="location.href='admin_seasoning_detail.php'" value="詳細"></td>
+                <td><?= htmlspecialchars($seasoningMaster->seasoning_id, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($seasoningMaster->seasoning_name, ENT_QUOTES, 'UTF-8') ?></td>
             </tr>
-            <tr>
-                <td>5002</td>
-                <td>油</td>
-                <td><input type="button" onclick="location.href='admin_seasoning_detail.php'" value="詳細"></td>
-            </tr>
-            <tr>
-                <td>5003</td>
-                <td>醤油</td>
-                <td><input type="button" onclick="location.href='admin_seasoning_detail.php'" value="詳細"></td>
-            </tr>
-        </tbody>
+            <?php endforeach; ?>
     </table>
-
+    <input type="button" onclick="location.href='admin_seasoning_detail.php'" value="詳細">
 </body>
 </html>

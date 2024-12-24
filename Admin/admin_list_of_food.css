@@ -1,61 +1,3 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-/* パンくずリストのスタイル */
-.breadcrumb {
-    background-color: #f9f9f9;
-    padding: 10px;
-    margin: 20px 0;
-    list-style: none;
-    display: inline-block;
-    font-size: 14px;
-    text-align: left;
-    width: 100%;
-}
-
-.breadcrumb a {
-    text-decoration: none;
-    color: #007bff;
-    padding: 5px;
-}
-
-.breadcrumb a:hover {
-    text-decoration: underline;
-}
-
-.breadcrumb span {
-    padding: 5px;
-    color: #6c757d;
-}
-
-/* テーブルのスタイル */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tr:hover {
-    background-color: #f1f1f1;
-}
-
 /* ボタンのスタイル */
 .button-container {
     display: flex;
@@ -70,7 +12,7 @@ button {
     border: none;
     background-color: #4CAF50;
     color: white;
-    border-radius: 5px;
+    border-radius: 5px; /* 角を丸くする */
     width: 100%;
     max-width: 150px;
 }
@@ -78,6 +20,8 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+/* input[type="button"] のスタイル */
 input[type="button"] {
     padding: 5px 10px;
     background-color: #28a745; /* ボタンの背景色（緑） */
@@ -91,4 +35,3 @@ input[type="button"] {
 input[type="button"]:hover {
     background-color: #218838; /* ホバー時の背景色（少し暗い緑） */
 }
-

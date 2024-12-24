@@ -14,6 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>食品一覧</title>
     <link rel="stylesheet" href="admin_list_of_food.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -31,6 +33,9 @@
             <button>新規登録</button>
         </a>
     </div>
+
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">
+                    削除</button>
 
         <!--<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">削除</button>-->
                 
@@ -56,6 +61,7 @@
             </tr>
             <?php endforeach; ?>
     </table>
-
+<!-- Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

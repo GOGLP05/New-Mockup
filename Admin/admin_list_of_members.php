@@ -26,6 +26,7 @@
 
     <h1>会員一覧</h1>
 
+
     <table>
             <tr>
                 <th>会員ID</th>
@@ -33,31 +34,32 @@
                 <th>パスワード</th>
                 <th>性別</th>
                 <th>生年月日</th>
-                <th>操作</th>
             </tr>
             <?php foreach ($member_list as $member) : ?>
-        <tr>
-            <td><?= htmlspecialchars($member->member_id, ENT_QUOTES, 'UTF-8') ?></td>
-            <td><?= htmlspecialchars($member->email, ENT_QUOTES, 'UTF-8') ?></td>
-            <td><?= htmlspecialchars($member->password, ENT_QUOTES, 'UTF-8') ?></td>
-            <td>
-                <?php 
-                if ($member->sex == 0) {
-                    echo '男性';
-                } elseif ($member->sex == 1) {
-                    echo '女性';
-                } else {
-                    echo '未設定';  // もし他の値が入っている場合
-                }
-                ?>
-            </td>
-            <td><?= htmlspecialchars($member->birthdate, ENT_QUOTES, 'UTF-8') ?></td>
-            <td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">
-                削除</button>
-            </td>
-        </tr>
+            <tr>
+                <td><?= htmlspecialchars($member->member_id, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($member->email, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($member->password, ENT_QUOTES, 'UTF-8') ?></td>
+                <td>
+                    <?php 
+                    if ($member->sex == 0) {
+                        echo '男性';
+                    } elseif ($member->sex == 1) {
+                        echo '女性';
+                    } else {
+                        echo '未設定';  // もし他の値が入っている場合
+                    }
+                    ?>
+                </td>
+                <td><?= htmlspecialchars($member->birthdate, ENT_QUOTES, 'UTF-8') ?></td>
+            </tr>
         <?php endforeach; ?>
     </table>
+
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">
+                    削除</button>
+
+
         <!-- モーダル -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog">
