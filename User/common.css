@@ -81,6 +81,7 @@
 .menu__item:hover {
     background-color: #CFD8DC;
 }
+
 body {
     background-image: linear-gradient(transparent calc(100% - 1px), #e6edf3 50%, #e6edf3), linear-gradient(90deg, transparent calc(100% - 1px), #e6edf3 50%, #e6edf3);
     background-size: 15px 15px;

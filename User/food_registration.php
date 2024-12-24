@@ -5,6 +5,7 @@ $FoodMasterDAO = new FoodMasterDAO();
 $foodmaster_list = $FoodMasterDAO->get_foods();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -31,7 +32,7 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
 
     <div class="content">
         <h1>食品登録</h1>
-        <div class="recent_registration"> <button onclick="location.href='recent_food_registration.php'">食品登録</button> </div>
+        <div class="recent_registration"> <button onclick="location.href='recent_food_registration.php'">最近登録した食材</button> </div>
     </div>
 
     <hr>
@@ -53,12 +54,12 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
             <span id="popup-close" class="popup-close" onclick="closePopup()">×</span>
             <h2 id="popup-food-title"></h2>
             <form onsubmit="event.preventDefault(); submitForm();">
-    <label for="count">個数:</label>
-    <input type="text" id="count" name="count" required><br><br>
-    <label for="date">日付:</label>
-    <input type="date" id="date" name="date" required><br><br>
-    <button type="submit">登録</button>
-</form>
+                <label for="count">個数:</label>
+                <input type="text" id="count" name="count" required><br><br>
+                <label for="date">日付:</label>
+                <input type="date" id="date" name="date" required><br><br>
+                <button type="submit">登録</button>
+            </form>
 
         </div>
     </div>

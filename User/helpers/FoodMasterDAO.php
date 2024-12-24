@@ -5,6 +5,7 @@ class foodMaster{
     public string $food_name;
     public string $expiry_date;
     public string $category_id;
+    public string $category_name;
     public string $standard_gram;
     public string $food_file_path;
 }
@@ -80,6 +81,29 @@ class FoodMasterDAO
 
 //登録された順で表示
     }
+
+    public function get_categories() {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT DISTINCT category_id, category_name FROM food_master ORDER BY category_name";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $categories;
+    }
+    
+    public function get_foods_by_category($category_id) {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM food_master WHERE category_id = :category_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = [];
+        while ($row = $stmt->fetchObject('foodMaster')) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+    
 
 
 
