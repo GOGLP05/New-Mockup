@@ -1,3 +1,12 @@
+<?php
+    require_once 'helpers\FoodMasterDAO.php';
+
+    $FoodMasterDAO = new FoodMasterDAO();
+
+    $food_list = $FoodMasterDAO->get_foods();
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -23,52 +32,29 @@
         </a>
     </div>
 
+        <!--<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">削除</button>-->
+                
+
     <!-- 食品テーブル -->
     <table>
-        <thead>
             <tr>
                 <th>食品ID</th>
                 <th>食品名</th>
-                <th>カテゴリID</th>
+                <th>カテゴリ名</th>
                 <th>基準単位グラム</th>
-                <th>単位</th>
                 <th>使い切り期限</th>
                 <th>食品写真ファイルパス</th>
-                <th>操作</th>
             </tr>
-        </thead>
-        <tbody>
+            <?php foreach ($food_list as $foodmaster) : ?>
             <tr>
-                <td>3001</td>
-                <td>牛乳</td>
-                <td>4001</td>
-                <td>1000</td>
-                <td>g</td>
-                <td>7</td>
-                <td></td>
-                <td><input type="button" onclick="location.href='admin_food_registration.php'" value="編集"></td>
+                <td><?= htmlspecialchars($foodmaster->food_id, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($foodmaster->food_name, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($foodmaster->category_name, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($foodmaster->standard_gram, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($foodmaster->expiry_date, ENT_QUOTES, 'UTF-8') ?></td>
+                <td><?= htmlspecialchars($foodmaster->food_file_path, ENT_QUOTES, 'UTF-8') ?></td>
             </tr>
-            <tr>
-                <td>3002</td>
-                <td>卵</td>
-                <td>4002</td>
-                <td>60</td>
-                <td>パック</td>
-                <td>14</td>
-                <td></td>
-                <td><input type="button" onclick="location.href='admin_food_registration.php'" value="編集"></td>
-            </tr>
-            <tr>
-                <td>3002</td>
-                <td>豆腐</td>
-                <td>4003</td>
-                <td>300</td>
-                <td>丁</td>
-                <td>10</td>
-                <td></td>
-                <td><input type="button" onclick="location.href='admin_food_registration.php'" value="編集"></td>
-            </tr>
-        </tbody>
+            <?php endforeach; ?>
     </table>
 
 </body>
