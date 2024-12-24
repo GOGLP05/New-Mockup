@@ -38,17 +38,17 @@
             <tr>
                 <td>5001</td>
                 <td>だし</td>
-                <td><input type="button" onclick="location.href='admin_food_registration.php'" value="詳細"></td>
+                <td><input type="button" onclick="location.href='admin_seasoning_detail.php'" value="詳細"></td>
             </tr>
             <tr>
                 <td>5002</td>
                 <td>油</td>
-                <td><input type="button" onclick="location.href='admin_food_registration.php'" value="詳細"></td>
+                <td><input type="button" onclick="location.href='admin_seasoning_detail.php'" value="詳細"></td>
             </tr>
             <tr>
                 <td>5003</td>
                 <td>醤油</td>
-                <td><input type="button" onclick="location.href='admin_food_registration.php'" value="詳細"></td>
+                <td><input type="button" onclick="location.href='admin_seasoning_detail.php'" value="詳細"></td>
             </tr>
         </tbody>
     </table>
