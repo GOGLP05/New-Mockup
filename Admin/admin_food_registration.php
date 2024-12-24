@@ -36,12 +36,27 @@
             <option value="option2">個</option>
             <option value="option3">本</option>
             <option value="option4">枚</option>
-            <option value="option4">パック</option>
-            <option value="option4">束</option>
-            <option value="option4">玉</option>
-            <option value="option4">株</option>
-            <option value="option4">節</option>
-            <option value="option4">匹</option>
+            <option value="option5">パック</option>
+            <option value="option6">束</option>
+            <option value="option7">玉</option>
+            <option value="option8">株</option>
+            <option value="option9">節</option>
+            <option value="option10">匹</option>
+        </select>      
+        <label for="category">カテゴリ:</label>
+        <select name="options" id="options">
+            <option value="option1">米・雑穀・シリアル</option>
+            <option value="option2">麺類</option>
+            <option value="option3">野菜</option>
+            <option value="option4">水産物・水産加工品</option>
+            <option value="option5">肉・肉加工品</option>
+            <option value="option6">果物</option>
+            <option value="option7">豆腐・納豆・漬物</option>
+            <option value="option8">パン</option>
+            <option value="option9">ジャム・はちみつ</option>
+            <option value="option10">粉類</option>
+            <option value="option11">乾物</option>
+            <option value="option12">調味料</option>
         </select>      
         <label for="foodphoto">食品写真:</label>
         <!--  <button id="foodphoto" name="foodphoto">アップロード</button>-->
