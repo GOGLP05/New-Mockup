@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レシピ管理</title>
     <link rel="stylesheet" href="admin_recipe_registration.css">
-        <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
+
 <body>
     <!-- パンくずリスト -->
     <ul class="breadcrumb">
         <a href="admin_top.php">管理者TOP</a> >
         <a href="admin_list_of_recipe.php">登録レシピ一覧</a> >
         <span>レシピ登録/編集</span>
-    </ul>    
+    </ul>
 
     <h1>レシピ登録/編集</h1>
 
@@ -28,15 +30,20 @@
                 <label for="recipe_name">レシピ名</label>
                 <input type="text" id="recipe_name" required>
 
-                <p><label for="recipe_file_path1">レシピ写真1</label>
-                <button type="button"class="upload-button">アップロード</button></p> 
+                <p class="upload-row">
+                    <label for="recipe_file_path1">レシピ写真1</label>
+                    <button type="button" class="upload-button">アップロード</button>
+                </p>
+                <p class="upload-row">
+                    <label for="recipe_file_path2">レシピ写真2</label>
+                    <button type="button" class="upload-button">アップロード</button>
+                </p>
+                <p class="upload-row">
+                    <label for="recipe_file_path3">レシピ写真3</label>
+                    <button type="button" class="upload-button">アップロード</button>
+                </p>
 
-                <p><label for="recipe_file_path2">レシピ写真2</label>
-                <button type="button"class="upload-button">アップロード</button></p>
-
-                <p><label for="recipe_file_path3">レシピ写真3</label>
-                <button type="button"class="upload-button">アップロード</button></p>
-<!--
+                <!--
                 <label for="process_1">手順1</label>
                 <textarea id="process_1" rows="6" required></textarea>
 
@@ -51,12 +58,12 @@
                 <table class="ingredients-table">
                     <thead>
                         <tr>
-                             <th>食品名</th>
+                            <th>食品名</th>
                             <th>表示用使用料</th>
                             <th>単位</th>
                             <th>算出用値</th>
 
-<!--<input type="number" id="number-of-unit" name="unit" value="1" min="0" max="10">人前
+                            <!--<input type="number" id="number-of-unit" name="unit" value="1" min="0" max="10">人前
 -->
                         </tr>
                     </thead>
@@ -69,44 +76,44 @@
                             <td>2</td>
                             <td>2</td>-->
                             <td><input type="text" id="number-of-unit"
-                                name=""></td>
-                             <td><input type="number" id="number-of-unit"
-                                name="unit" value="1" min="0" max="10"></td>
-                             <td><select name="options" id="options">
-                                <option value="option1">g</option>
-                                <option value="option2">個</option>
-                                <option value="option3">本</option>
-                                <option value="option4">枚</option>
-                                <option value="option4">パック</option>
-                                <option value="option4">束</option>
-                                <option value="option4">玉</option>
-                                <option value="option4">株</option>
-                                <option value="option4">節</option>
-                                <option value="option4">匹</option>
-                            </select> </td>
+                                    name=""></td>
+                            <td><input type="number" id="number-of-unit"
+                                    name="unit" value="1" min="0" max="10"></td>
+                            <td><select name="options" id="options">
+                                    <option value="option1">g</option>
+                                    <option value="option2">個</option>
+                                    <option value="option3">本</option>
+                                    <option value="option4">枚</option>
+                                    <option value="option4">パック</option>
+                                    <option value="option4">束</option>
+                                    <option value="option4">玉</option>
+                                    <option value="option4">株</option>
+                                    <option value="option4">節</option>
+                                    <option value="option4">匹</option>
+                                </select> </td>
                             <td><input type="text" id="number-of-unit"
-                                name="">g</td>
-                           
+                                    name="">g</td>
+
                         </tr>
                         <tr>
                             <td><input type="text" id="number-of-unit"
-                                name=""></td>
-                             <td><input type="number" id="number-of-unit"
-                                name="unit" value="1" min="0" max="10"></td>
-                             <td><select name="options" id="options">
-                                <option value="option1">g</option>
-                                <option value="option2">個</option>
-                                <option value="option3">本</option>
-                                <option value="option4">枚</option>
-                                <option value="option4">パック</option>
-                                <option value="option4">束</option>
-                                <option value="option4">玉</option>
-                                <option value="option4">株</option>
-                                <option value="option4">節</option>
-                                <option value="option4">匹</option>
-                            </select> </td>
+                                    name=""></td>
+                            <td><input type="number" id="number-of-unit"
+                                    name="unit" value="1" min="0" max="10"></td>
+                            <td><select name="options" id="options">
+                                    <option value="option1">g</option>
+                                    <option value="option2">個</option>
+                                    <option value="option3">本</option>
+                                    <option value="option4">枚</option>
+                                    <option value="option4">パック</option>
+                                    <option value="option4">束</option>
+                                    <option value="option4">玉</option>
+                                    <option value="option4">株</option>
+                                    <option value="option4">節</option>
+                                    <option value="option4">匹</option>
+                                </select> </td>
                             <td><input type="text" id="number-of-unit"
-                                name="">g</td>
+                                    name="">g</td>
                         </tr>
                     </tbody>
                 </table>
@@ -124,59 +131,59 @@
                     <tbody>
                         <tr>
                             <td><select name="options" id="options">
-                                <option value="option1">g</option>
-                                <option value="option2">個</option>
-                                <option value="option3">本</option>
-                                <option value="option4">枚</option>
-                                <option value="option4">パック</option>
-                                <option value="option4">束</option>
-                                <option value="option4">玉</option>
-                                <option value="option4">株</option>
-                                <option value="option4">節</option>
-                                <option value="option4">匹</option>
-                            </select> </td>
-                             <td><input type="number" id="number-of-unit"
-                                 name="unit" value="1" min="0" max="10"></td>
+                                    <option value="option1">g</option>
+                                    <option value="option2">個</option>
+                                    <option value="option3">本</option>
+                                    <option value="option4">枚</option>
+                                    <option value="option4">パック</option>
+                                    <option value="option4">束</option>
+                                    <option value="option4">玉</option>
+                                    <option value="option4">株</option>
+                                    <option value="option4">節</option>
+                                    <option value="option4">匹</option>
+                                </select> </td>
+                            <td><input type="number" id="number-of-unit"
+                                    name="unit" value="1" min="0" max="10"></td>
                             <td><select name="options" id="options">
-                                <option value="option1">g</option>
-                                <option value="option2">個</option>
-                                <option value="option3">本</option>
-                                <option value="option4">枚</option>
-                                <option value="option4">パック</option>
-                                <option value="option4">束</option>
-                                <option value="option4">玉</option>
-                                <option value="option4">株</option>
-                                <option value="option4">節</option>
-                                <option value="option4">匹</option>
-                            </select>      </td>
+                                    <option value="option1">g</option>
+                                    <option value="option2">個</option>
+                                    <option value="option3">本</option>
+                                    <option value="option4">枚</option>
+                                    <option value="option4">パック</option>
+                                    <option value="option4">束</option>
+                                    <option value="option4">玉</option>
+                                    <option value="option4">株</option>
+                                    <option value="option4">節</option>
+                                    <option value="option4">匹</option>
+                                </select> </td>
                         </tr>
                         <tr>
                             <td><select name="options" id="options">
-                                <option value="option1">g</option>
-                                <option value="option2">個</option>
-                                <option value="option3">本</option>
-                                <option value="option4">枚</option>
-                                <option value="option4">パック</option>
-                                <option value="option4">束</option>
-                                <option value="option4">玉</option>
-                                <option value="option4">株</option>
-                                <option value="option4">節</option>
-                                <option value="option4">匹</option>
-                            </select> </td>
-                             <td><input type="number" id="number-of-unit"
-                                 name="unit" value="1" min="0" max="10"></td>
+                                    <option value="option1">g</option>
+                                    <option value="option2">個</option>
+                                    <option value="option3">本</option>
+                                    <option value="option4">枚</option>
+                                    <option value="option4">パック</option>
+                                    <option value="option4">束</option>
+                                    <option value="option4">玉</option>
+                                    <option value="option4">株</option>
+                                    <option value="option4">節</option>
+                                    <option value="option4">匹</option>
+                                </select> </td>
+                            <td><input type="number" id="number-of-unit"
+                                    name="unit" value="1" min="0" max="10"></td>
                             <td><select name="options" id="options">
-                                <option value="option1">g</option>
-                                <option value="option2">個</option>
-                                <option value="option3">本</option>
-                                <option value="option4">枚</option>
-                                <option value="option4">パック</option>
-                                <option value="option4">束</option>
-                                <option value="option4">玉</option>
-                                <option value="option4">株</option>
-                                <option value="option4">節</option>
-                                <option value="option4">匹</option>
-                            </select>      </td>
+                                    <option value="option1">g</option>
+                                    <option value="option2">個</option>
+                                    <option value="option3">本</option>
+                                    <option value="option4">枚</option>
+                                    <option value="option4">パック</option>
+                                    <option value="option4">束</option>
+                                    <option value="option4">玉</option>
+                                    <option value="option4">株</option>
+                                    <option value="option4">節</option>
+                                    <option value="option4">匹</option>
+                                </select> </td>
                         </tr>
                     </tbody>
                 </table>
@@ -191,13 +198,13 @@
                 <textarea id="process_3" rows="6" required></textarea>
             </form>
         </div>
-                <div class="button-container">
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">削除</button>
-                    <button class="update">更新</button>
-                </div>
+        <div class="button-container">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">削除</button>
+            <button class="update">更新</button>
+        </div>
 
 
-                    <!-- モーダル -->
+        <!-- モーダル -->
         <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -219,9 +226,10 @@
         </div>
 
     </div>
-    
+
     <!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
