@@ -35,3 +35,29 @@ input[type="button"] {
 input[type="button"]:hover {
     background-color: #218838; /* ホバー時の背景色（少し暗い緑） */
 }
+/* テーブル全体のスタイル */
+table {
+    width: 100%;
+    border-collapse: collapse; /* 枠線を1本にまとめる */
+    margin-top: 20px;
+}
+
+/* テーブルヘッダーのスタイル */
+th {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border: 1px solid #ddd; /* ヘッダーの枠線 */
+    text-align: left;
+}
+
+/* テーブルセルのスタイル */
+td {
+    padding: 10px;
+    border: 1px solid #ddd; /* セルの枠線 */
+    text-align: left;
+}
+
+/* テーブルの偶数行の背景色を設定（任意） */
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

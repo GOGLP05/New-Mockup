@@ -1,26 +1,43 @@
 <?php
-    require_once 'helpers\MemberDAO.php';
+require_once 'helpers/MemberDAO.php';
 
-    $MemberDAO = new Member_DAO();
+$MemberDAO = new Member_DAO();
+$member_list = $MemberDAO->get_members();
 
-    $member_list = $MemberDAO->get_members();
+// 削除処理
+// 削除処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['delete'])) {
+        $member_id = trim($_POST['member_id']);
+
+        // 削除実行
+        $result = $MemberDAO->delete($member_id);
+
+        // 削除結果を表示するためのメッセージを用意
+        if ($result) {
+            $message = "会員ID {$member_id} を削除しました。更新してください。";
+        } else {
+            $message = "会員ID {$member_id} は存在しません。";
+        }
+    }
+}
 
 ?>
 <!DOCTYPE html>
 <html lang="ja">
-    <link rel="stylesheet" href="admin_list_of_members.css">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>会員一覧</title>
+    <link rel="stylesheet" href="admin_list_of_members.css">
     <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
     <!-- パンくずリスト -->
     <ul class="breadcrumb">
-        <a href="admin_top.php">管理者TOP</a>>
+        <a href="admin_top.php">管理者TOP</a> >
         <span>会員一覧</span>
     </ul>
 
@@ -28,53 +45,51 @@
 
 
     <table>
-            <tr>
-                <th>会員ID</th>
-                <th>メールアドレス</th>
-                <th>パスワード</th>
-                <th>性別</th>
-                <th>生年月日</th>
-            </tr>
-            <?php foreach ($member_list as $member) : ?>
+        <tr>
+            <th>会員ID</th>
+            <th>メールアドレス</th>
+            <th>パスワード</th>
+            <th>性別</th>
+            <th>生年月日</th>
+        </tr>
+        <?php foreach ($member_list as $member) : ?>
             <tr>
                 <td><?= htmlspecialchars($member->member_id, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($member->email, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($member->password, ENT_QUOTES, 'UTF-8') ?></td>
-                <td>
-                    <?php 
-                    if ($member->sex == 0) {
-                        echo '男性';
-                    } elseif ($member->sex == 1) {
-                        echo '女性';
-                    } else {
-                        echo '未設定';  // もし他の値が入っている場合
-                    }
-                    ?>
-                </td>
+                <td><?= $member->sex == 0 ? '男性' : ($member->sex == 1 ? '女性' : '未設定') ?></td>
                 <td><?= htmlspecialchars($member->birthdate, ENT_QUOTES, 'UTF-8') ?></td>
             </tr>
         <?php endforeach; ?>
     </table>
 
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Modal">
-                    削除</button>
+    <!-- 削除ボタン -->
+    <div class="mt-3">
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">削除</button>
+    </div>
 
 
-        <!-- モーダル -->
-    <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <?php if (isset($message)) : ?>
+        <div class="message"><?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?></div>
+    <?php endif; ?>
+
+    <!-- モーダル -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">該当の会員情報を削除します</h5>
-                    <p style="margin: 0;">会員ID:1001</p>
+                    <h5 class="modal-title" id="deleteModalLabel">会員情報の削除</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="">
-                        <p>削除する会員番号を入力</p>
-                        <input type="text" class="form-control" name="popup_input" required>
+                        <div class="mb-3">
+                            <label for="member_id" class="form-label">削除する会員IDを入力してください</label>
+                            <input type="text" class="form-control" id="member_id" name="member_id" required>
+                        </div>
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-danger">削除</button>
+                            <button type="submit" class="btn btn-danger" name="delete">削除</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                         </div>
                     </form>
                 </div>
@@ -82,7 +97,14 @@
         </div>
     </div>
 
-<!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // モーダルが表示されたときに自動で入力欄にフォーカスを設定
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('shown.bs.modal', () => {
+            document.getElementById('member_id').focus();
+        });
+    </script>
 </body>
 </html>
