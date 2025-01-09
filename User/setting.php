@@ -13,6 +13,7 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
   <link rel="stylesheet" href="setting.css">
   <title>設定</title>
 </head>
+
 <body>
   <div class="hamburger-menu">
     <input id="menu__toggle" type="checkbox" />
@@ -38,19 +39,20 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
     </div>
 
     <div class="notification">
-  <form method="post" action="" class="notification-form">
+      <form method="post" action="" class="notification-form">
 
-    <label class="switch">
-      <input type="checkbox" id="toggleSwitch" name="toggleSwitch" <?php if (isset($_POST['toggleSwitch'])) echo 'checked'; ?>>
-      <span class="slider round"></span>
-    </label>
+        <label class="switch">
+          <input type="checkbox" id="toggleSwitch" name="toggleSwitch" <?php if (isset($_POST['toggleSwitch'])) echo 'checked'; ?>>
+          <span class="slider round"></span>
+        </label>
 
-  </form>
-</div>
+      </form>
+    </div>
 
 
     <p>使い切り期限 3日前に 通知します</p>
 
   </div>
 </body>
+
 </html>

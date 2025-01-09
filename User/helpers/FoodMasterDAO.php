@@ -1,6 +1,7 @@
 <?php
 require_once 'DAO.php';
-class foodMaster{
+class foodMaster
+{
     public int $food_id;
     public string $food_name;
     public string $expiry_date;
@@ -11,46 +12,50 @@ class foodMaster{
 }
 
 
-class FoodMasterDAO 
+class FoodMasterDAO
 {
-    
-    public function get_foods() { 
-        $dbh = DAO::get_db_connect(); 
-         $sql = "SELECT * FROM food_master";
+
+    public function get_foods()
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM food_master";
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
-        $data = []; 
-        while($row = $stmt->fetchObject('foodMaster')){
+        $data = [];
+        while ($row = $stmt->fetchObject('foodMaster')) {
             $data[] = $row;
-        } 
-        return $data; 
-    } 
+        }
+        return $data;
+    }
     //いらない？？
-    public function get_name_and_path() {
+    public function get_name_and_path()
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT food_name, food_file_path FROM food_master";
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
         $data = [];
-        while($row = $stmt->fetchObject('foodMaster')) {
+        while ($row = $stmt->fetchObject('foodMaster')) {
             $data[] = $row;
-        } 
-        return $data; 
+        }
+        return $data;
     }
 
-    public function get_use_unit() {
+    public function get_use_unit()
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT food_name, food_file_path FROM food_master";
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
         $data = [];
-        while($row = $stmt->fetchObject('foodMaster')) {
+        while ($row = $stmt->fetchObject('foodMaster')) {
             $data[] = $row;
-        } 
-        return $data; 
+        }
+        return $data;
     }
 
-    public function get_name_and_path_paginated($page = 1, $perPage = 50) {
+    public function get_name_and_path_paginated($page = 1, $perPage = 50)
+    {
 
         $offset = ($page - 1) * $perPage;
         $sql = "SELECT food_name, food_file_path FROM food_master 
@@ -77,12 +82,14 @@ class FoodMasterDAO
         return $data;
     }
 
-    public function get_name_and_path_sort_by_registration_date($page = 1, $perPage = 50) {
+    public function get_name_and_path_sort_by_registration_date($page = 1, $perPage = 50)
+    {
 
-//登録された順で表示
+        //登録された順で表示
     }
 
-    public function get_categories() {
+    public function get_categories()
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT DISTINCT category_id, category_name FROM food_master ORDER BY category_name";
         $stmt = $dbh->prepare($sql);
@@ -90,8 +97,9 @@ class FoodMasterDAO
         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $categories;
     }
-    
-    public function get_foods_by_category($category_id) {
+
+    public function get_foods_by_category($category_id)
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM food_master WHERE category_id = :category_id";
         $stmt = $dbh->prepare($sql);
@@ -103,9 +111,4 @@ class FoodMasterDAO
         }
         return $data;
     }
-    
-
-
-
-
 }
