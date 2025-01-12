@@ -1,6 +1,5 @@
 <?php
 require_once 'helpers/RecipeMasterDAO.php';
-
 // RecipeMasterDAOのインスタンスを作成し、データを取得
 $recipeMasterDAO = new Recipe_MasterDAO();
 $recipes = $recipeMasterDAO->get_recipes();
