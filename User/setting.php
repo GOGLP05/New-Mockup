@@ -1,6 +1,36 @@
 <?php
+require_once 'helpers/MemberDAO.php';
+
 session_start();
 $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
+
+// メッセージの状態を初期化
+$message = 0;  // デフォルトはオフ(0)
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // トグルスイッチの状態が送信された場合
+    if (isset($_POST['toggleSwitch'])) {
+        // スイッチがオンの場合、messageを1に設定
+        $message = 1;
+    } else {
+        // スイッチがオフの場合、messageを0に設定
+        $message = 0;
+    }
+
+    // DAOを使ってmessageの状態をデータベースに保存
+    try {
+        $memberDAO = new MemberDAO();
+        $result = $memberDAO->update_message($email, $message);
+
+        if ($result) {
+            echo "<script>alert('設定が保存されました');</script>";
+        } else {
+            echo "<script>alert('設定の保存に失敗しました');</script>";
+        }
+    } catch (Exception $e) {
+        echo "<script>alert('エラーが発生しました');</script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -40,18 +70,14 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
 
     <div class="notification">
       <form method="post" action="" class="notification-form">
-
         <label class="switch">
-          <input type="checkbox" id="toggleSwitch" name="toggleSwitch" <?php if (isset($_POST['toggleSwitch'])) echo 'checked'; ?>>
+          <input type="checkbox" id="toggleSwitch" name="toggleSwitch" <?php if ($message == 1) echo 'checked'; ?>>
           <span class="slider round"></span>
         </label>
-
       </form>
     </div>
 
-
     <p>使い切り期限 3日前に 通知します</p>
-
   </div>
 </body>
 

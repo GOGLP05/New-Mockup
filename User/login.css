@@ -14,7 +14,7 @@ label {
     text-align: left;
     display: block;
 }
-input[type="text"], input[type="password"] {
+input[type="email"], input[type="password"] {
     padding: 10px;
     font-size: 16px;
     margin: 10px 0;
@@ -22,7 +22,7 @@ input[type="text"], input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-input[type="button"]{
+input[type="submit"]{
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
