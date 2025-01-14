@@ -1,3 +1,9 @@
+<?php
+require_once 'helpers/RegisteredFoodDAO.php';
+
+$RegisteredFood = new RegisteredFoodDAO();
+$foods = $RegisteredFood->get_all_foods();
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -7,7 +13,6 @@
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="list_of_food.css">
   <title>食品庫</title>
-
 </head>
 
 <body>
@@ -37,32 +42,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><a href="food_detail.php">じゃがいも</a></td>
-          <td>2024/09/26</td>
-          <td>2024/10/12</td>
-          <td>5個</td>
-        </tr>
-        <tr>
-          <td><a href="food_detail.php">牛乳</a></td>
-          <td>2024/10/02</td>
-          <td>2024/10/09</td>
-          <td>6本</td>
-        </tr>
-        <tr>
-          <td>卵</td>
-          <td>2024/10/03</td>
-          <td>2024/10/17</td>
-          <td>1個</td>
-        </tr>
-        <tr>
-          <td>食パン</td>
-          <td>2024/10/05</td>
-          <td>2024/10/07</td>
-          <td>1個</td>
-        </tr>
+  <?php if (!empty($foods)) : ?>
+    <?php foreach ($foods as $food) : ?>
+      <tr>
+        <td><?php echo htmlspecialchars($food->food_name, ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?php echo htmlspecialchars($food->registration_date, ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?php echo htmlspecialchars($food->expire_date, ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?php echo htmlspecialchars($food->food_amount, ENT_QUOTES, 'UTF-8'); ?>個</td>
+      </tr>
+    <?php endforeach; ?>
+  <?php else : ?>
+    <tr>
+      <td colspan="4">データがありません。</td>
+    </tr>
+  <?php endif; ?>
+</tbody>
 
-      </tbody>
     </table>
   </div>
 

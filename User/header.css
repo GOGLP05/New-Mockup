@@ -1,6 +1,0 @@
-.sample img{
-    margin-left: 200px;
-    width: 150px; /* 幅を200pxに設定 */
-    height: 80; /* 高さは自動調整 */
-    max-width: 100%; /* 親要素の幅に合わせて最大幅を設定 */
-}
