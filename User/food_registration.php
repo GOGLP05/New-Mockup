@@ -1,6 +1,14 @@
 <?php
 require_once 'helpers/FoodMasterDAO.php';
+session_start(); // セッションを開始
 
+// member_id がセッションに存在しているか確認
+if (!isset($_SESSION['member_id'])) {
+    // セッションがない場合はエラーメッセージを表示
+    echo "ログインが必要です。";
+    exit;
+}
+$member_id = $_SESSION['member_id'];
 $FoodMasterDAO = new FoodMasterDAO();
 $foodmaster_list = $FoodMasterDAO->get_foods();
 ?>
@@ -40,8 +48,12 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
         <div class="foods">
             <?php foreach ($foodmaster_list as $food): ?>
                 <div class="button-container">
-                    <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
-                        <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
+                    <button class="button"
+                        onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>', '<?php echo htmlspecialchars($food->food_id); ?>', '<?php echo $member_id; ?>')"
+                        title="<?php echo htmlspecialchars($food->food_name); ?>">
+                        <img src="<?php echo htmlspecialchars($food->food_file_path); ?>"
+                            alt="<?php echo htmlspecialchars($food->food_name); ?>"
+                            class="food-image">
                     </button>
                     <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
                 </div>
@@ -54,15 +66,18 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
             <span id="popup-close" class="popup-close" onclick="closePopup()">×</span>
             <h2 id="popup-food-title"></h2>
             <form onsubmit="event.preventDefault(); submitForm();">
-                <label for="count">個数:/label>
-                    <input type="text" id="count" name="count" required><br><br>
-                    <label for="date">日付:</label>
-                    <input type="date" id="date" name="date" required><br><br>
-                    <button type="submit">登録</button>
+                <input type="hidden" id="foodId" name="foodId">
+                <input type="hidden" id="memberId" name="memberId">
+                <input type="hidden" id="foodName" name="foodName">
+                <label for="count">個数:</label>
+                <input type="text" id="count" name="count" required><br><br>
+                <label for="date">購入日:</label>
+                <input type="date" id="date" name="date" required><br><br>
+                <button type="submit">登録</button>
             </form>
-
         </div>
     </div>
+
 </body>
 
 </html>

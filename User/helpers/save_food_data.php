@@ -8,12 +8,15 @@ try {
     $input = json_decode(file_get_contents("php://input"), true);
 
     // 必要なデータを取得
+    $food_id = $input['food_id'] ?? null;
     $food_name = $input['food_name'] ?? null;
     $amount = $input['amount'] ?? null;
+    $member_id = $input['member_id'] ?? null;
     $date = $input['date'] ?? null;
 
+
     // 必要な値が揃っているか確認
-    if (!$food_name || !$amount || !$date) {
+    if (!$food_name || !$amount || !$date || !$food_id || !$member_id) {
         throw new Exception("入力データが不足しています。");
     }
 
@@ -26,14 +29,13 @@ try {
 
     // SQL作成
     $sql = "INSERT INTO registrated_food (food_id, member_id, lot_no, food_name, registration_date, food_amount, food_gram, expire_date) 
-            VALUES (:food_id, :member_id, :lot_no, :food_name, :registration_date, :food_amount, :food_gram, :expire_date)";
+    VALUES (:food_id, :member_id, DATEADD(HOUR, 9, CURRENT_TIMESTAMP), :food_name,  :registration_date, :food_amount, :food_gram, :expire_date)";
 
     $stmt = $dbh->prepare($sql);
 
     // プレースホルダーに値をバインド
-    $stmt->bindValue(':food_id', '400001', PDO::PARAM_STR); // 一意のfood_idを生成
-    $stmt->bindValue(':member_id', '100001', PDO::PARAM_STR); // 例: 固定値やセッションから取得
-    $stmt->bindValue(':lot_no', rand(1, 1000), PDO::PARAM_INT); // 例: ランダムなlot_no
+    $stmt->bindValue(':food_id', $food_id, PDO::PARAM_INT); // 一意のfood_idを生成
+    $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT); // 例: 固定値やセッションから取得
     $stmt->bindValue(':food_name', $food_name, PDO::PARAM_STR);
     $stmt->bindValue(':registration_date', $date, PDO::PARAM_STR);
     $stmt->bindValue(':food_amount', $amount, PDO::PARAM_INT);
