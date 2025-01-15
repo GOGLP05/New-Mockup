@@ -28,14 +28,11 @@ $foods = $RegisteredFood->get_all_foods();
     <li><a class="menu__item" href="food_registration.php">食品登録</a></li>
     <li><a class="menu__item" href="setting.php">設定</a></li>
   </ul>
-  </div>
 
   <div class="content">
     <h1>食品庫</h1>
 
     <h4>食品は直近に登録されたもののみを表示しています</h4>
-    <h4>数量だけは直近のものだけではなく、テーブルに保存されている合計の数を入れる</h4>
-    <h4>食品名をクリックすると同じ名前の食材を複数表示</h4>
     <table border="1">
       <thead>
         <tr>
