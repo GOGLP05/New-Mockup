@@ -32,6 +32,10 @@ $foods = $RegisteredFood->get_all_foods();
 
   <div class="content">
     <h1>食品庫</h1>
+
+    <h4>食品は直近に登録されたもののみを表示しています</h4>
+    <h4>数量だけは直近のものだけではなく、テーブルに保存されている合計の数を入れる</h4>
+    <h4>食品名をクリックすると同じ名前の食材を複数表示</h4>
     <table border="1">
       <thead>
         <tr>
@@ -42,22 +46,21 @@ $foods = $RegisteredFood->get_all_foods();
         </tr>
       </thead>
       <tbody>
-  <?php if (!empty($foods)) : ?>
-    <?php foreach ($foods as $food) : ?>
-      <tr>
-        <td><?php echo htmlspecialchars($food->food_name, ENT_QUOTES, 'UTF-8'); ?></td>
-        <td><?php echo htmlspecialchars($food->registration_date, ENT_QUOTES, 'UTF-8'); ?></td>
-        <td><?php echo htmlspecialchars($food->expire_date, ENT_QUOTES, 'UTF-8'); ?></td>
-        <td><?php echo htmlspecialchars($food->food_amount, ENT_QUOTES, 'UTF-8'); ?>個</td>
-      </tr>
-    <?php endforeach; ?>
-  <?php else : ?>
-    <tr>
-      <td colspan="4">データがありません。</td>
-    </tr>
-  <?php endif; ?>
-</tbody>
-
+        <?php if (!empty($foods)) : ?>
+          <?php foreach ($foods as $food) : ?>
+            <tr>
+              <td><?php echo htmlspecialchars($food['food_name'], ENT_QUOTES, 'UTF-8'); ?></td>
+              <td><?php echo htmlspecialchars($food['registration_date'], ENT_QUOTES, 'UTF-8'); ?></td>
+              <td><?php echo htmlspecialchars($food['expire_date'], ENT_QUOTES, 'UTF-8'); ?></td>
+              <td><?php echo htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8'); ?>個</td>
+            </tr>
+          <?php endforeach; ?>
+        <?php else : ?>
+          <tr>
+            <td colspan="4">データがありません。</td>
+          </tr>
+        <?php endif; ?>
+      </tbody>
     </table>
   </div>
 
