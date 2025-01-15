@@ -6,9 +6,9 @@ class RegisteredFood
     public int $food_id;
     public string $food_name;
     public int $member_id;
-    public string $lot_no;
+    public datetime $lot_no;
     public string $registration_date;
-    public float $food_gram;
+    public float $standard_gram;
     public int $food_amount;
     public string $expire_date;
 }
@@ -20,14 +20,29 @@ class RegisteredFoodDAO
     {
         $dbh = DAO::get_db_connect();
 
-        $sql = "SELECT * FROM registrated_food";
+        $sql = "
+SELECT t1.food_name, 
+       t1.registration_date, 
+       t1.expire_date, 
+       SUM(t1.food_amount) AS total_amount
+FROM registrated_food t1
+INNER JOIN (
+    SELECT food_name, MAX(lot_no) AS latest_lot_no
+    FROM registrated_food
+    GROUP BY food_name
+) t2
+ON t1.food_name = t2.food_name AND t1.lot_no = t2.latest_lot_no
+GROUP BY t1.food_name, t1.registration_date, t1.expire_date
+ORDER BY t1.registration_date DESC
+";
+
         $stmt = $dbh->prepare($sql);
 
         if (!$stmt->execute()) {
             throw new Exception('Failed to execute the query.');
         }
 
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'RegisteredFood');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // 特定の食品データをIDで取得する
@@ -48,20 +63,20 @@ class RegisteredFoodDAO
     }
 
     // 新しい食品を登録する
-    public function create_food(string $food_name, int $member_id, string $lot_no, string $registration_date, float $food_gram, int $food_amount, string $expire_date): bool
+    public function create_food(string $food_name, int $member_id, string $lot_no, string $registration_date, float $standard_gram, int $food_amount, string $expire_date): bool
     {
         try {
             $dbh = DAO::get_db_connect();
 
-            $sql = "INSERT INTO registrated_food (food_name, member_id, lot_no, registration_date, food_gram, food_amount, expire_date) 
-                    VALUES (:food_name, :member_id, :lot_no, :registration_date, :food_gram, :food_amount, :expire_date)";
+            $sql = "INSERT INTO registrated_food (food_name, member_id, lot_no, registration_date, standard_gram, food_amount, expire_date) 
+                    VALUES (:food_name, :member_id, :lot_no, :registration_date, :standard_gram, :food_amount, :expire_date)";
             $stmt = $dbh->prepare($sql);
 
             $stmt->bindValue(':food_name', $food_name, PDO::PARAM_STR);
             $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
             $stmt->bindValue(':lot_no', $lot_no, PDO::PARAM_STR);
             $stmt->bindValue(':registration_date', $registration_date, PDO::PARAM_STR);
-            $stmt->bindValue(':food_gram', $food_gram, PDO::PARAM_STR);
+            $stmt->bindValue(':standard_gram', $standard_gram, PDO::PARAM_STR);
             $stmt->bindValue(':food_amount', $food_amount, PDO::PARAM_INT);
             $stmt->bindValue(':expire_date', $expire_date, PDO::PARAM_STR);
 
@@ -117,4 +132,3 @@ class RegisteredFoodDAO
         }
     }
 }
-?>
