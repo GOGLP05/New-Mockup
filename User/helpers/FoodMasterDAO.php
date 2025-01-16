@@ -82,11 +82,7 @@ class FoodMasterDAO
         return $data;
     }
 
-    public function get_name_and_path_sort_by_registration_date($page = 1, $perPage = 50)
-    {
 
-        //登録された順で表示
-    }
 
     public function get_categories()
     {

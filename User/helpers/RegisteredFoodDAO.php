@@ -16,21 +16,23 @@ class RegisteredFood
 class RegisteredFoodDAO
 {
     // 全ての食品データを取得する
-    public function get_all_foods(): array
+    public function get_all_foods_by_member(int $member_id): array
     {
         $dbh = DAO::get_db_connect();
 
         $sql = "
-    SELECT t1.food_name, 
-           MAX(t1.registration_date) AS registration_date, 
-           MAX(t1.expire_date) AS expire_date, 
-           SUM(t1.food_amount) AS total_amount
-    FROM registrated_food t1
-    GROUP BY t1.food_name
-    ORDER BY MAX(t1.registration_date) DESC
-    ";
+            SELECT t1.food_name, 
+                   MAX(t1.registration_date) AS registration_date, 
+                   MAX(t1.expire_date) AS expire_date, 
+                   SUM(t1.food_amount) AS total_amount
+            FROM registrated_food t1
+            WHERE t1.member_id = :member_id
+            GROUP BY t1.food_name
+            ORDER BY MAX(t1.registration_date) DESC
+        ";
 
         $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
 
         if (!$stmt->execute()) {
             throw new Exception('Failed to execute the query.');
@@ -38,6 +40,7 @@ class RegisteredFoodDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
 
     // 特定の食品データをIDで取得する
@@ -128,28 +131,55 @@ class RegisteredFoodDAO
     }
 
     // 特定の食品名のデータを取得する
-    public function get_foods_by_name(string $food_name): array
+    public function get_foods_by_name_and_member(string $food_name, int $member_id): array
     {
         $dbh = DAO::get_db_connect();
 
         $sql = "
     SELECT food_name, 
+           lot_no,
            registration_date, 
            expire_date, 
            SUM(food_amount) AS total_amount
     FROM registrated_food
-    WHERE food_name = :food_name
-    GROUP BY food_name, registration_date, expire_date
+    WHERE food_name = :food_name AND member_id = :member_id
+    GROUP BY food_name, lot_no, registration_date, expire_date
     ORDER BY registration_date DESC
     ";
 
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':food_name', $food_name, PDO::PARAM_STR);
+        $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
 
         if (!$stmt->execute()) {
             throw new Exception('Failed to execute the query.');
         }
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function get_food_detail_by_name_and_lotno(string $food_name, string $lotno, int $member_id)
+    {
+        $dbh = DAO::get_db_connect();
+
+        $sql = "
+    SELECT * 
+    FROM registrated_food
+    WHERE food_name = :food_name 
+      AND lot_no = :lotno 
+      AND member_id = :member_id
+    ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':food_name', $food_name, PDO::PARAM_STR);
+        $stmt->bindValue(':lotno', $lotno, PDO::PARAM_STR); // DATETIME型でも文字列としてバインド
+        $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
+
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to execute the query.');
+        }
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

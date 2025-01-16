@@ -1,6 +1,13 @@
 <?php
 require_once 'helpers/RegisteredFoodDAO.php';
+session_start();
 
+if (!isset($_SESSION['member_id'])) {
+  header('Location: login.php'); // ログインページへリダイレクト
+  exit;
+}
+
+$member_id = $_SESSION['member_id'];
 $RegisteredFood = new RegisteredFoodDAO();
 
 // 食品名が指定されている場合、その食品のみを取得
@@ -8,12 +15,13 @@ $food_name = $_GET['food_name'] ?? null;
 
 if ($food_name) {
   // 特定の食品のデータを取得
-  $foods = $RegisteredFood->get_foods_by_name($food_name);
+  $foods = $RegisteredFood->get_foods_by_name_and_member($food_name, $member_id);
 } else {
   // 全食品を取得
-  $foods = $RegisteredFood->get_all_foods();
+  $foods = $RegisteredFood->get_all_foods_by_member($member_id);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -33,6 +41,8 @@ if ($food_name) {
   </label>
 
   <ul class="menu__box">
+
+
     <li><a class="menu__item" href="top.php">TOP</a></li>
     <li><a class="menu__item" href="list_of_food.php">食品庫</a></li>
     <li><a class="menu__item" href="food_registration.php">食品登録</a></li>
