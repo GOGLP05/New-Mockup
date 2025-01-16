@@ -34,7 +34,7 @@ try {
     }
 
     $expiry_days = (int)$result['expiry_date'];
-    $standard_gram = (int)$result['standard_gram'];
+    $standard_gram = (int)$result['standard_gram'] * $amount;
 
     // expire_dateを計算 (登録日 + expiry_days 日)
     $registration_date = new DateTime($date);
