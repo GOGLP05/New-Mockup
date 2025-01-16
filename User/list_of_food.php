@@ -2,7 +2,17 @@
 require_once 'helpers/RegisteredFoodDAO.php';
 
 $RegisteredFood = new RegisteredFoodDAO();
-$foods = $RegisteredFood->get_all_foods();
+
+// 食品名が指定されている場合、その食品のみを取得
+$food_name = $_GET['food_name'] ?? null;
+
+if ($food_name) {
+  // 特定の食品のデータを取得
+  $foods = $RegisteredFood->get_foods_by_name($food_name);
+} else {
+  // 全食品を取得
+  $foods = $RegisteredFood->get_all_foods();
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -32,21 +42,31 @@ $foods = $RegisteredFood->get_all_foods();
   <div class="content">
     <h1>食品庫</h1>
 
-    <h4>食品は直近に登録されたもののみを表示しています</h4>
+    <?php if ($food_name) : ?>
+      <h4>「<?php echo htmlspecialchars($food_name, ENT_QUOTES, 'UTF-8'); ?>」の一覧を表示しています</h4>
+      <a href="list_of_food.php">全ての食品を見る</a>
+    <?php else : ?>
+      <h4>直近に登録された食品のみを表示しています</h4>
+    <?php endif; ?>
+
     <table border="1">
       <thead>
         <tr>
           <th>食品名</th>
-          <th>登録日</th>
-          <th>使い切り期限</th>
-          <th>数量</th>
+          <th>登録日(直近)</th>
+          <th>使い切り期限(直近)</th>
+          <th>数量(合計)</th>
         </tr>
       </thead>
       <tbody>
         <?php if (!empty($foods)) : ?>
           <?php foreach ($foods as $food) : ?>
             <tr>
-              <td><?php echo htmlspecialchars($food['food_name'], ENT_QUOTES, 'UTF-8'); ?></td>
+              <td>
+                <a href="list_of_food.php?food_name=<?php echo urlencode($food['food_name']); ?>">
+                  <?php echo htmlspecialchars($food['food_name'], ENT_QUOTES, 'UTF-8'); ?>
+                </a>
+              </td>
               <td><?php echo htmlspecialchars($food['registration_date'], ENT_QUOTES, 'UTF-8'); ?></td>
               <td><?php echo htmlspecialchars($food['expire_date'], ENT_QUOTES, 'UTF-8'); ?></td>
               <td><?php echo htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8'); ?>個</td>

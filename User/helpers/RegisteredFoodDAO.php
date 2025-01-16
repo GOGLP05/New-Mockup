@@ -21,20 +21,14 @@ class RegisteredFoodDAO
         $dbh = DAO::get_db_connect();
 
         $sql = "
-SELECT t1.food_name, 
-       t1.registration_date, 
-       t1.expire_date, 
-       SUM(t1.food_amount) AS total_amount
-FROM registrated_food t1
-INNER JOIN (
-    SELECT food_name, MAX(lot_no) AS latest_lot_no
-    FROM registrated_food
-    GROUP BY food_name
-) t2
-ON t1.food_name = t2.food_name AND t1.lot_no = t2.latest_lot_no
-GROUP BY t1.food_name, t1.registration_date, t1.expire_date
-ORDER BY t1.registration_date DESC
-";
+    SELECT t1.food_name, 
+           MAX(t1.registration_date) AS registration_date, 
+           MAX(t1.expire_date) AS expire_date, 
+           SUM(t1.food_amount) AS total_amount
+    FROM registrated_food t1
+    GROUP BY t1.food_name
+    ORDER BY MAX(t1.registration_date) DESC
+    ";
 
         $stmt = $dbh->prepare($sql);
 
@@ -44,6 +38,7 @@ ORDER BY t1.registration_date DESC
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
     // 特定の食品データをIDで取得する
     public function get_food_by_id(int $food_id): ?RegisteredFood
@@ -130,5 +125,31 @@ ORDER BY t1.registration_date DESC
             error_log($e->getMessage());
             throw new Exception('データベースエラー');
         }
+    }
+
+    // 特定の食品名のデータを取得する
+    public function get_foods_by_name(string $food_name): array
+    {
+        $dbh = DAO::get_db_connect();
+
+        $sql = "
+    SELECT food_name, 
+           registration_date, 
+           expire_date, 
+           SUM(food_amount) AS total_amount
+    FROM registrated_food
+    WHERE food_name = :food_name
+    GROUP BY food_name, registration_date, expire_date
+    ORDER BY registration_date DESC
+    ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':food_name', $food_name, PDO::PARAM_STR);
+
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to execute the query.');
+        }
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
