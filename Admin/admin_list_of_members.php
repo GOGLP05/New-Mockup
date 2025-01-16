@@ -5,7 +5,6 @@ $MemberDAO = new Member_DAO();
 $member_list = $MemberDAO->get_members();
 
 // 削除処理
-// 削除処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
         $member_id = trim($_POST['member_id']);

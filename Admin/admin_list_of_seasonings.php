@@ -30,7 +30,7 @@
     <h1>調味料一覧</h1>
 
     <div class="button-container">
-        <a href="admin_seasoning_detail.php">
+        <a href="admin_seasoning_detail.php?action=new">
             <button>新規登録</button>
         </a>
     </div>
@@ -39,14 +39,21 @@
             <tr>
                 <th>調味料ID</th>
                 <th>調味料名</th>
+                <th>操作</th>
+
             </tr>
         <?php foreach ($seasoning_list as $seasoningMaster) : ?>
             <tr>
                 <td><?= htmlspecialchars($seasoningMaster->seasoning_id, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($seasoningMaster->seasoning_name, ENT_QUOTES, 'UTF-8') ?></td>
-            </tr>
-            <?php endforeach; ?>
+                <!-- 詳細ボタン -->
+                <td>
+                    <a href="admin_seasoning_detail.php?action=edit&seasoning_id=<?= htmlspecialchars($seasoningMaster->seasoning_id, ENT_QUOTES, 'UTF-8') ?>">
+                        <input type="button" value="詳細">
+                    </a>
+                </td>
+            </tr>            
+        <?php endforeach; ?>
     </table>
-    <input type="button" onclick="location.href='admin_seasoning_detail.php'" value="詳細">
 </body>
 </html>

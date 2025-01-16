@@ -5,7 +5,7 @@ class Member{
     public int $member_id;
     public  string $password;
     public int $sex;
-    public int $birthdate;
+    public string $birthdate;
     public string $email;
     public string $message;
 }
