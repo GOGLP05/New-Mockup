@@ -129,6 +129,36 @@ class RegisteredFoodDAO
             throw new Exception('データベースエラー');
         }
     }
+    public function get_registered_foods_with_images($page = 1, $perPage = 50)
+    {
+        $offset = ($page - 1) * $perPage;
+    
+        $sql = "
+            SELECT DISTINCT fm.food_name, fm.food_file_path, MAX(rf.lot_no) AS latest_lot_no
+            FROM food_master fm
+            INNER JOIN registrated_food rf ON fm.food_name = rf.food_name
+            GROUP BY fm.food_name, fm.food_file_path
+            ORDER BY latest_lot_no DESC
+            OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY
+        ";
+    
+        $dbh = DAO::get_db_connect();
+        $stmt = $dbh->prepare($sql);
+    
+        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    
+        $stmt->execute();
+    
+        $data = [];
+        while ($row = $stmt->fetchObject('FoodMaster')) {
+            $data[] = $row;
+        }
+    
+        return $data;
+    }
+    
+
 
     // 特定の食品名のデータを取得する
     public function get_foods_by_name_and_member(string $food_name, int $member_id): array
