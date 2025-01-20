@@ -1,7 +1,8 @@
 <?php
 require_once 'DAO.php';
 
-class recipeMaster {
+class recipeMaster
+{
     public int $recipe_id;
     public string $recipe_name;
     public string $recipe_file_path1;
@@ -20,9 +21,11 @@ class recipeMaster {
     public array $processes = [];
 }
 
-class Recipe_MasterDAO {
+class Recipe_MasterDAO
+{
     // レシピ一覧を取得
-    public function get_recipes() {
+    public function get_recipes()
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT recipe_id, recipe_name, recipe_file_path1 FROM recipe";
         $stmt = $dbh->prepare($sql);
@@ -37,7 +40,8 @@ class Recipe_MasterDAO {
     }
 
     // レシピIDに基づいて詳細を取得
-    public function get_recipe_by_id($id) {
+    public function get_recipe_by_id($id)
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM recipe WHERE recipe_id = :id";
         $stmt = $dbh->prepare($sql);
@@ -55,7 +59,8 @@ class Recipe_MasterDAO {
     }
 
     // プロセス情報を配列に変換
-    private function extract_processes($recipe) {
+    private function extract_processes($recipe)
+    {
         $processes = [];
         for ($i = 1; $i <= 10; $i++) {
             $property = "process_$i";
@@ -65,5 +70,17 @@ class Recipe_MasterDAO {
             }
         }
         return $processes;
+    }
+    public function get_foods_sorted_by_registration_date()
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM food_master ORDER BY registration_date DESC";  // 登録日で降順に並び替え
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        $data = [];
+        while ($row = $stmt->fetchObject('foodMaster')) {
+            $data[] = $row;
+        }
+        return $data;
     }
 }
