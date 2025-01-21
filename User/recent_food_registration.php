@@ -1,8 +1,9 @@
 <?php
+require_once 'helpers/RegisteredFoodDAO.php';
 require_once 'helpers/FoodMasterDAO.php';
-
 $FoodMasterDAO = new FoodMasterDAO();
-$foodmaster_list = $FoodMasterDAO->get_name_and_path_paginated();
+$RegisteredFoodDAO = new RegisteredFoodDAO();
+$foodmaster_list = $RegisteredFoodDAO->get_registered_foods_with_images();
 ?>
 
 <!DOCTYPE html>
@@ -36,16 +37,17 @@ $foodmaster_list = $FoodMasterDAO->get_name_and_path_paginated();
 
     <hr>
     <div class="content">
-        <div class="foods">
-            <?php foreach ($foodmaster_list as $food): ?>
-                <div class="button-container">
-                    <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
-                        <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
-                    </button>
-                    <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
-                </div>
-            <?php endforeach; ?>
+    <div class="foods">
+    <?php foreach ($foodmaster_list as $food): ?>
+        <div class="button-container">
+            <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
+                <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
+            </button>
+            <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
         </div>
+    <?php endforeach; ?>
+</div>
+
     </div>
 
     <div id="popup" class="popup" style="display: none;">

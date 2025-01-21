@@ -9,6 +9,7 @@ class foodMaster
     public string $category_name;
     public string $standard_gram;
     public string $food_file_path;
+    public ?string $latest_lot_no = null;
 }
 
 

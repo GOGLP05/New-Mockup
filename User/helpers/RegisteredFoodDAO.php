@@ -129,6 +129,36 @@ class RegisteredFoodDAO
             throw new Exception('データベースエラー');
         }
     }
+    public function get_registered_foods_with_images($page = 1, $perPage = 50)
+    {
+        $offset = ($page - 1) * $perPage;
+
+        $sql = "
+            SELECT DISTINCT fm.food_name, fm.food_file_path, MAX(rf.lot_no) AS latest_lot_no
+            FROM food_master fm
+            INNER JOIN registrated_food rf ON fm.food_name = rf.food_name
+            GROUP BY fm.food_name, fm.food_file_path
+            ORDER BY latest_lot_no DESC
+            OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY
+        ";
+
+        $dbh = DAO::get_db_connect();
+        $stmt = $dbh->prepare($sql);
+
+        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $data = [];
+        while ($row = $stmt->fetchObject('FoodMaster')) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
+
 
     // 特定の食品名のデータを取得する
     public function get_foods_by_name_and_member(string $food_name, int $member_id): array
@@ -181,5 +211,83 @@ class RegisteredFoodDAO
         }
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function get_expired_foods_by_member(int $member_id): array
+    {
+        $dbh = DAO::get_db_connect();
+
+        // 現在の日付を取得
+        $today = date('Y-m-d');
+
+        $sql = "
+            SELECT t1.food_name, 
+                   MAX(t1.registration_date) AS registration_date, 
+                   MAX(t1.expire_date) AS expire_date, 
+                   SUM(t1.food_amount) AS total_amount
+            FROM registrated_food t1
+            WHERE t1.member_id = :member_id
+            AND t1.expire_date < :today  -- expire_dateが今日より前のデータのみ取得
+            GROUP BY t1.food_name
+            ORDER BY MAX(t1.registration_date) DESC
+        ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
+        $stmt->bindValue(':today', $today, PDO::PARAM_STR);  // 今日の日付をバインド
+
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to execute the query.');
+        }
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 使い切り期限が7日以内の食材を取得する
+    public function get_expiring_soon_foods_by_member(int $member_id): array
+    {
+        $dbh = DAO::get_db_connect();
+
+        // 今日の日付を取得
+        $today = date('Y-m-d');
+        // 今日から7日後の日付を計算
+        $sevenDaysLater = date('Y-m-d', strtotime('+7 days'));
+
+        $sql = "
+        SELECT t1.food_name, 
+               MAX(t1.registration_date) AS registration_date, 
+               MAX(t1.expire_date) AS expire_date, 
+               SUM(t1.food_amount) AS total_amount
+        FROM registrated_food t1
+        WHERE t1.member_id = :member_id
+        AND t1.expire_date BETWEEN :today AND :sevenDaysLater
+        GROUP BY t1.food_name
+        ORDER BY MAX(t1.registration_date) DESC
+    ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
+        $stmt->bindValue(':today', $today, PDO::PARAM_STR);
+        $stmt->bindValue(':sevenDaysLater', $sevenDaysLater, PDO::PARAM_STR);
+
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to execute the query.');
+        }
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function subtract_food_amount($food_id, $amount)
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "
+            UPDATE registrated_food
+            SET food_amount = food_amount - :amount
+            WHERE food_id = :food_id AND food_amount >= :amount
+        ";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':amount', $amount, PDO::PARAM_INT);
+        $stmt->bindValue(':food_id', $food_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
     }
 }

@@ -1,7 +1,8 @@
 <?php
 require_once 'DAO.php';
 
-class recipeMaster {
+class recipeMaster
+{
     public int $recipe_id;
     public string $recipe_name;
     public string $recipe_file_path1;
@@ -20,9 +21,11 @@ class recipeMaster {
     public array $processes = [];
 }
 
-class Recipe_MasterDAO {
+class Recipe_MasterDAO
+{
     // レシピ一覧を取得
-    public function get_recipes() {
+    public function get_recipes()
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT recipe_id, recipe_name, recipe_file_path1 FROM recipe";
         $stmt = $dbh->prepare($sql);
@@ -37,7 +40,8 @@ class Recipe_MasterDAO {
     }
 
     // レシピIDに基づいて詳細を取得
-    public function get_recipe_by_id($id) {
+    public function get_recipe_by_id($id)
+    {
         $dbh = DAO::get_db_connect();
         $sql = "SELECT * FROM recipe WHERE recipe_id = :id";
         $stmt = $dbh->prepare($sql);
@@ -55,7 +59,8 @@ class Recipe_MasterDAO {
     }
 
     // プロセス情報を配列に変換
-    private function extract_processes($recipe) {
+    private function extract_processes($recipe)
+    {
         $processes = [];
         for ($i = 1; $i <= 10; $i++) {
             $property = "process_$i";
@@ -65,5 +70,74 @@ class Recipe_MasterDAO {
             }
         }
         return $processes;
+    }
+    public function get_foods_sorted_by_registration_date()
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM food_master ORDER BY registration_date DESC";  // 登録日で降順に並び替え
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute();
+        $data = [];
+        while ($row = $stmt->fetchObject('foodMaster')) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    public function get_ingredients_by_recipe_id($recipeId)
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "
+            SELECT fm.food_name, ri.calculation_use, ri.display_use
+            FROM recipe_ingredients ri
+            JOIN food_master fm ON ri.food_id = fm.food_id
+            WHERE ri.recipe_id = :recipeId
+        ";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':recipeId', $recipeId, PDO::PARAM_INT);
+        $stmt->execute();
+        $ingredients = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $ingredients[] = $row;
+        }
+
+        return $ingredients;
+    }
+
+    // レシピに必要な調味料を取得（前回と同様）
+    public function get_seasonings_by_recipe_id($recipeId)
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "
+            SELECT sm.seasoning_name, sm.unit, su.display_use
+            FROM seasoning_master sm
+            JOIN seasoning_use su ON sm.seasoning_id = su.seasoning_id
+            WHERE su.recipe_id = :recipeId
+        ";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':recipeId', $recipeId, PDO::PARAM_INT);
+        $stmt->execute();
+        $seasonings = [];
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $seasonings[] = $row;
+        }
+
+        return $seasonings;
+    }
+
+    public function get_use_unit_by_category_id($categoryId)
+    {
+        $dbh = DAO::get_db_connect();
+        // ここではSQLを使用してカテゴリーのuse_unitを取得
+        // 例：カテゴリーテーブルからcategory_idに基づいてuse_unitを取得する
+        $sql = "SELECT use_unit FROM category WHERE category_id = :category_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['use_unit'] : 0; // デフォルトで '0'（個）
     }
 }
