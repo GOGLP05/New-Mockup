@@ -241,4 +241,38 @@ class RegisteredFoodDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // 使い切り期限が7日以内の食材を取得する
+    public function get_expiring_soon_foods_by_member(int $member_id): array
+    {
+        $dbh = DAO::get_db_connect();
+
+        // 今日の日付を取得
+        $today = date('Y-m-d');
+        // 今日から7日後の日付を計算
+        $sevenDaysLater = date('Y-m-d', strtotime('+7 days'));
+
+        $sql = "
+        SELECT t1.food_name, 
+               MAX(t1.registration_date) AS registration_date, 
+               MAX(t1.expire_date) AS expire_date, 
+               SUM(t1.food_amount) AS total_amount
+        FROM registrated_food t1
+        WHERE t1.member_id = :member_id
+        AND t1.expire_date BETWEEN :today AND :sevenDaysLater
+        GROUP BY t1.food_name
+        ORDER BY MAX(t1.registration_date) DESC
+    ";
+
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
+        $stmt->bindValue(':today', $today, PDO::PARAM_STR);
+        $stmt->bindValue(':sevenDaysLater', $sevenDaysLater, PDO::PARAM_STR);
+
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to execute the query.');
+        }
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

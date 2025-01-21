@@ -1,8 +1,28 @@
 <?php
+session_start();
+
+
+// ログインしていない場合は、ログインページにリダイレクト
+if (!isset($_SESSION['member_id'])) {
+    header('Location: login.php');
+    exit;
+}
+// セッションからユーザー情報を取得
+$member_id = $_SESSION['member_id'];
+
 require_once 'helpers/RecipeMasterDAO.php';
+require_once 'helpers/RegisteredFoodDAO.php';
+require_once 'helpers/DAO.php';
+
 // RecipeMasterDAOのインスタンスを作成し、データを取得
 $recipeMasterDAO = new Recipe_MasterDAO();
 $recipes = $recipeMasterDAO->get_recipes();
+
+// ここで期限切れの食品を取得する
+$member_id = 10000003;  // 例として、member_idを1としています。実際の環境に合わせて取得方法を変更してください。
+$foodDAO = new RegisteredFoodDAO();
+$expiredFoods = $foodDAO->get_expired_foods_by_member($member_id);
+$expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -62,26 +82,27 @@ $recipes = $recipeMasterDAO->get_recipes();
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>じゃがいも</td>
-                        <td>3個</td>
-                        <td>あと3日</td>
-                    </tr>
-                    <tr>
-                        <td>さつまいも</td>
-                        <td>5個</td>
-                        <td>あと4日</td>
-                    </tr>
-                    <tr>
-                        <td>里芋</td>
-                        <td>3個</td>
-                        <td>あと4日</td>
-                    </tr>
-                    <tr>
-                        <td>玉ねぎ</td>
-                        <td>2個</td>
-                        <td>あと6日</td>
-                    </tr>
+                    <?php if (!empty($expiringSoonFoods)) : ?>
+                        <?php foreach ($expiringSoonFoods as $food) : ?>
+                            <tr>
+                                <td><?= htmlspecialchars($food['food_name'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8') ?> 個</td>
+                                <td>
+                                    <?php
+                                    // expire_date と現在の日付を比較して残り日数を計算
+                                    $expireDate = new DateTime($food['expire_date']);
+                                    $today = new DateTime();
+                                    $interval = $expireDate->diff($today);
+                                    echo $interval->days . " 日";
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <tr>
+                            <td colspan="3">使い切り期限が近い食材はありません。</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
