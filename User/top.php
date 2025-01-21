@@ -97,63 +97,63 @@ $recipes = $recipeMasterDAO->get_recipes();
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>牛乳</td>
-                        <td>1本</td>
-                        <td>3日</td>
-                    </tr>
-                    <tr>
-                        <td>木綿豆腐</td>
-                        <td>1丁</td>
-                        <td>3日</td>
-                    </tr>
-                    <tr>
-                        <td>みょうが</td>
-                        <td>1個</td>
-                        <td>4日</td>
-                    </tr>
-                    <tr>
-                        <td>納豆</td>
-                        <td>3個</td>
-                        <td>6日</td>
-                    </tr>
+                    <?php if (!empty($expiredFoods)) : ?>
+                        <?php foreach ($expiredFoods as $food) : ?>
+                            <tr>
+                                <td><?= htmlspecialchars($food['food_name'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8') ?> 個</td>
+                                <td>
+                                    <?php
+                                    // expire_date と現在の日付を比較して経過日数を計算
+                                    $expireDate = new DateTime($food['expire_date']);
+                                    $today = new DateTime();
+                                    $interval = $expireDate->diff($today);
+                                    echo $interval->days . " 日";
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <tr>
+                            <td colspan="3">期限が過ぎた食材はありません。</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
-    </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const toggleBtn = document.getElementById("toggle-btn");
-            const hiddenItems = document.querySelectorAll(".dishes_can_make .hidden");
-            let isExpanded = false; // 初期状態は折り畳み
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const toggleBtn = document.getElementById("toggle-btn");
+                const hiddenItems = document.querySelectorAll(".dishes_can_make .hidden");
+                let isExpanded = false; // 初期状態は折り畳み
 
-            if (toggleBtn) {
-                toggleBtn.addEventListener("click", () => {
-                    if (isExpanded) {
-                        hiddenItems.forEach(item => {
-                            item.style.maxHeight = "0"; // 高さを0に設定
-                            item.style.opacity = "0"; // 不透明度を0に設定
-                            setTimeout(() => {
-                                item.style.display = "none"; // トランジション後に非表示
-                            }, 500); // トランジションの時間に合わせる
-                        });
-                        toggleBtn.textContent = "すべて表示";
-                    } else {
-                        hiddenItems.forEach(item => {
-                            item.style.display = "block"; // 表示に戻す
-                            setTimeout(() => {
-                                item.style.maxHeight = item.scrollHeight + "px"; // 自然な高さを設定
-                                item.style.opacity = "1"; // 不透明度を1に設定
-                            }, 0); // レイアウトの再計算を待つ
-                        });
-                        toggleBtn.textContent = "折り畳む";
-                    }
-                    isExpanded = !isExpanded;
-                });
-            }
-        });
-    </script>
+                if (toggleBtn) {
+                    toggleBtn.addEventListener("click", () => {
+                        if (isExpanded) {
+                            hiddenItems.forEach(item => {
+                                item.style.maxHeight = "0"; // 高さを0に設定
+                                item.style.opacity = "0"; // 不透明度を0に設定
+                                setTimeout(() => {
+                                    item.style.display = "none"; // トランジション後に非表示
+                                }, 500); // トランジションの時間に合わせる
+                            });
+                            toggleBtn.textContent = "すべて表示";
+                        } else {
+                            hiddenItems.forEach(item => {
+                                item.style.display = "block"; // 表示に戻す
+                                setTimeout(() => {
+                                    item.style.maxHeight = item.scrollHeight + "px"; // 自然な高さを設定
+                                    item.style.opacity = "1"; // 不透明度を1に設定
+                                }, 0); // レイアウトの再計算を待つ
+                            });
+                            toggleBtn.textContent = "折り畳む";
+                        }
+                        isExpanded = !isExpanded;
+                    });
+                }
+            });
+        </script>
 </body>
 
 </html>
