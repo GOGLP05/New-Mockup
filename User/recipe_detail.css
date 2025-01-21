@@ -1,53 +1,159 @@
+/* 既存の共通スタイルをそのまま使用し、改善 */
 img {
     width: 100%;
-    height: 100%;
-    margin-bottom: 20px;
+    height: auto;
     border-radius: 15px;
-}
-ol{
-    font-size: 1.2em;
-}
-.details h1 {
-    margin-top: 0;
+    margin-bottom: 20px;
 }
 
-.servings {
-    text-align: right;
-}
-
-.ingredients ul {
-    list-style: none;
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    margin: 0;
     padding: 0;
 }
 
-.ingredients li {
+.content {
+    margin: 5% auto;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2 {
+    color: #333;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.ingredients-seasonings {
     display: flex;
-    margin: 5px 0;
+    gap: 30px;
+    /* 食材と調味料の間隔 */
+    justify-content: space-between;
+    /* 横並びに配置 */
+    margin-bottom: 30px;
 }
 
-.ingredients-name {
-    flex-grow: 1;
+.ingredients,
+.seasonings {
+    flex: 1;
+    /* 各セクションを均等に広げる */
+    margin-bottom: 30px;
 }
 
-.ingredients-quantity {
+.ingredients ul,
+.seasonings ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.ingredients li,
+.seasonings li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1em;
+    margin: 10px 0;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ingredients li:hover,
+.seasonings li:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.ingredients-name,
+.seasoning-name {
+    flex-grow: 2;
+    font-weight: 600;
+    color: #333;
+}
+
+.ingredients-quantity,
+.seasoning-quantity {
+    font-weight: 400;
     text-align: right;
+    color: #555;
 }
 
-.steps h2 {
-    text-align: center;
+.ingredients-name::before,
+.seasoning-name::before {
+    content: '🍴';
+    margin-right: 10px;
+    font-size: 1.3em;
+}
+
+.steps {
+    margin-top: 30px;
+    /* 手順の前に間隔を空ける */
 }
 
 .steps ol {
     padding-left: 20px;
+    font-size: 1.2em;
+    list-style-position: inside;
 }
 
 .steps li {
-    margin: 50px 0;
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+}
+
+.steps li:hover {
+    background-color: #f1f1f1;
+}
+
+.steps li p {
+    margin: 0;
+    padding: 0;
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.steps li::before {
+    content: "📝";
+    font-size: 1.5em;
+    margin-right: 10px;
+}
+
+.serving-counter {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.serving-counter input {
+    padding: 10px;
+    font-size: 1.2em;
+    width: 60px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    text-align: center;
 }
 
 .make {
-    text-align: right;
-    float: right; /* 右寄せ */
+    display: block;
     margin-top: 20px;
     padding: 15px 30px;
     background-color: #4caf50;
@@ -55,16 +161,126 @@ ol{
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    bottom: 20px;
     font-size: 1.2em;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
 }
 
 .make:hover {
     background-color: #45a049;
 }
 
-.make a {
-    color: white; 
+.make:active {
+    background-color: #388e3c;
+}
+
+
+
+.menu__btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.menu__btn>span {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background-color: #616161;
+    transition: transform 0.25s ease;
+}
+
+.menu__btn>span::before,
+.menu__btn>span::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background-color: #616161;
+    transition: transform 0.25s ease;
+}
+
+.menu__btn>span::before {
+    top: -8px;
+}
+
+.menu__btn>span::after {
+    top: 8px;
+}
+
+#menu__toggle:checked+.menu__btn>span {
+    transform: rotate(45deg);
+}
+
+#menu__toggle:checked+.menu__btn>span::before {
+    transform: rotate(0);
+    top: 0;
+}
+
+#menu__toggle:checked+.menu__btn>span::after {
+    transform: rotate(90deg);
+    top: 0;
+}
+
+.menu__box {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 300px;
+    height: 100%;
+    margin: 0;
+    padding: 80px 0;
+    list-style: none;
+    background-color: #ECEFF1;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
+    transition: left 0.25s ease;
+    z-index: 1;
+}
+
+#menu__toggle:checked~.menu__box {
+    left: 0;
+}
+
+.menu__item {
+    display: block;
+    padding: 12px 24px;
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
     text-decoration: none;
+    transition: background-color 0.25s ease;
+}
+
+.menu__item:hover {
+    background-color: #CFD8DC;
+}
+
+@media (max-width: 768px) {
+    .content {
+        margin: 20px;
+    }
+
+    .make {
+        font-size: 1.1em;
+        padding: 12px 25px;
+    }
+
+    .menu__item {
+        font-size: 18px;
+    }
+
+    .hamburger-menu {
+        display: block;
+    }
+
+    .details {
+        margin-top: 20px;
+    }
 }

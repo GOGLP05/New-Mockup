@@ -275,4 +275,19 @@ class RegisteredFoodDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function subtract_food_amount($food_id, $amount)
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "
+            UPDATE registrated_food
+            SET food_amount = food_amount - :amount
+            WHERE food_id = :food_id AND food_amount >= :amount
+        ";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':amount', $amount, PDO::PARAM_INT);
+        $stmt->bindValue(':food_id', $food_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
 }

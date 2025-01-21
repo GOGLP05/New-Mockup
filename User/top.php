@@ -2,13 +2,14 @@
 session_start();
 
 
-// ログインしていない場合は、ログインページにリダイレクト
+
+// セッションからユーザー情報を取得
 if (!isset($_SESSION['member_id'])) {
     header('Location: login.php');
     exit;
 }
-// セッションからユーザー情報を取得
-$member_id = $_SESSION['member_id'];
+
+
 
 require_once 'helpers/RecipeMasterDAO.php';
 require_once 'helpers/RegisteredFoodDAO.php';
@@ -19,7 +20,7 @@ $recipeMasterDAO = new Recipe_MasterDAO();
 $recipes = $recipeMasterDAO->get_recipes();
 
 // ここで期限切れの食品を取得する
-$member_id = 10000003;  // 例として、member_idを1としています。実際の環境に合わせて取得方法を変更してください。
+$member_id = $_SESSION['member_id'];
 $foodDAO = new RegisteredFoodDAO();
 $expiredFoods = $foodDAO->get_expired_foods_by_member($member_id);
 $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
