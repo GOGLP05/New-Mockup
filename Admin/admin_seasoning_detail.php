@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //}
     // seasoning_idがない場合は新規追加処理
     else if (isset($_POST['add'])) {
-        var_dump($seasoning_name);
+        //var_dump($seasoning_name);
 
         // 新規追加処理
         if ($seasoning_name) {
@@ -67,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "この調味料名はすでに存在します。";
             } else {
                 $SeasoningMasterDAO->insert_seasoning($seasoning_id, $seasoning_name);
-                //header('Location: admin_list_of_seasonings.php');
-                //exit;
+                header('Location: admin_list_of_seasonings.php');
+                exit;
             }
         }
     }

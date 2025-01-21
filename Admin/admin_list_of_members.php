@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 削除結果を表示するためのメッセージを用意
         if ($result) {
-            $message = "会員ID {$member_id} を削除しました。更新してください。";
+            $message = "会員ID {$member_id} を削除しました。";
+            header('Location: admin_list_of_members.php');
         } else {
             $message = "会員ID {$member_id} は存在しません。";
         }
@@ -56,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td><?= htmlspecialchars($member->member_id, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($member->email, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($member->password, ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= $member->sex == 0 ? '男性' : ($member->sex == 1 ? '女性' : '未設定') ?></td>
+                <td><?= $member->sex == 0 ? '女性' : ($member->sex == 1 ? '男性' : '未設定') ?></td>
                 <td><?= htmlspecialchars($member->birthdate, ENT_QUOTES, 'UTF-8') ?></td>
             </tr>
         <?php endforeach; ?>

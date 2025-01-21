@@ -15,7 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 削除結果を表示するためのメッセージを用意
         if ($result) {
-            $message = "食品ID {$food_id} を削除しました。更新してください。";
+            $message = "食品ID {$food_id} を削除しました。";
+            header('Location: admin_list_of_food.php');
+
         } else {
             $message = "食品ID {$food_id} は存在しません。";
         }
