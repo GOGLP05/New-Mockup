@@ -34,16 +34,23 @@
             <tr>
                 <th>カテゴリーID</th>
                 <th>カテゴリー名</th>
+                <th>操作</th>
+
             </tr>
             <?php foreach ($category_list as $category) : ?>
             <tr>
                 <td><?= htmlspecialchars($category->category_id, ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($category->category_name, ENT_QUOTES, 'UTF-8') ?></td>
+                <td>
+                    <form action="admin_food_categories_registration.php" method="GET" style="display:inline;">
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($category->category_id, ENT_QUOTES, 'UTF-8') ?>">
+                        <button type="submit" class="btn btn-primary">編集</button>
+                    </form>
+                </td>
             </tr>
         <?php endforeach; ?>
 
     </table>
-    <input type="button" onclick="location.href='admin_food_categories_registration.php'" value="編集">
 
 </body>
 </html>

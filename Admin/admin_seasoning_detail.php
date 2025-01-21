@@ -4,35 +4,44 @@ require_once 'helpers/SeasoningMasterDAO.php';
 $SeasoningMasterDAO = new SeasoningMasterDAO();
 
 // URL パラメータから調味料IDを取得
-$seasoning_id = $_GET['seasoning_id'] ?? null;
+$seasoning_id = $_GET['seasoning_id'] ?? $_POST['seasoning_id'] ?? null;
 
-// 新規作成の場合
-if (!$seasoning_id) { // これを確認
+if (!$seasoning_id) {
+    // 新規作成の場合
     $seasoning = new stdClass();
     $seasoning->seasoning_name = ""; // 名前は空
-    // 新規作成時に ID を設定
+
+    // 新規作成時にIDを設定
     $dbh = DAO::get_db_connect();
     $sql = "SELECT MAX(seasoning_id) AS max_id FROM seasoning_master";
     $stmt = $dbh->query($sql);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    // 最大のIDを取得し、新しいIDを作成
     if ($row && $row['max_id']) {
         $max_id = (int)$row['max_id'];
         $seasoning->seasoning_id = str_pad($max_id + 1, 8, "0", STR_PAD_LEFT);
     } else {
-        $seasoning->seasoning_id = "50000001";
+        // 最初のIDを設定
+        $seasoning->seasoning_id = "50000001"; // 初期ID
     }
 } else {
     // 既存の調味料情報を取得
     $seasoning = $SeasoningMasterDAO->get_seasoning_by_id($seasoning_id);
+
+    // データが存在しない場合の処理
+    if (!$seasoning) {
+        $seasoning = new stdClass();
+        $seasoning->seasoning_id = null;
+        $seasoning->seasoning_name = "";
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $seasoning_name = $_POST['seasoning_name'] ?? null;
     $seasoning_id = $_POST['seasoning_id'] ?? null;
-
     // seasoning_idが存在する場合のみ更新処理
-    if ($seasoning_id) {
+   // if ($seasoning_id) {
         // 更新ボタンが押された場合
         if (isset($_POST['update'])) {
             if ($seasoning_name) {
@@ -47,17 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
-    }
+    //}
     // seasoning_idがない場合は新規追加処理
     else if (isset($_POST['add'])) {
+        var_dump($seasoning_name);
+
         // 新規追加処理
         if ($seasoning_name) {
             if ($SeasoningMasterDAO->check_if_seasoning_exists($seasoning_name)) {
                 echo "この調味料名はすでに存在します。";
             } else {
-                $SeasoningMasterDAO->insert_seasoning($seasoning->seasoning_id, $seasoning_name);
-                header('Location: admin_list_of_seasonings.php');
-                exit;
+                $SeasoningMasterDAO->insert_seasoning($seasoning_id, $seasoning_name);
+                //header('Location: admin_list_of_seasonings.php');
+                //exit;
             }
         }
     }
@@ -115,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
         <?php endif; ?>
 
             <div class="button-container">
-            <?php if ($seasoning_id): ?>
+            <?php if (!empty($seasoning->seasoning_id) && $seasoning_id): ?>
                 <!-- 更新ボタン -->
                 <button type="submit" class="btn btn-primary" name="update">更新</button>
             <?php else: ?>
@@ -143,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
                     <form method="POST" action="">
                         <input type="hidden" name="seasoning_id" value="<?= htmlspecialchars($seasoning->seasoning_id ?? "", ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="delete" value="1"> <!-- 削除を指示するための隠しフィールド -->
-                        <p>調味料 <?= htmlspecialchars($seasoning->seasoning_id ?? "不明", ENT_QUOTES, 'UTF-8') ?> を削除します。</p>
+                        <p>調味料 <?= htmlspecialchars($seasoning->seasoning_name ?? "不明", ENT_QUOTES, 'UTF-8') ?> を削除します。</p>
                         <br>
                         <p>よろしいですか？</p>
                         <div class="mt-3">
