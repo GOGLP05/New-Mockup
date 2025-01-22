@@ -28,50 +28,50 @@ class FoodMasterDAO
     }
 
     public function get_food_by_id($foodId)
-{
-    error_log("food_id: " . $foodId); // food_idをログに出力
-    $dbh = DAO::get_db_connect();
-    $sql = "SELECT * FROM registrated_food WHERE food_id = :food_id";
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
-    $stmt->execute();
-    $food = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$food) {
-        error_log("Error: food_id " . $foodId . " not found.");
+    {
+        error_log("food_id: " . $foodId); // food_idをログに出力
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM registrated_food WHERE food_id = :food_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
+        $stmt->execute();
+        $food = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$food) {
+            error_log("Error: food_id " . $foodId . " not found.");
+        }
+
+        return $food;
     }
 
-    return $food;
-}
 
 
 
 
+    public function update_food_amount_by_lot($foodId, $lotNo, $newAmount)
+    {
+        $dbh = DAO::get_db_connect();
+        $dbh->beginTransaction();  // トランザクション開始
 
-public function update_food_amount_by_lot($foodId, $lotNo, $newAmount)
-{
-    $dbh = DAO::get_db_connect();
-    $dbh->beginTransaction();  // トランザクション開始
-    
-    try {
-        $sql = "UPDATE registrated_food 
+        try {
+            $sql = "UPDATE registrated_food 
                 SET food_amount = :food_amount 
                 WHERE food_id = :food_id 
                 AND lot_no = :lot_no";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':food_amount', $newAmount, PDO::PARAM_INT);
-        $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
-        $stmt->bindValue(':lot_no', $lotNo, PDO::PARAM_STR);
-        $stmt->execute();
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':food_amount', $newAmount, PDO::PARAM_INT);
+            $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
+            $stmt->bindValue(':lot_no', $lotNo, PDO::PARAM_STR);
+            $stmt->execute();
 
-        $dbh->commit();  // コミット
-        return true;
-    } catch (Exception $e) {
-        $dbh->rollBack();  // ロールバック
-        error_log("Error updating food amount by lot: " . $e->getMessage());
-        return false;
+            $dbh->commit();  // コミット
+            return true;
+        } catch (Exception $e) {
+            $dbh->rollBack();  // ロールバック
+            error_log("Error updating food amount by lot: " . $e->getMessage());
+            return false;
+        }
     }
-}
 
 
     public function get_foods_by_category($category_id)
@@ -98,27 +98,23 @@ public function update_food_amount_by_lot($foodId, $lotNo, $newAmount)
         return $categories;
     }
     public function get_foods_by_id_and_member($foodId, $memberId)
-{
-    $dbh = DAO::get_db_connect();
-    $sql = "SELECT * 
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * 
             FROM registrated_food 
             WHERE food_id = :food_id 
               AND member_id = :member_id
             ORDER BY expire_date ASC";  // 有効期限順で並べる
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
-    $stmt->bindValue(':member_id', $memberId, PDO::PARAM_INT);
-    $stmt->execute();
-    $foods = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
+        $stmt->bindValue(':member_id', $memberId, PDO::PARAM_INT);
+        $stmt->execute();
+        $foods = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if (!$foods) {
-        error_log("No records found for food_id: {$foodId}, member_id: {$memberId}");
+        if (!$foods) {
+            error_log("No records found for food_id: {$foodId}, member_id: {$memberId}");
+        }
+
+        return $foods;
     }
-
-    return $foods;
-}
-
-
-
-    
 }

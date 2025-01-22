@@ -14,10 +14,9 @@ if (!isset($_SESSION['member_id'])) {
 require_once 'helpers/RecipeMasterDAO.php';
 require_once 'helpers/RegisteredFoodDAO.php';
 require_once 'helpers/DAO.php';
-$creatible = $recipeMasterDAO->
 
-    // RecipeMasterDAOのインスタンスを作成し、データを取得
-    $recipeMasterDAO = new Recipe_MasterDAO();
+// RecipeMasterDAOのインスタンスを作成し、データを取得
+$recipeMasterDAO = new Recipe_MasterDAO();
 $recipes = $recipeMasterDAO->get_recipes();
 
 // ここで期限切れの食品を取得する
