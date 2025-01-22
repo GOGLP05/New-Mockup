@@ -1,6 +1,6 @@
 <?php
 require_once 'DAO.php';
-class foodMaster
+class FoodMaster
 {
     public int $food_id;
     public string $food_name;
@@ -12,10 +12,8 @@ class foodMaster
     public ?string $latest_lot_no = null;
 }
 
-
 class FoodMasterDAO
 {
-
     public function get_foods()
     {
         $dbh = DAO::get_db_connect();
@@ -23,67 +21,72 @@ class FoodMasterDAO
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
         $data = [];
-        while ($row = $stmt->fetchObject('foodMaster')) {
-            $data[] = $row;
-        }
-        return $data;
-    }
-    //いらない？？
-    public function get_name_and_path()
-    {
-        $dbh = DAO::get_db_connect();
-        $sql = "SELECT food_name, food_file_path FROM food_master";
-        $stmt = $dbh->prepare($sql);
-        $stmt->execute();
-        $data = [];
-        while ($row = $stmt->fetchObject('foodMaster')) {
+        while ($row = $stmt->fetchObject('FoodMaster')) {
             $data[] = $row;
         }
         return $data;
     }
 
-    public function get_use_unit()
-    {
-        $dbh = DAO::get_db_connect();
-        $sql = "SELECT food_name, food_file_path FROM food_master";
-        $stmt = $dbh->prepare($sql);
-        $stmt->execute();
-        $data = [];
-        while ($row = $stmt->fetchObject('foodMaster')) {
-            $data[] = $row;
-        }
-        return $data;
+    public function get_food_by_id($foodId)
+{
+    error_log("food_id: " . $foodId); // food_idをログに出力
+    $dbh = DAO::get_db_connect();
+    $sql = "SELECT * FROM registrated_food WHERE food_id = :food_id";
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
+    $stmt->execute();
+    $food = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$food) {
+        error_log("Error: food_id " . $foodId . " not found.");
     }
 
-    public function get_name_and_path_paginated($page = 1, $perPage = 50)
-    {
-
-        $offset = ($page - 1) * $perPage;
-        $sql = "SELECT food_name, food_file_path FROM food_master 
-                ORDER BY food_name 
-                OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY";
+    return $food;
+}
 
 
-        $dbh = DAO::get_db_connect();
+
+
+
+public function update_food_amount_by_lot($foodId, $lotNo, $newAmount)
+{
+    $dbh = DAO::get_db_connect();
+    $dbh->beginTransaction();  // トランザクション開始
+    
+    try {
+        $sql = "UPDATE registrated_food 
+                SET food_amount = :food_amount 
+                WHERE food_id = :food_id 
+                AND lot_no = :lot_no";
         $stmt = $dbh->prepare($sql);
-
-
-        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-
-
+        $stmt->bindValue(':food_amount', $newAmount, PDO::PARAM_INT);
+        $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
+        $stmt->bindValue(':lot_no', $lotNo, PDO::PARAM_STR);
         $stmt->execute();
 
+        $dbh->commit();  // コミット
+        return true;
+    } catch (Exception $e) {
+        $dbh->rollBack();  // ロールバック
+        error_log("Error updating food amount by lot: " . $e->getMessage());
+        return false;
+    }
+}
 
+
+    public function get_foods_by_category($category_id)
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM food_master WHERE category_id = :category_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->execute();
         $data = [];
         while ($row = $stmt->fetchObject('FoodMaster')) {
             $data[] = $row;
         }
-
         return $data;
     }
-
-
 
     public function get_categories()
     {
@@ -94,18 +97,28 @@ class FoodMasterDAO
         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $categories;
     }
+    public function get_foods_by_id_and_member($foodId, $memberId)
+{
+    $dbh = DAO::get_db_connect();
+    $sql = "SELECT * 
+            FROM registrated_food 
+            WHERE food_id = :food_id 
+              AND member_id = :member_id
+            ORDER BY expire_date ASC";  // 有効期限順で並べる
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
+    $stmt->bindValue(':member_id', $memberId, PDO::PARAM_INT);
+    $stmt->execute();
+    $foods = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    public function get_foods_by_category($category_id)
-    {
-        $dbh = DAO::get_db_connect();
-        $sql = "SELECT * FROM food_master WHERE category_id = :category_id";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $data = [];
-        while ($row = $stmt->fetchObject('foodMaster')) {
-            $data[] = $row;
-        }
-        return $data;
+    if (!$foods) {
+        error_log("No records found for food_id: {$foodId}, member_id: {$memberId}");
     }
+
+    return $foods;
+}
+
+
+
+    
 }

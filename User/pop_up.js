@@ -62,4 +62,6 @@ function submitForm() {
       console.error("エラー:", error);
       alert("通信エラーが発生しました。");
     });
+
+    
 }

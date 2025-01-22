@@ -23,7 +23,6 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="food_registration.css">
     <title>食品登録</title>
-    <script src="pop_up.js" defer></script>
 </head>
 
 <body>
@@ -77,7 +76,7 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
             </form>
         </div>
     </div>
-
+    <script src="pop_up.js"></script>
 </body>
 
 </html>
