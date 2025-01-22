@@ -27,7 +27,7 @@ if (!empty($missingFields)) {
 
 
 // DAOのインスタンスを作成
-$foodMasterDAO = new FoodMasterDAO(); 
+$foodMasterDAO = new FoodMasterDAO();
 $recipeMasterDAO = new Recipe_MasterDAO();
 
 // レシピに必要な食材を取得
@@ -99,4 +99,3 @@ foreach ($ingredients as $ingredient) {
         exit;
     }
 }
-?>

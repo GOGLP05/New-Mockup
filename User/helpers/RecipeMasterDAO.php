@@ -87,7 +87,11 @@ class Recipe_MasterDAO
     public function get_ingredients_by_recipe_id($recipeId)
     {
         $dbh = DAO::get_db_connect();
-        $sql = "SELECT food_id, calculation_use FROM recipe_ingredients WHERE recipe_id = :recipe_id";
+        $sql = "SELECT food_master.food_name, food_master.food_id, recipe_ingredients.calculation_use,recipe_ingredients.display_use
+        FROM recipe_ingredients 
+        INNER JOIN food_master ON food_master.food_id = recipe_ingredients.food_id 
+        WHERE recipe_ingredients.recipe_id = :recipe_id";
+
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
         $stmt->execute();

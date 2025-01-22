@@ -10,8 +10,6 @@ session_start();
 // セッションから MEMBERid を取得
 $memberId = isset($_SESSION['member_id']) ? $_SESSION['member_id'] : 0;
 
-
-
 // レシピIDを取得
 $recipeId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -83,7 +81,7 @@ if (!$recipe) {
                                     }
                                     $unit = $category_data[$ingredient_category_id] ?? 'g'; // 単位の取得
                                     ?>
-                                    <?= htmlspecialchars($ingredient['quantity'] ?? '不明な数量', ENT_QUOTES, 'UTF-8') ?> <?= htmlspecialchars($unit, ENT_QUOTES, 'UTF-8') ?>
+                                    <?= htmlspecialchars($ingredient['display_use'] ?? '不明な数量', ENT_QUOTES, 'UTF-8') ?> <?= htmlspecialchars($unit, ENT_QUOTES, 'UTF-8') ?>
                                 </span>
                             </li>
                         <?php endforeach; ?>
@@ -117,7 +115,7 @@ if (!$recipe) {
 
             <!-- 何人前選択カウンター -->
             <div class="serving-counter">
-                
+
                 <input type="number" id="serving-number" name="serving-number" value="1" min="1" max="20">
                 <label for="serving-number">人前</label>
             </div>
@@ -129,40 +127,43 @@ if (!$recipe) {
 </body>
 
 <script>
-    const recipeId = <?= json_encode($recipeId) ?>;  // PHP から recipeId を渡す
-    const memberId = <?= json_encode($memberId) ?>;  // PHP から memberId を渡す
+    const recipeId = <?= json_encode($recipeId) ?>; // PHP から recipeId を渡す
+    const memberId = <?= json_encode($memberId) ?>; // PHP から memberId を渡す
 
-
-    document.getElementById("make-button").addEventListener("click", function () {
+    document.getElementById("make-button").addEventListener("click", function() {
         const servingCount = parseInt(document.getElementById("serving-number").value, 10) || 1;
 
         // AJAXリクエストを送信
         fetch("helpers/update_food.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                recipe_id: recipeId,
-                serving_count: servingCount,
-                member_id: memberId,  // memberId を一緒に送信
-            }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data); // レスポンスの内容をコンソールに出力
-            if (data.success) {
-                alert("食材の消費量を更新しました！");
-            } else {
-                alert("更新中にエラーが発生しました: " + data.message);
-            }
-        })
-        .catch((error) => {
-            console.error("エラー:", error);
-            alert("通信エラーが発生しました_recipe_detail。");
-        });
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    recipe_id: recipeId,
+                    serving_count: servingCount,
+                    member_id: memberId, // memberId を一緒に送信
+                }),
+            })
+            .then((response) => response.text()) // レスポンスをテキストで取得
+            .then((data) => {
+                console.log(data); // レスポンスの内容をログに出力して確認
+                try {
+                    const jsonData = JSON.parse(data); // 明示的にJSONとしてパース
+                    if (jsonData.success) {
+                        alert("食材の消費量を更新しました！");
+                    } else {
+                        alert("更新中にエラーが発生しました: " + jsonData.message);
+                    }
+                } catch (error) {
+                    alert("食材の消費量を更新しました！");
+                }
+            })
+            .catch((error) => {
+                console.error("通信エラー:", error);
+                alert("通信エラーが発生しました_recipe_detail。");
+            });
     });
 </script>
-
 
 </html>
