@@ -13,9 +13,10 @@ try {
     $amount = $input['amount'] ?? null;
     $member_id = $input['member_id'] ?? null;
     $date = $input['date'] ?? null;
+    $use_unit = $input['use_unit'] ?? null;  // use_unitを取得
 
     // 必要な値が揃っているか確認
-    if (!$food_name || !$amount || !$date || !$food_id || !$member_id) {
+    if (!$food_name || !$amount || !$date || !$food_id || !$member_id || $use_unit === null) {
         throw new Exception("入力データが不足しています。");
     }
 
@@ -33,16 +34,28 @@ try {
         throw new Exception("食品IDが無効です。");
     }
 
-    $expiry_days = (int)$result['expiry_date'];
-    $standard_gram = (int)$result['standard_gram'] * $amount;
 
-    // expire_dateを計算 (登録日 + expiry_days 日)
     $registration_date = new DateTime($date);
     $expire_date = $registration_date->modify("+{$expiry_days} days")->format('Y-m-d');
+    // use_unitが0の場合は標準グラムを使って重量を計算、それ以外は数量として扱う
+    if ($use_unit == 0) {
+        // use_unitが0の場合（重量）
+        $standard_gram = (int)$result['standard_gram'];
+        $food_amount = NULL;
+    } else {
+        // use_unitが1の場合（個数）
+        $food_amount = $amount;  // ここでamountをそのまま使います
+        $standard_gram = (int)$result['standard_gram'] * $amount;
+    }
 
-    // SQL作成
+
+    $expiry_days = (int)$result['expiry_date'];
+    // expire_dateを計算 (登録日 + expiry_days 日)
     $sql = "INSERT INTO registrated_food (food_id, member_id, lot_no, food_name, registration_date, food_amount, standard_gram, expire_date) 
             VALUES (:food_id, :member_id, DATEADD(HOUR, 9, CURRENT_TIMESTAMP), :food_name, :registration_date, :food_amount, :standard_gram, :expire_date)";
+
+    // SQL作成
+
 
     $stmt = $dbh->prepare($sql);
 
@@ -51,8 +64,8 @@ try {
     $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
     $stmt->bindValue(':food_name', $food_name, PDO::PARAM_STR);
     $stmt->bindValue(':registration_date', $date, PDO::PARAM_STR);
-    $stmt->bindValue(':food_amount', $amount, PDO::PARAM_INT);
-    $stmt->bindValue(':standard_gram', $standard_gram, PDO::PARAM_INT); // standard_gramを設定
+    $stmt->bindValue(':food_amount', $amount, PDO::PARAM_INT);  // amount（個数または重量）を挿入
+    $stmt->bindValue(':standard_gram', $standard_gram, PDO::PARAM_INT); // 計算したstandard_gramを設定
     $stmt->bindValue(':expire_date', $expire_date, PDO::PARAM_STR);
 
     // 実行

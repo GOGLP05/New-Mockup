@@ -1,5 +1,7 @@
 <?php
 require_once 'helpers/FoodMasterDAO.php';
+require_once 'helpers/CategoryDAO.php';
+
 session_start(); // セッションを開始
 
 // member_id がセッションに存在しているか確認
@@ -8,11 +10,13 @@ if (!isset($_SESSION['member_id'])) {
     echo "ログインが必要です。";
     exit;
 }
+
 $member_id = $_SESSION['member_id'];
 $FoodMasterDAO = new FoodMasterDAO();
+$CategoryDAO = new CategoryDAO();
+
 $foodmaster_list = $FoodMasterDAO->get_foods();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -46,9 +50,13 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
     <div class="content">
         <div class="foods">
             <?php foreach ($foodmaster_list as $food): ?>
+                <?php
+                // category_idに基づいてuse_unitを取得
+                $use_unit = $CategoryDAO->get_use_unit_by_category_id($food->category_id);
+                ?>
                 <div class="button-container">
                     <button class="button"
-                        onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>', '<?php echo htmlspecialchars($food->food_id); ?>', '<?php echo $member_id; ?>')"
+                        onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>', '<?php echo htmlspecialchars($food->food_id); ?>', '<?php echo $member_id; ?>', '<?php echo $use_unit; ?>')"
                         title="<?php echo htmlspecialchars($food->food_name); ?>">
                         <img src="<?php echo htmlspecialchars($food->food_file_path); ?>"
                             alt="<?php echo htmlspecialchars($food->food_name); ?>"
@@ -68,14 +76,19 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
                 <input type="hidden" id="foodId" name="foodId">
                 <input type="hidden" id="memberId" name="memberId">
                 <input type="hidden" id="foodName" name="foodName">
+                <input type="hidden" id="useUnit" name="useUnit"> <!-- 追加 -->
+
                 <label for="count">個数:</label>
                 <input type="text" id="count" name="count" required><br><br>
+
                 <label for="date">購入日:</label>
                 <input type="date" id="date" name="date" required><br><br>
+
                 <button type="submit">登録</button>
             </form>
         </div>
     </div>
+
     <script src="pop_up.js"></script>
 </body>
 
