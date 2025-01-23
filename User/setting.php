@@ -8,28 +8,28 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
 $message = 0;  // デフォルトはオフ(0)
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // トグルスイッチの状態が送信された場合
-    if (isset($_POST['toggleSwitch'])) {
-        // スイッチがオンの場合、messageを1に設定
-        $message = 1;
+  // トグルスイッチの状態が送信された場合
+  if (isset($_POST['toggleSwitch'])) {
+    // スイッチがオンの場合、messageを1に設定
+    $message = 1;
+  } else {
+    // スイッチがオフの場合、messageを0に設定
+    $message = 0;
+  }
+
+  // DAOを使ってmessageの状態をデータベースに保存
+  try {
+    $memberDAO = new MemberDAO();
+    $result = $memberDAO->update_message($email, $message);
+
+    if ($result) {
+      echo "<script>alert('設定が保存されました');</script>";
     } else {
-        // スイッチがオフの場合、messageを0に設定
-        $message = 0;
+      echo "<script>alert('設定の保存に失敗しました');</script>";
     }
-
-    // DAOを使ってmessageの状態をデータベースに保存
-    try {
-        $memberDAO = new MemberDAO();
-        $result = $memberDAO->update_message($email, $message);
-
-        if ($result) {
-            echo "<script>alert('設定が保存されました');</script>";
-        } else {
-            echo "<script>alert('設定の保存に失敗しました');</script>";
-        }
-    } catch (Exception $e) {
-        echo "<script>alert('エラーが発生しました');</script>";
-    }
+  } catch (Exception $e) {
+    echo "<script>alert('エラーが発生しました');</script>";
+  }
 }
 ?>
 
@@ -54,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <ul class="menu__box">
       <li><a class="menu__item" href="top.php">TOP</a></li>
       <li><a class="menu__item" href="list_of_food.php">食品庫</a></li>
+      <li><a class="menu__item" href="recipe_list.php">レシピ一覧</a></li>
       <li><a class="menu__item" href="food_registration.php">食品登録</a></li>
       <li><a class="menu__item" href="setting.php">設定</a></li>
     </ul>

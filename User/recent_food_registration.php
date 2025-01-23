@@ -26,6 +26,7 @@ $foodmaster_list = $RegisteredFoodDAO->get_registered_foods_with_images();
     <ul class="menu__box">
         <li><a class="menu__item" href="top.php">TOP</a></li>
         <li><a class="menu__item" href="list_of_food.php">食品庫</a></li>
+        <li><a class="menu__item" href="recipe_list.php">レシピ一覧</a></li>
         <li><a class="menu__item" href="food_registration.php">食品登録</a></li>
         <li><a class="menu__item" href="setting.php">設定</a></li>
     </ul>
@@ -37,16 +38,16 @@ $foodmaster_list = $RegisteredFoodDAO->get_registered_foods_with_images();
 
     <hr>
     <div class="content">
-    <div class="foods">
-    <?php foreach ($foodmaster_list as $food): ?>
-        <div class="button-container">
-            <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
-                <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
-            </button>
-            <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
+        <div class="foods">
+            <?php foreach ($foodmaster_list as $food): ?>
+                <div class="button-container">
+                    <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
+                        <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
+                    </button>
+                    <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
+                </div>
+            <?php endforeach; ?>
         </div>
-    <?php endforeach; ?>
-</div>
 
     </div>
 

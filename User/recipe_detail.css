@@ -40,6 +40,10 @@ h2 {
     margin-bottom: 10px;
 }
 
+li {
+    list-style: none;
+}
+
 .ingredients-seasonings {
     display: flex;
     gap: 30px;
