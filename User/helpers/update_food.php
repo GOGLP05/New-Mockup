@@ -9,6 +9,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 $recipeId = $data['recipe_id'];
 $servingCount = $data['serving_count'];
 $memberId = $data['member_id'];
+
 // 必要なフィールドが揃っているか確認
 $missingFields = [];
 if (empty($data['recipe_id'])) $missingFields[] = 'recipe_id';
@@ -23,8 +24,6 @@ if (!empty($missingFields)) {
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
-
-
 
 // DAOのインスタンスを作成
 $foodMasterDAO = new FoodMasterDAO();
@@ -43,8 +42,6 @@ if (empty($ingredients)) {
 }
 
 // 食材ごとに在庫を確認し、消費する
-$totalAmount = 0;
-$requiredAmount = 0;
 foreach ($ingredients as $ingredient) {
     $foodId = $ingredient['food_id'];
     $calculationUse = $ingredient['calculation_use'] * $servingCount; // 必要量を計算
@@ -52,11 +49,12 @@ foreach ($ingredients as $ingredient) {
     // 各食材の在庫を取得
     $foods = $foodMasterDAO->get_foods_by_id_and_member($foodId, $memberId);
 
-    // 在庫不足の場合のエラー処理
+    $totalAmount = 0;
     foreach ($foods as $food) {
-        $totalAmount += $food['food_amount'];
+        $totalAmount += $food['standard_gram']; // 各ロットの在庫量を合算
     }
 
+    // 在庫が不足している場合、エラーメッセージを返す
     if ($totalAmount < $calculationUse) {
         echo json_encode([
             'success' => false,
@@ -69,12 +67,20 @@ foreach ($ingredients as $ingredient) {
         ], JSON_UNESCAPED_UNICODE);
         exit;
     }
+}
 
-    // 在庫を消費
+// 在庫を消費
+foreach ($ingredients as $ingredient) {
+    $foodId = $ingredient['food_id'];
+    $calculationUse = $ingredient['calculation_use'] * $servingCount; // 必要量を計算
+
+    // 各食材の在庫を取得
+    $foods = $foodMasterDAO->get_foods_by_id_and_member($foodId, $memberId);
+
     try {
         foreach ($foods as $food) {
-            $consume = min($calculationUse, $food['food_amount']);
-            $newAmount = $food['food_amount'] - $consume;
+            $consume = min($calculationUse, $food['standard_gram']);
+            $newAmount = $food['standard_gram'] - $consume;
 
             // ロットごとに在庫を更新
             $updateResult = $foodMasterDAO->update_food_amount_by_lot($foodId, $food['lot_no'], $newAmount);
@@ -86,6 +92,7 @@ foreach ($ingredients as $ingredient) {
             if ($calculationUse <= 0) break; // 必要量が満たされたら終了
         }
 
+        // 最後に正常に更新されたメッセージを返す
         echo json_encode([
             'success' => true,
             'message' => '在庫が正常に更新されました。'

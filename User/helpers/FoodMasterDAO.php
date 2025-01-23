@@ -55,11 +55,11 @@ class FoodMasterDAO
 
         try {
             $sql = "UPDATE registrated_food 
-                SET food_amount = :food_amount 
+                SET standard_gram = :standard_gram 
                 WHERE food_id = :food_id 
                 AND lot_no = :lot_no";
             $stmt = $dbh->prepare($sql);
-            $stmt->bindValue(':food_amount', $newAmount, PDO::PARAM_INT);
+            $stmt->bindValue(':standard_gram', $newAmount, PDO::PARAM_INT);
             $stmt->bindValue(':food_id', $foodId, PDO::PARAM_INT);
             $stmt->bindValue(':lot_no', $lotNo, PDO::PARAM_STR);
             $stmt->execute();
