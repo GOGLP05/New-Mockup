@@ -75,7 +75,7 @@ class RecipeChecker
             $recipe_details = $status['details'];
             $recipe_name = $recipe_details['recipe_name'];
             $recipe_file_path1 = $recipe_details['recipe_file_path1'];
-            
+
             if ($status['can_make']) {
                 $available_recipes[] = [
                     'recipe_id' => $recipe_id,
@@ -96,19 +96,18 @@ class RecipeChecker
 }
 
 // 使用例
-$member_id = 10000003; // ユーザーIDを指定
-$recipeChecker = new RecipeChecker();
-list($available_recipes, $unavailable_recipes) = $recipeChecker->getAvailableRecipes($member_id);
+//$member_id = 10000001; // ユーザーIDを指定
+//$recipeChecker = new RecipeChecker();
+//list($available_recipes, $unavailable_recipes) = $recipeChecker->getAvailableRecipes($member_id);
 
 // 作れるレシピ
-echo "作れるレシピ:\n";
-foreach ($available_recipes as $recipe) {
-    echo "レシピID: {$recipe['recipe_id']}, 名前: {$recipe['recipe_name']}, 画像: {$recipe['recipe_file_path1']}\n";
-}
+//echo "作れるレシピ:\n";
+//foreach ($available_recipes as $recipe) {
+//    echo "レシピID: {$recipe['recipe_id']}, 名前: {$recipe['recipe_name']}, 画像: {$recipe['recipe_file_path1']}\n";
+//}
 
 // 作れないレシピ
-echo "\n作れないレシピ:\n";
-foreach ($unavailable_recipes as $recipe) {
-    echo "レシピID: {$recipe['recipe_id']}, 名前: {$recipe['recipe_name']}, 画像: {$recipe['recipe_file_path1']}\n";
-}
-?>
+//echo "\n作れないレシピ:\n";
+//foreach ($unavailable_recipes as $recipe) {
+//    echo "レシピID: {$recipe['recipe_id']}, 名前: {$recipe['recipe_name']}, 画像: {$recipe['recipe_file_path1']}\n";
+//}

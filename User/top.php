@@ -1,26 +1,25 @@
 <?php
 session_start();
 
-
-
 // セッションからユーザー情報を取得
 if (!isset($_SESSION['member_id'])) {
     header('Location: login.php');
     exit;
 }
 
-
-
 require_once 'helpers/RecipeMasterDAO.php';
 require_once 'helpers/RegisteredFoodDAO.php';
 require_once 'helpers/DAO.php';
+require_once 'helpers/RecipeChecker.php';
 
-// RecipeMasterDAOのインスタンスを作成し、データを取得
-$recipeMasterDAO = new Recipe_MasterDAO();
-$recipes = $recipeMasterDAO->get_recipes();
+// ユーザーIDを取得
+$member_id = $_SESSION['member_id'];
+
+// RecipeCheckerインスタンスを作成し、作れるレシピを取得
+$recipeChecker = new RecipeChecker();
+list($available_recipes, $unavailable_recipes) = $recipeChecker->getAvailableRecipes($member_id);
 
 // ここで期限切れの食品を取得する
-$member_id = $_SESSION['member_id'];
 $foodDAO = new RegisteredFoodDAO();
 $expiredFoods = $foodDAO->get_expired_foods_by_member($member_id);
 $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
@@ -55,20 +54,20 @@ $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
             <h1>作れる料理</h1>
         </div>
         <div class="dishes_can_make" id="dishes-container">
-            <?php if (!empty($recipes)) : ?>
-                <?php foreach ($recipes as $index => $recipe) : ?>
-                    <a href="recipe_detail.php?id=<?= htmlspecialchars($recipe->recipe_id, ENT_QUOTES, 'UTF-8') ?>"
+            <?php if (!empty($available_recipes)) : ?>
+                <?php foreach ($available_recipes as $index => $recipe) : ?>
+                    <a href="recipe_detail.php?id=<?= htmlspecialchars($recipe['recipe_id'], ENT_QUOTES, 'UTF-8') ?>"
                         class="image-container <?= $index >= 6 ? 'hidden' : '' ?>">
-                        <img src="<?= htmlspecialchars($recipe->recipe_file_path1, ENT_QUOTES, 'UTF-8') ?>"
-                            alt="<?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?>">
-                        <div class="image-text"><?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?></div>
+                        <img src="<?= htmlspecialchars($recipe['recipe_file_path1'], ENT_QUOTES, 'UTF-8') ?>"
+                            alt="<?= htmlspecialchars($recipe['recipe_name'], ENT_QUOTES, 'UTF-8') ?>">
+                        <div class="image-text"><?= htmlspecialchars($recipe['recipe_name'], ENT_QUOTES, 'UTF-8') ?></div>
                     </a>
                 <?php endforeach; ?>
             <?php else : ?>
-                <p>表示できる料理がありません。</p>
+                <p>作れる料理がありません。</p>
             <?php endif; ?>
         </div>
-        <?php if (count($recipes) > 6): ?>
+        <?php if (count($available_recipes) > 6): ?>
             <button id="toggle-btn">すべて表示</button>
         <?php endif; ?>
 
