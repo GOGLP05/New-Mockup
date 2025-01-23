@@ -84,24 +84,24 @@ class Recipe_MasterDAO
         return $data;
     }
 
+
+
     public function get_ingredients_by_recipe_id($recipeId)
     {
         $dbh = DAO::get_db_connect();
-        $sql = "
-            SELECT fm.food_name, ri.calculation_use, ri.display_use
-            FROM recipe_ingredients ri
-            JOIN food_master fm ON ri.food_id = fm.food_id
-            WHERE ri.recipe_id = :recipeId
-        ";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':recipeId', $recipeId, PDO::PARAM_INT);
-        $stmt->execute();
-        $ingredients = [];
+        $sql = "SELECT food_master.food_name, food_master.food_id, recipe_ingredients.calculation_use,recipe_ingredients.display_use
+        FROM recipe_ingredients 
+        INNER JOIN food_master ON food_master.food_id = recipe_ingredients.food_id 
+        WHERE recipe_ingredients.recipe_id = :recipe_id";
 
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':recipe_id', $recipeId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $ingredients = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $ingredients[] = $row;
         }
-
         return $ingredients;
     }
 

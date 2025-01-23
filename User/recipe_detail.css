@@ -96,7 +96,6 @@ h2 {
 
 .ingredients-name::before,
 .seasoning-name::before {
-    content: '🍴';
     margin-right: 10px;
     font-size: 1.3em;
 }
@@ -133,7 +132,6 @@ h2 {
 }
 
 .steps li::before {
-    content: "📝";
     font-size: 1.5em;
     margin-right: 10px;
 }
