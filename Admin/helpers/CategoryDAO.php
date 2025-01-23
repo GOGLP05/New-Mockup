@@ -65,12 +65,17 @@ class CategoryDAO {
     // 新しいカテゴリの追加
     public function insert_category($category_name) {
         $dbh = DAO::get_db_connect();
-        $sql = "INSERT INTO category (category_name) VALUES (:category_name)";
+    
+        // 次のカテゴリIDを取得
+        $next_id = $this->get_next_category_id();
+    
+        $sql = "INSERT INTO category (category_id, category_name) VALUES (:category_id, :category_name)";
         $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':category_id', $next_id, PDO::PARAM_INT);
         $stmt->bindValue(':category_name', $category_name, PDO::PARAM_STR);
         $stmt->execute();
     }
-        // カテゴリの削除
+            // カテゴリの削除
     public function delete_category($category_id) {
         $dbh = DAO::get_db_connect();
         $sql = "DELETE FROM category WHERE category_id = :category_id";
