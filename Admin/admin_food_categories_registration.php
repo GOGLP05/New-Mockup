@@ -22,7 +22,6 @@ if ($category_id) {
     $category_id = $CategoryDAO->get_next_category_id();
 }
 
-// フォームから送信されたデータを処理（新規登録・更新処理）
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 削除処理
     if (isset($_POST['delete_category_id'])) {
@@ -34,8 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 新規登録・更新処理
     if (isset($_POST['category_name']) && !empty($_POST['category_name'])) {
         $category_name = $_POST['category_name'];
+        $category_id = isset($_POST['category_id']) ? (int)$_POST['category_id'] : null; // POSTからカテゴリIDを取得
 
-        if ($category_id) {
+        if ($category_id && $CategoryDAO->get_category_by_id($category_id)) {
             // 更新処理
             $CategoryDAO->update_category($category_id, $category_name);
         } else {

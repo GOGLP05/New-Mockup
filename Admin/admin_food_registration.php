@@ -12,39 +12,62 @@ foreach ($categories as $category) {
     $category_ids[$category['category_name']] = $category['category_id'];
 }
 
-// フォームがPOSTで送信された場合
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // フォームから送信されたデータを取得
-    $food_id = $_POST['food_id'];
-    $food_name = $_POST['foodname'];
-    $standard_gram = $_POST['standardgrams'];
-    $expiry_date = $_POST['deadline'];
-    $unit = $_POST['unit'];
-    $category_name = $_POST['category'];
+    $food_id = $_POST['food_id'] ?? null; // 食品ID
+    $food_name = $_POST['foodname'] ?? ''; // 食品名
+    $standard_gram = $_POST['standardgrams'] ?? ''; // 基準グラム数
+    $expiry_date = $_POST['deadline'] ?? ''; // 賞味期限
+    $unit = $_POST['unit'] ?? ''; // 単位
+    $category_name = $_POST['category'] ?? ''; // カテゴリ名
 
     // カテゴリIDを取得
     $category_id = isset($category_ids[$category_name]) ? $category_ids[$category_name] : '';
 
     // 画像のアップロード処理
     $food_file_path = '';
-    if (isset($_FILES['foodphoto']) && $_FILES['foodphoto']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = 'uploads/'; // アップロード先ディレクトリ
-        $file_name = basename($_FILES['foodphoto']['name']);
+    if (isset($_FILES['food_file_path']) && $_FILES['food_file_path']['error'] === UPLOAD_ERR_OK) {
+        $upload_dir = 'uploads/';
+        $file_name = basename($_FILES['food_file_path']['name']);
         $file_path = $upload_dir . $file_name;
 
-        // 画像をアップロード
-        if (move_uploaded_file($_FILES['foodphoto']['tmp_name'], $file_path)) {
+        if (move_uploaded_file($_FILES['food_file_path']['tmp_name'], $file_path)) {
             $food_file_path = $file_path;
         }
     }
 
-    // 食品情報を更新
-    $FoodMasterDAO->update_food($food_id, $food_name, $expiry_date, $food_file_path, $category_id, $standard_gram, $category_name);
-
-    // 更新完了後、一覧ページなどにリダイレクト
-    header("Location: admin_list_of_food.php");
-    exit;
+    // 「更新」ボタンが押された場合
+    if (isset($_POST['update'])) {
+        // 食品IDが存在する場合、更新処理
+        if ($food_id) {
+            $existing_food = $FoodMasterDAO->get_food_by_name($food_name);
+            if ($existing_food && $existing_food->food_id !== $food_id) {
+                echo "この食品名はすでに存在します。";
+            } else {
+                // 更新処理
+                $FoodMasterDAO->update_food($food_id, $food_name, $expiry_date, $food_file_path, $category_id, $standard_gram, $category_name);
+                header("Location: admin_list_of_food.php");
+                exit;
+            }
+        }
+    }
+    // 「追加」ボタンが押された場合
+    else if (isset($_POST['add'])) {
+        // 新規追加処理
+        if ($food_name) {
+            if ($FoodMasterDAO->check_if_food_exists($food_name)) {
+                echo "この食品名はすでに存在します。";
+            } else {
+                $food_id = $FoodMasterDAO->get_next_food_id();
+                $FoodMasterDAO->insert_food($food_name, $expiry_date, $food_file_path, $category_id, $standard_gram, $category_name);
+                header("Location: admin_list_of_food.php");
+                exit;
+            }
+        }
+    }
 }
+
 
 // 編集の場合、指定された食品IDを取得
 if (isset($_GET['food_id'])) {
@@ -53,7 +76,21 @@ if (isset($_GET['food_id'])) {
 } else {
     // 新規登録の場合、次の食品IDを設定
     $food_id = $FoodMasterDAO->get_next_food_id();
+    $food_details = (object) [
+        'food_name' => '',
+        'standard_gram' => '',
+        'expiry_date' => '',
+        'category_id' => '',
+        'food_file_path' => ''  // 新規登録の場合は空のデフォルト値
+    ];
 }
+
+$food_name = $food_details->food_name ?? '';
+$standard_gram = $food_details->standard_gram ?? '';
+$expiry_date = $food_details->expiry_date ?? '';
+$food_file_path = $food_details->food_file_path ?? '';
+$category_id = $food_details->category_id ?? '';
+
 ?>
 
 <!DOCTYPE html>
@@ -110,8 +147,8 @@ if (isset($_GET['food_id'])) {
                 <?php endforeach; ?>
             </select>
 
-            <label for="foodphoto">食品写真:</label>
-            <input type="file" id="foodphoto" name="foodphoto" style="display: none;" accept="image/*">
+            <label for="food_file_path">食品写真:</label>
+            <input type="file" id="food_file_path" name="food_file_path" style="display: none;" accept="image/*">
             <button type="button" id="uploadBtn">アップロード</button>
 
             <div id="previewContainer" style="display: none;">
@@ -120,7 +157,13 @@ if (isset($_GET['food_id'])) {
             </div>
 
             <div class="button-container">
-                <button class="update" type="submit">更新</button>
+                <?php if (isset($food_details->food_name) && empty($food_details->food_name)): ?>
+                    <!-- 新規登録ボタン（追加） -->
+                    <button type="submit" class="btn btn-success" name="add">追加</button>
+                <?php else: ?>
+                    <!-- 更新ボタン -->
+                    <button type="submit" class="btn btn-primary" name="update">更新</button>
+                <?php endif; ?>
             </div>
         </div>
     </form>
@@ -128,10 +171,10 @@ if (isset($_GET['food_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.getElementById('uploadBtn').addEventListener('click', function() {
-            document.getElementById('foodphoto').click();
+            document.getElementById('food_file_path').click();
         });
 
-        document.getElementById('foodphoto').addEventListener('change', function(event) {
+        document.getElementById('food_file_path').addEventListener('change', function(event) {
             var file = event.target.files[0];
             if (file) {
                 var reader = new FileReader();
@@ -144,5 +187,9 @@ if (isset($_GET['food_id'])) {
             }
         });
     </script>
+    <?php if (isset($error_message)): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8') ?></div>
+    <?php endif; ?>
+
 </body>
 </html>
