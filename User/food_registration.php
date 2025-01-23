@@ -45,6 +45,7 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
     <div class="content">
         <h1>食品登録</h1>
         <div class="recent_registration"> <button onclick="location.href='recent_food_registration.php'">最近登録した食材</button> </div>
+
     </div>
 
     <hr>
@@ -56,6 +57,7 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
                 $use_unit = $CategoryDAO->get_use_unit_by_category_id($food->category_id);
                 ?>
                 <div class="button-container">
+                <?php //echo htmlspecialchars($CategoryDAO->get_use_unit_by_category_id($food->category_id)); ?>
                     <button class="button"
                         onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>', '<?php echo htmlspecialchars($food->food_id); ?>', '<?php echo $member_id; ?>', '<?php echo $use_unit; ?>')"
                         title="<?php echo htmlspecialchars($food->food_name); ?>">
@@ -77,8 +79,7 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
                 <input type="hidden" id="foodId" name="foodId">
                 <input type="hidden" id="memberId" name="memberId">
                 <input type="hidden" id="foodName" name="foodName">
-                <input type="hidden" id="useUnit" name="useUnit"> <!-- 追加 -->
-
+                <input type="hidden" id="useUnit" name="useUnit" value="<?php echo htmlspecialchars($use_unit); ?>">
                 <label for="count">個数:</label>
                 <input type="text" id="count" name="count" required><br><br>
 

@@ -1,9 +1,24 @@
 <?php
 require_once 'helpers/RegisteredFoodDAO.php';
 require_once 'helpers/FoodMasterDAO.php';
+require_once 'helpers/CategoryDAO.php';
+
+session_start(); // セッションを開始
+if (!isset($_SESSION['member_id'])) {
+    die('ログインしてください。');
+}
+
+$member_id = $_SESSION['member_id']; // セッションからmember_idを取得
 $FoodMasterDAO = new FoodMasterDAO();
 $RegisteredFoodDAO = new RegisteredFoodDAO();
-$foodmaster_list = $RegisteredFoodDAO->get_registered_foods_with_images();
+$CategoryDAO = new CategoryDAO();
+
+try {
+    $foodmaster_list = $RegisteredFoodDAO->get_registered_foods_with_images_by_member($member_id);
+} catch (Exception $e) {
+    die('データの取得に失敗しました: ' . htmlspecialchars($e->getMessage()));
+}
+$use_unit =0;
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +55,13 @@ $foodmaster_list = $RegisteredFoodDAO->get_registered_foods_with_images();
     <div class="content">
         <div class="foods">
             <?php foreach ($foodmaster_list as $food): ?>
+                <?php
+                // category_idに基づいてuse_unitを取得
+                $use_unit = $CategoryDAO->get_use_unit_by_category_id($food->category_id);
+                ?>
+                <?php echo htmlspecialchars($use_unit); ?>
                 <div class="button-container">
+                    
                     <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
                         <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
                     </button>
@@ -55,16 +76,24 @@ $foodmaster_list = $RegisteredFoodDAO->get_registered_foods_with_images();
         <div class="popup-content">
             <span id="popup-close" class="popup-close" onclick="closePopup()">×</span>
             <h2 id="popup-food-title"></h2>
+            <?php echo htmlspecialchars($use_unit); ?>
             <form onsubmit="event.preventDefault(); submitForm();">
+                <input type="hidden" id="foodId" name="foodId">
+                <input type="hidden" id="memberId" name="memberId">
+                <input type="hidden" id="foodName" name="foodName">
+                <input type="hidden" id="useUnit" name="useUnit" value="<?php echo htmlspecialchars($use_unit); ?>">
                 <label for="count">個数:</label>
                 <input type="text" id="count" name="count" required><br><br>
-                <label for="date">日付:</label>
+
+                <label for="date">購入日:</label>
                 <input type="date" id="date" name="date" required><br><br>
+
                 <button type="submit">登録</button>
             </form>
-
         </div>
     </div>
+
+    <script src="pop_up.js"></script>
 </body>
 
 </html>

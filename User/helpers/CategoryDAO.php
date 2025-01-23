@@ -27,27 +27,19 @@ class CategoryDAO
         $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
 
         // SQLを実行
-        $stmt->execute();
+$stmt->execute();
+        
 
         // 結果をフェッチ
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        error_log("取得した結果: " . print_r($result, true));
 
         // 結果があればuse_unitを返す。なければデフォルト値を0（個）を返す
         if ($result) {
             $useUnit = $result['use_unit'];
-            // use_unitによって単位を決定
-            switch ($useUnit) {
-                case 0:
-                    return '個';  // 0: 個
-                case 1:
-                    return 'g';   // 1: g
-                case 3:
-                    return 'ml';  // 3: ml（液体の単位）
-                default:
-                    return '個';  // デフォルトは個
-            }
+            return $useUnit;
         } else {
-            return '個';  // 存在しない場合もデフォルトは個
+            return '-1';  // 存在しない場合もデフォルトは個
         }
     }
 }
