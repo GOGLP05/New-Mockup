@@ -30,6 +30,13 @@ if (!$recipe) {
     echo "指定されたレシピは存在しません。";
     exit;
 }
+
+$ingredient_category_id = $ingredient['category_id']; // 食材のカテゴリーIDを正しく取得
+if (!isset($category_data[$ingredient_category_id])) {
+    // カテゴリーIDに基づいてuse_unitを取得
+    $category_data[$ingredient_category_id] = $categoryDAO->get_use_unit_by_category_id($ingredient_category_id);
+}
+$unit = $category_data[$ingredient_category_id] ?? 'g'; // 単位の取得
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -74,14 +81,6 @@ if (!$recipe) {
                             <li>
                                 <span class="ingredients-name"><?= htmlspecialchars($ingredient['food_name'] ?? '不明な食材', ENT_QUOTES, 'UTF-8') ?></span>
                                 <span class="ingredients-quantity">
-                                    <?php
-                                    // 食材のカテゴリーIDを取得
-                                    $ingredient_category_id = $ingredient['category_id']; // 食材のカテゴリーIDを正しく取得
-                                    if (!isset($category_data[$ingredient_category_id])) {
-                                        $category_data[$ingredient_category_id] = $categoryDAO->get_use_unit_by_category_id($ingredient_category_id);
-                                    }
-                                    $unit = $category_data[$ingredient_category_id] ?? 'g'; // 単位の取得
-                                    ?>
                                     <?= htmlspecialchars($ingredient['display_use'] ?? '不明な数量', ENT_QUOTES, 'UTF-8') ?> <?= htmlspecialchars($unit, ENT_QUOTES, 'UTF-8') ?>
                                 </span>
                             </li>

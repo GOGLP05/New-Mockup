@@ -74,13 +74,25 @@ if ($food_name) {
           <?php foreach ($foods as $food) : ?>
             <tr>
               <td>
-                <a href="list_of_food.php?food_name=<?php echo urlencode($food['food_name']); ?>">
-                  <?php echo htmlspecialchars($food['food_name'], ENT_QUOTES, 'UTF-8'); ?>
+                <a href="list_of_food.php?food_name=<?php echo urlencode($food['food_name'] ?? ''); ?>">
+                  <?php echo htmlspecialchars($food['food_name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
                 </a>
               </td>
-              <td><?php echo htmlspecialchars($food['registration_date'], ENT_QUOTES, 'UTF-8'); ?></td>
-              <td><?php echo htmlspecialchars($food['expire_date'], ENT_QUOTES, 'UTF-8'); ?></td>
-              <td><?php echo htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8'); ?>個</td>
+              <td><?php echo htmlspecialchars($food['registration_date'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
+              <td><?php echo htmlspecialchars($food['expire_date'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
+              <td>
+                <?php
+                if (!empty($food['total_amount'])) {
+                  echo htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8');
+                ?>個
+                <?php
+                } elseif (!empty($food['total_gram'])) {
+                  echo htmlspecialchars($food['total_gram'], ENT_QUOTES, 'UTF-8');
+                }
+                ?>g
+              </td>
+
+
             </tr>
           <?php endforeach; ?>
         <?php else : ?>

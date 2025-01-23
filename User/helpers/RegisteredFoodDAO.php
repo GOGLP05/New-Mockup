@@ -24,7 +24,8 @@ class RegisteredFoodDAO
             SELECT t1.food_name, 
                    MAX(t1.registration_date) AS registration_date, 
                    MAX(t1.expire_date) AS expire_date, 
-                   SUM(t1.food_amount) AS total_amount
+                   SUM(t1.food_amount) AS total_amount,
+                   SUM(t1.standard_gram) AS total_gram
             FROM registrated_food t1
             WHERE t1.member_id = :member_id
             GROUP BY t1.food_name

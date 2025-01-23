@@ -33,6 +33,21 @@ class CategoryDAO
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // 結果があればuse_unitを返す。なければデフォルト値を0（個）を返す
-        return $result ? $result['use_unit'] : '個';
+        if ($result) {
+            $useUnit = $result['use_unit'];
+            // use_unitによって単位を決定
+            switch ($useUnit) {
+                case 0:
+                    return '個';  // 0: 個
+                case 1:
+                    return 'g';   // 1: g
+                case 3:
+                    return 'ml';  // 3: ml（液体の単位）
+                default:
+                    return '個';  // デフォルトは個
+            }
+        } else {
+            return '個';  // 存在しない場合もデフォルトは個
+        }
     }
 }

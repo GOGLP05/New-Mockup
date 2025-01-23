@@ -57,11 +57,11 @@ $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
         <div class="dishes_can_make" id="dishes-container">
             <?php if (!empty($available_recipes)) : ?>
                 <?php foreach ($available_recipes as $index => $recipe) : ?>
-                    <a href="recipe_detail.php?id=<?= htmlspecialchars($recipe['recipe_id'], ENT_QUOTES, 'UTF-8') ?>"
+                    <a href="recipe_detail.php?id=<?= htmlspecialchars($recipe['recipe_id'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                         class="image-container <?= $index >= 6 ? 'hidden' : '' ?>">
-                        <img src="<?= htmlspecialchars($recipe['recipe_file_path1'], ENT_QUOTES, 'UTF-8') ?>"
-                            alt="<?= htmlspecialchars($recipe['recipe_name'], ENT_QUOTES, 'UTF-8') ?>">
-                        <div class="image-text"><?= htmlspecialchars($recipe['recipe_name'], ENT_QUOTES, 'UTF-8') ?></div>
+                        <img src="<?= htmlspecialchars($recipe['recipe_file_path1'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            alt="<?= htmlspecialchars($recipe['recipe_name'] ?? '不明な料理', ENT_QUOTES, 'UTF-8') ?>">
+                        <div class="image-text"><?= htmlspecialchars($recipe['recipe_name'] ?? '不明な料理', ENT_QUOTES, 'UTF-8') ?></div>
                     </a>
                 <?php endforeach; ?>
             <?php else : ?>
@@ -86,12 +86,12 @@ $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
                     <?php if (!empty($expiringSoonFoods)) : ?>
                         <?php foreach ($expiringSoonFoods as $food) : ?>
                             <tr>
-                                <td><?= htmlspecialchars($food['food_name'], ENT_QUOTES, 'UTF-8') ?></td>
-                                <td><?= htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8') ?> 個</td>
+                                <td><?= htmlspecialchars($food['food_name'] ?? '不明な食材', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($food['total_amount'] ?? 0, ENT_QUOTES, 'UTF-8') ?> 個</td>
                                 <td>
                                     <?php
                                     // expire_date と現在の日付を比較して残り日数を計算
-                                    $expireDate = new DateTime($food['expire_date']);
+                                    $expireDate = new DateTime($food['expire_date'] ?? 'now');
                                     $today = new DateTime();
                                     $interval = $expireDate->diff($today);
                                     echo $interval->days . " 日";
@@ -122,12 +122,12 @@ $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
                     <?php if (!empty($expiredFoods)) : ?>
                         <?php foreach ($expiredFoods as $food) : ?>
                             <tr>
-                                <td><?= htmlspecialchars($food['food_name'], ENT_QUOTES, 'UTF-8') ?></td>
-                                <td><?= htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8') ?> 個</td>
+                                <td><?= htmlspecialchars($food['food_name'] ?? '不明な食材', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars($food['total_amount'] ?? 0, ENT_QUOTES, 'UTF-8') ?> 個</td>
                                 <td>
                                     <?php
                                     // expire_date と現在の日付を比較して経過日数を計算
-                                    $expireDate = new DateTime($food['expire_date']);
+                                    $expireDate = new DateTime($food['expire_date'] ?? 'now');
                                     $today = new DateTime();
                                     $interval = $expireDate->diff($today);
                                     echo $interval->days . " 日";
