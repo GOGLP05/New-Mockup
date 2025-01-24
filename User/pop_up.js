@@ -8,19 +8,29 @@ function showPopup(foodName, foodId, memberId, useUnit) {
   document.getElementById("foodId").value = foodId;
   document.getElementById("memberId").value = memberId;
   document.getElementById("foodName").value = foodName;
+  
+  // クリックした食材のuseUnitを設定
   document.getElementById("useUnit").value = useUnit;
 
   // 個数のラベルを更新
+  document.querySelector('label[for="count"]').textContent = `${useUnit}:`;
 }
+
 
 // ポップアップを閉じる関数
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
 
-// フォームを送信する関数
 function submitForm() {
-  const foodId = document.getElementById("foodId").value;
+  const foodIdElement = document.getElementById("foodId");
+  if (!foodIdElement) {
+    console.error("Food ID element not found!");
+    alert("エラーが発生しました。");
+    return;
+  }
+
+  const foodId = foodIdElement.value;
   const foodName = document.getElementById("foodName").value;
   const memberId = document.getElementById("memberId").value;
   const count = document.getElementById("count").value;
@@ -31,9 +41,8 @@ function submitForm() {
   console.log("Food Name:", foodName);
   console.log("Count:", count);
   console.log("Date:", date);
-  console.log("Use Unit:", useUnit); // useUnitの値をログに出力
+  console.log("Use Unit:", useUnit); 
 
-  // サーバーにデータを送信
   fetch("helpers/save_food_data.php", {
     method: "POST",
     headers: {
@@ -48,11 +57,8 @@ function submitForm() {
       use_unit: useUnit,
     }),
   })
-    .then((response) => {
-      return response.json(); // レスポンスをJSONとして解析
-    })
+    .then((response) => response.json())
     .then((data) => {
-      console.log("Response data:", data); // レスポンス内容を確認
       if (data.status === "success") {
         alert("登録が完了しました！");
         closePopup();

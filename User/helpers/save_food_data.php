@@ -8,17 +8,33 @@ try {
     $input = json_decode(file_get_contents("php://input"), true);
 
     // 必要なデータを取得
-    $food_id = $input['food_id'] ?? null;
-    $food_name = $input['food_name'] ?? null;
+    $food_id = $input['food_id'];
+    $food_name = $input['food_name'];
     $amount = $input['amount'] ?? null;
     $member_id = $input['member_id'] ?? null;
     $date = $input['date'] ?? null;
     $use_unit = $input['use_unit'] ?? null;
+// 必要な値が揃っているか確認
+// 必要な値が揃っているか確認
+if (!$food_name) {
+    throw new Exception("food_nameが不足しています。");
+}
+if (!$amount) {
+    throw new Exception("amountが不足しています。");
+}
+if (!$date) {
+    throw new Exception("dateが不足しています。");
+}
+if (!$food_id) {
+    throw new Exception("food_idが不足しています。");
+}
+if (!$member_id) {
+    throw new Exception("member_idが不足しています。");
+}
+if ($use_unit === null) {
+    throw new Exception("use_unitが不足しています。");
+}
 
-    // 必要な値が揃っているか確認
-    if (!$food_name || !$amount || !$date || !$food_id || !$member_id || $use_unit === null) {
-        throw new Exception("入力データが不足しています。");
-    }
 
     // DB接続
     $dbh = DAO::get_db_connect();
@@ -41,23 +57,23 @@ try {
     $registration_date = new DateTime($date);
     $expire_date = $registration_date->modify("+{$expiry_days} days")->format('Y-m-d');
 
-    // use_unitが0の場合は標準グラムを使って重量を計算、それ以外は数量として扱う
-    if ($use_unit == 0) {
-        $standard_gram = (int)$result['standard_gram'];
+    // food_amount と standard_gram を計算
+    if ($use_unit == "g" || $use_unit == "ml") {
+        // gまたはmlの場合、food_amountはNULLでstandard_gramにcountをそのままセット
         $food_amount = null;
+        $standard_gram = $amount;
     } else {
+        // その他の単位の場合、food_amountに入力値を設定し、standard_gramは数量×標準グラム
         $food_amount = $amount;
-        $standard_gram = (int)$result['standard_gram'] * $amount;
+        $standard_gram = $amount * (int)$result['standard_gram'];
     }
 
-    // SQLでDATEADDを使用して有効期限を計算
+    // SQL文を作成
     $sql = "INSERT INTO registrated_food (food_id, member_id, lot_no, food_name, registration_date, food_amount, standard_gram, expire_date) 
             VALUES (:food_id, :member_id, DATEADD(HOUR, 9, GETDATE()), :food_name, :registration_date, :food_amount, :standard_gram, :expire_date)";
 
-    // SQL作成
-    $stmt = $dbh->prepare($sql);
-
     // プレースホルダーに値をバインド
+    $stmt = $dbh->prepare($sql);
     $stmt->bindValue(':food_id', $food_id, PDO::PARAM_INT);
     $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
     $stmt->bindValue(':food_name', $food_name, PDO::PARAM_STR);
@@ -70,7 +86,9 @@ try {
     $stmt->execute();
 
     // レスポンス
+
     echo json_encode(["status" => "success", "message" => "データが保存されました。"]);
+
 } catch (Exception $e) {
     // エラーレスポンス
     http_response_code(400);

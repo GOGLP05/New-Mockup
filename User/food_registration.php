@@ -56,7 +56,6 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
                 // category_idに基づいてuse_unitを取得
                 $use_unit = $CategoryDAO->get_use_unit_by_category_id($food->category_id);
                 ?>
-                <?php echo htmlspecialchars($use_unit); ?>
                 <div class="button-container">
                 <?php //echo htmlspecialchars($CategoryDAO->get_use_unit_by_category_id($food->category_id)); ?>
                     <button class="button"
@@ -81,7 +80,7 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
                 <input type="hidden" id="memberId" name="memberId">
                 <input type="hidden" id="foodName" name="foodName">
                 
-                <input type="hidden" id="useUnit" name="useUnit" value="">
+                <input type="hidden" id="useUnit" name="useUnit">
                 <label for="count"><?php echo htmlspecialchars($use_unit); ?>:</label>
                 <input type="text" id="count" name="count" required><br><br>
 

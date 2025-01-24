@@ -57,22 +57,24 @@ $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
             <h1>料理一覧 </h1>
         </div>
         <div class="dishes_can_make" id="dishes-container">
-            <?php if (!empty($recipes)) : ?>
-                <?php foreach ($recipes as $index => $recipe) : ?>
-                    <a href="recipe_detail.php?id=<?= htmlspecialchars($recipe->recipe_id, ENT_QUOTES, 'UTF-8') ?>"
-                        class="image-container <?= $index >= 6 ? 'hidden' : '' ?>">
-                        <img src="<?= htmlspecialchars($recipe->recipe_file_path1, ENT_QUOTES, 'UTF-8') ?>"
-                            alt="<?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?>">
-                        <div class="image-text"><?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?></div>
-                    </a>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <p>表示できる料理がありません。</p>
-            <?php endif; ?>
-        </div>
-        <?php if (count($recipes) > 6): ?>
-            <button id="toggle-btn">すべて表示</button>
-        <?php endif; ?>
+    <?php if (!empty($recipes)) : ?>
+        <?php foreach ($recipes as $index => $recipe) : ?>
+            <?php if ($recipe->recipe_id > 40000021) break; // 40000021まで表示 ?>
+            <a href="recipe_detail.php?id=<?= htmlspecialchars($recipe->recipe_id, ENT_QUOTES, 'UTF-8') ?>"
+                class="image-container <?= $index >= 6 ? 'hidden' : '' ?>">
+                <img src="<?= htmlspecialchars($recipe->recipe_file_path1, ENT_QUOTES, 'UTF-8') ?>"
+                    alt="<?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?>">
+                <div class="image-text"><?= htmlspecialchars($recipe->recipe_name, ENT_QUOTES, 'UTF-8') ?></div>
+            </a>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <p>表示できる料理がありません。</p>
+    <?php endif; ?>
+</div>
+<?php if (count($recipes) > 6): ?>
+    <button id="toggle-btn">すべて表示</button>
+<?php endif; ?>
+
 
 
         <script>
