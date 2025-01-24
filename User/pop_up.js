@@ -11,20 +11,6 @@ function showPopup(foodName, foodId, memberId, useUnit) {
   document.getElementById("useUnit").value = useUnit;
 
   // 個数のラベルを更新
-  const countLabel = document.querySelector("label[for='count']");
-  if (useUnit == 0) {
-    // use_unitが0の場合、「g」を表示
-    countLabel.textContent = "g:";
-  } else if (useUnit == 1) {
-    // use_unitが1の場合、「個数」を表示
-    countLabel.textContent = "個数:";
-  } else if (useUnit == 3) {
-    // use_unitが3の場合、「ml」を表示
-    countLabel.textContent = "ml:";
-  } else {
-    // use_unitがその他の値の場合、「エラー」を表示
-    countLabel.textContent = "エラー:";
-  }
 }
 
 // ポップアップを閉じる関数

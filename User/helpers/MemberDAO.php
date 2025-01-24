@@ -103,6 +103,7 @@ class MemberDAO {
         }
     }
 
+    // メンバーの通知設定を更新するメソッド
     public function update_message($email, $message) {
         try {
             $dbh = DAO::get_db_connect();
@@ -119,20 +120,19 @@ class MemberDAO {
     }
 
     // メールアドレスからメンバー情報を取得するメソッド
-public function get_member_by_email($email) {
-    try {
-        $dbh = DAO::get_db_connect();
-        $sql = "SELECT * FROM member WHERE email = :email";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-        $stmt->execute();
-        $member = $stmt->fetchObject('Member');
-        return $member;  // メンバーオブジェクトを返す
-    } catch (PDOException $e) {
-        error_log($e->getMessage());
-        throw new Exception('データベースエラー');
+    public function get_member_by_email($email) {
+        try {
+            $dbh = DAO::get_db_connect();
+            $sql = "SELECT * FROM member WHERE email = :email";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+            $stmt->execute();
+            $member = $stmt->fetchObject('Member');
+            return $member;  // メンバーオブジェクトを返す
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception('データベースエラー');
+        }
     }
-}
-
 }
 ?>

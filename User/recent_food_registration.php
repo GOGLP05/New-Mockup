@@ -81,8 +81,9 @@ $use_unit =0;
                 <input type="hidden" id="foodId" name="foodId">
                 <input type="hidden" id="memberId" name="memberId">
                 <input type="hidden" id="foodName" name="foodName">
-                <input type="hidden" id="useUnit" name="useUnit" value="<?php echo htmlspecialchars($use_unit); ?>">
-                <label for="count">個数:</label>
+                
+                <input type="hidden" id="useUnit" name="useUnit" value="">
+                <label for="count"><?php echo htmlspecialchars($use_unit); ?>:</label>
                 <input type="text" id="count" name="count" required><br><br>
 
                 <label for="date">購入日:</label>

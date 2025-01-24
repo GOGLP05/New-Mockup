@@ -7,35 +7,37 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
 // メッセージの状態を初期化
 $message = 0;  // デフォルトはオフ(0)
 
+// POSTリクエストが送信された場合
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // トグルスイッチの状態が送信された場合
   if (isset($_POST['toggleSwitch'])) {
-    // スイッチがオンの場合、messageを1に設定
-    $message = 1;
+      // スイッチがオンの場合、messageを1に設定
+      $message = 1;
   } else {
-    // スイッチがオフの場合、messageを0に設定
-    $message = 0;
+      // スイッチがオフの場合、messageを0に設定
+      $message = 0;
   }
 
   // DAOを使ってmessageの状態をデータベースに保存
   try {
-    $memberDAO = new MemberDAO();
-    $result = $memberDAO->update_message($email, $message);
+      $memberDAO = new MemberDAO();
+      $result = $memberDAO->update_message($email, $message);
 
-    if ($result) {
-      echo "<script>alert('設定が保存されました');</script>";
-    } else {
-      echo "<script>alert('設定の保存に失敗しました');</script>";
-    }
+      if ($result) {
+          echo "<script>alert('設定が保存されました');</script>";
+      } else {
+          echo "<script>alert('設定の保存に失敗しました');</script>";
+      }
   } catch (Exception $e) {
-    echo "<script>alert('エラーが発生しました');</script>";
+      echo "<script>alert('エラーが発生しました');</script>";
+      error_log($e->getMessage()); // エラーログを記録
   }
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="setting.css">
   <title>設定</title>
 </head>
-
 <body>
   <div class="hamburger-menu">
     <input id="menu__toggle" type="checkbox" />
@@ -81,5 +82,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p>使い切り期限 3日前に 通知します</p>
   </div>
 </body>
-
 </html>

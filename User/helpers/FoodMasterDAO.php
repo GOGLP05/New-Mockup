@@ -5,7 +5,7 @@ class FoodMaster
     public int $food_id;
     public string $food_name;
     public string $expiry_date;
-    public string $category_id;
+    public int $category_id;
     public string $category_name;
     public string $standard_gram;
     public string $food_file_path;
@@ -96,6 +96,17 @@ class FoodMasterDAO
         $stmt->execute();
         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $categories;
+    }
+
+    public function get_category_by_food_id($food_id)
+    {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT category_id FROM food_master WHERE food_id = :food_id";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':food_id', $food_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
     }
     public function get_foods_by_id_and_member($foodId, $memberId)
     {
