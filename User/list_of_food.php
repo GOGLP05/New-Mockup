@@ -1,5 +1,6 @@
 <?php
 require_once 'helpers/RegisteredFoodDAO.php';
+require_once 'helpers/CategoryDAO.php';
 session_start();
 
 if (!isset($_SESSION['member_id'])) {
@@ -9,6 +10,7 @@ if (!isset($_SESSION['member_id'])) {
 
 $member_id = $_SESSION['member_id'];
 $RegisteredFood = new RegisteredFoodDAO();
+$CategoryDAO = new CategoryDAO();
 
 // 食品名が指定されている場合、その食品のみを取得
 $food_name = $_GET['food_name'] ?? null;
@@ -81,16 +83,19 @@ if ($food_name) {
               <td><?php echo htmlspecialchars($food['registration_date'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
               <td><?php echo htmlspecialchars($food['expire_date'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
               <td>
-                <?php
-                if (!empty($food['total_amount'])) {
-                  echo htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8');
-                ?>個
-                <?php
-                } elseif (!empty($food['total_gram'])) {
-                  echo htmlspecialchars($food['total_gram'], ENT_QUOTES, 'UTF-8');
-                }
-                ?>g
-              </td>
+  <?php
+  if (!empty($food['total_amount'])) {
+      echo htmlspecialchars($food['total_amount'], ENT_QUOTES, 'UTF-8');
+  ?>
+  <?php
+  } elseif (!empty($food['total_gram'])) {
+      echo htmlspecialchars($food['total_gram'], ENT_QUOTES, 'UTF-8');
+  }
+  ;
+  ?>
+  <?php echo htmlspecialchars($unit =$CategoryDAO->get_use_unit_by_category_id($food['category_id'])?? '', ENT_QUOTES, 'UTF-8'); ?>
+</td>
+
 
 
             </tr>

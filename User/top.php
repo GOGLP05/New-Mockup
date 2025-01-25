@@ -23,6 +23,8 @@ list($available_recipes, $unavailable_recipes) = $recipeChecker->getAvailableRec
 $foodDAO = new RegisteredFoodDAO();
 $expiredFoods = $foodDAO->get_expired_foods_by_member($member_id);
 $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
+var_dump($expiredFoods);
+var_dump($expiringSoonFoods);
 ?>
 <!DOCTYPE html>
 <html lang="ja">

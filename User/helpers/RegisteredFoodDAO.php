@@ -231,68 +231,73 @@ OFFSET
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function get_expired_foods_by_member(int $member_id): array
-    {
-        $dbh = DAO::get_db_connect();
+{
+    $dbh = DAO::get_db_connect();
 
-        // 現在の日付を取得
-        $today = date('Y-m-d');
+    // 現在の日付を取得
+    $today = date('Y-m-d');
 
-        $sql = "
-            SELECT t1.food_name, 
-                   MAX(t1.registration_date) AS registration_date, 
-                   MAX(t1.expire_date) AS expire_date, 
-                   SUM(t1.food_amount) AS total_amount
-            FROM registrated_food t1
-            WHERE t1.member_id = :member_id
-            AND t1.expire_date < :today  -- expire_dateが今日より前のデータのみ取得
-            GROUP BY t1.food_name
-            ORDER BY MAX(t1.registration_date) DESC
-        ";
-
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
-        $stmt->bindValue(':today', $today, PDO::PARAM_STR);  // 今日の日付をバインド
-
-        if (!$stmt->execute()) {
-            throw new Exception('Failed to execute the query.');
-        }
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // 使い切り期限が7日以内の食材を取得する
-    public function get_expiring_soon_foods_by_member(int $member_id): array
-    {
-        $dbh = DAO::get_db_connect();
-
-        // 今日の日付を取得
-        $today = date('Y-m-d');
-        // 今日から7日後の日付を計算
-        $sevenDaysLater = date('Y-m-d', strtotime('+7 days'));
-
-        $sql = "
+    $sql = "
         SELECT t1.food_name, 
                MAX(t1.registration_date) AS registration_date, 
                MAX(t1.expire_date) AS expire_date, 
-               SUM(t1.food_amount) AS total_amount
+               SUM(t1.food_amount) AS total_amount,
+               fm.category_id
         FROM registrated_food t1
+        INNER JOIN food_master fm ON t1.food_name = fm.food_name  -- food_masterテーブルと結合
         WHERE t1.member_id = :member_id
-        AND t1.expire_date BETWEEN :today AND :sevenDaysLater
-        GROUP BY t1.food_name
+        AND t1.expire_date < :today  -- expire_dateが今日より前のデータのみ取得
+        GROUP BY t1.food_name, fm.category_id  -- food_nameとcategory_idでグループ化
         ORDER BY MAX(t1.registration_date) DESC
     ";
 
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
-        $stmt->bindValue(':today', $today, PDO::PARAM_STR);
-        $stmt->bindValue(':sevenDaysLater', $sevenDaysLater, PDO::PARAM_STR);
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
+    $stmt->bindValue(':today', $today, PDO::PARAM_STR);  // 今日の日付をバインド
 
-        if (!$stmt->execute()) {
-            throw new Exception('Failed to execute the query.');
-        }
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (!$stmt->execute()) {
+        throw new Exception('Failed to execute the query.');
     }
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+    public function get_expiring_soon_foods_by_member(int $member_id): array
+{
+    $dbh = DAO::get_db_connect();
+
+    // 今日の日付を取得
+    $today = date('Y-m-d');
+    // 今日から7日後の日付を計算
+    $sevenDaysLater = date('Y-m-d', strtotime('+7 days'));
+
+    $sql = "
+    SELECT t1.food_name, 
+           MAX(t1.registration_date) AS registration_date, 
+           MAX(t1.expire_date) AS expire_date, 
+           SUM(t1.food_amount) AS total_amount,
+           fm.category_id
+    FROM registrated_food t1
+    LEFT JOIN food_master fm ON t1.food_name = fm.food_name
+    WHERE t1.member_id = :member_id
+    AND t1.expire_date BETWEEN :today AND :sevenDaysLater
+    GROUP BY t1.food_name, fm.category_id
+    ORDER BY MAX(t1.registration_date) DESC
+    ";
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
+    $stmt->bindValue(':today', $today, PDO::PARAM_STR);
+    $stmt->bindValue(':sevenDaysLater', $sevenDaysLater, PDO::PARAM_STR);
+
+    if (!$stmt->execute()) {
+        throw new Exception('Failed to execute the query.');
+    }
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
     public function subtract_food_amount($food_id, $amount)
     {
         $dbh = DAO::get_db_connect();
