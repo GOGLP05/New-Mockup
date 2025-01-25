@@ -68,14 +68,6 @@ foreach ($ingredients as $ingredient) {
     }
 }
 
-// $ingredient_units の内容を確認（デバッグ用）
-var_dump($ingredient_units);
-
-
-
-// 結果を確認
-var_dump($category_id);
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">

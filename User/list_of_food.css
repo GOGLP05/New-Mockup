@@ -2,10 +2,12 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* テーブルに影を追加 */
 }
 
 th, td {
-    padding: 12px;
+    padding: 15px;
     text-align: left;
     border: 1px solid #ddd;
 }
@@ -13,12 +15,39 @@ th, td {
 th {
     background-color: #f2f2f2;
     font-weight: bold;
+    color: #444;
 }
 
 td {
     background-color: #ffffff;
+    color: #333;
 }
 
 tr:hover {
     background-color: #f9f9f9;
+    cursor: pointer; /* マウスオーバー時にカーソルをポインターに変更 */
 }
+
+h1, h4 {
+    text-align: center; /* 見出しを中央揃え */
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #3498db; /* リンクの色を変更 */
+    font-weight: 600;
+}
+
+
+
+.content {
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 20px;
+    background-color: #fafafa; /* コンテンツエリアの背景色を変更 */
+    border-radius: 8px; /* 丸みを帯びた角 */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* コンテンツエリアに影を追加 */
+}
+

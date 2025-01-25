@@ -25,9 +25,6 @@ list($available_recipes, $unavailable_recipes) = $recipeChecker->getAvailableRec
 $foodDAO = new RegisteredFoodDAO();
 $expiredFoods = $foodDAO->get_expired_foods_by_member($member_id);
 $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
-
-var_dump($expiredFoods);
-var_dump($expiringSoonFoods);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -73,7 +70,7 @@ var_dump($expiringSoonFoods);
                 <p>作れる料理がありません。</p>
             <?php endif; ?>
         </div>
-        <?php if (count($available_recipes) > 6): ?>
+        <?php if (count($available_recipes) > 6) : ?>
             <button id="toggle-btn">すべて表示</button>
         <?php endif; ?>
 
@@ -92,11 +89,18 @@ var_dump($expiringSoonFoods);
                         <?php foreach ($expiringSoonFoods as $food) : ?>
                             <tr>
                                 <td><?= htmlspecialchars($food['food_name'] ?? '不明な食材', ENT_QUOTES, 'UTF-8') ?></td>
-                                <td><?= htmlspecialchars($food['total_amount'] ?? 0, ENT_QUOTES, 'UTF-8') ?> 
-                                    <?php echo htmlspecialchars($unit = $CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td>
                                     <?php
-                                    // expire_date と現在の日付を比較して残り日数を計算
+                                    $amount = $food['food_amount'] ?? $food['standard_gram'];
+                                    $formattedAmount = (is_numeric($amount) && floor($amount) == $amount) 
+                                        ? intval($amount) 
+                                        : $amount;
+                                    ?>
+                                    <?= htmlspecialchars($formattedAmount, ENT_QUOTES, 'UTF-8') ?>
+                                    <?php echo htmlspecialchars($CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?>
+                                </td>
+                                <td>
+                                    <?php
                                     $expireDate = new DateTime($food['expire_date'] ?? 'now');
                                     $today = new DateTime();
                                     $interval = $expireDate->diff($today);
@@ -129,11 +133,18 @@ var_dump($expiringSoonFoods);
                         <?php foreach ($expiredFoods as $food) : ?>
                             <tr>
                                 <td><?= htmlspecialchars($food['food_name'] ?? '不明な食材', ENT_QUOTES, 'UTF-8') ?></td>
-                                <td><?= htmlspecialchars($food['total_amount'] ?? 0, ENT_QUOTES, 'UTF-8') ?> 
-                                    <?php echo htmlspecialchars($unit = $CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td>
                                     <?php
-                                    // expire_date と現在の日付を比較して経過日数を計算
+                                    $amount = $food['food_amount'] ?? $food['standard_gram'];
+                                    $formattedAmount = (is_numeric($amount) && floor($amount) == $amount) 
+                                        ? intval($amount) 
+                                        : $amount;
+                                    ?>
+                                    <?= htmlspecialchars($formattedAmount, ENT_QUOTES, 'UTF-8') ?>
+                                    <?php echo htmlspecialchars($CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?>
+                                </td>
+                                <td>
+                                    <?php
                                     $expireDate = new DateTime($food['expire_date'] ?? 'now');
                                     $today = new DateTime();
                                     $interval = $expireDate->diff($today);
@@ -155,34 +166,20 @@ var_dump($expiringSoonFoods);
             document.addEventListener("DOMContentLoaded", () => {
                 const toggleBtn = document.getElementById("toggle-btn");
                 const hiddenItems = document.querySelectorAll(".dishes_can_make .hidden");
-                let isExpanded = false; // 初期状態は折り畳み
+                let isExpanded = false;
 
                 if (toggleBtn) {
                     toggleBtn.addEventListener("click", () => {
-                        if (isExpanded) {
-                            hiddenItems.forEach(item => {
-                                item.style.maxHeight = "0"; // 高さを0に設定
-                                item.style.opacity = "0"; // 不透明度を0に設定
-                                setTimeout(() => {
-                                    item.style.display = "none"; // トランジション後に非表示
-                                }, 500); // トランジションの時間に合わせる
-                            });
-                            toggleBtn.textContent = "すべて表示";
-                        } else {
-                            hiddenItems.forEach(item => {
-                                item.style.display = "block"; // 表示に戻す
-                                setTimeout(() => {
-                                    item.style.maxHeight = item.scrollHeight + "px"; // 自然な高さを設定
-                                    item.style.opacity = "1"; // 不透明度を1に設定
-                                }, 0); // レイアウトの再計算を待つ
-                            });
-                            toggleBtn.textContent = "折り畳む";
-                        }
+                        hiddenItems.forEach(item => {
+                            item.style.display = isExpanded ? "none" : "block";
+                        });
+                        toggleBtn.textContent = isExpanded ? "すべて表示" : "折り畳む";
                         isExpanded = !isExpanded;
                     });
                 }
             });
         </script>
+    </div>
 </body>
 
 </html>

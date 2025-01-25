@@ -18,7 +18,7 @@ try {
 } catch (Exception $e) {
     die('データの取得に失敗しました: ' . htmlspecialchars($e->getMessage()));
 }
-$use_unit =0;
+var_dump($foodmaster_list);
 ?>
 
 <!DOCTYPE html>
@@ -58,11 +58,11 @@ $use_unit =0;
                 <?php
                 // category_idに基づいてuse_unitを取得
                 $use_unit = $CategoryDAO->get_use_unit_by_category_id($food->category_id);
+                echo $use_unit;
                 ?>
-                <?php echo htmlspecialchars($use_unit); ?>
                 <div class="button-container">
                     
-                    <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
+                    <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>','<?php echo $member_id; ?>', '<?php echo $use_unit; ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
                         <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
                     </button>
                     <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
@@ -76,13 +76,12 @@ $use_unit =0;
         <div class="popup-content">
             <span id="popup-close" class="popup-close" onclick="closePopup()">×</span>
             <h2 id="popup-food-title"></h2>
-            <?php echo htmlspecialchars($use_unit); ?>
             <form onsubmit="event.preventDefault(); submitForm();">
                 <input type="hidden" id="foodId" name="foodId">
                 <input type="hidden" id="memberId" name="memberId">
                 <input type="hidden" id="foodName" name="foodName">
                 
-                <input type="hidden" id="useUnit" name="useUnit" value="">
+                <input type="hidden" id="useUnit" name="useUnit">
                 <label for="count"><?php echo htmlspecialchars($use_unit); ?>:</label>
                 <input type="text" id="count" name="count" required><br><br>
 

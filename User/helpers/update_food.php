@@ -1,7 +1,7 @@
 <?php
 require_once 'FoodMasterDAO.php';
 require_once 'RecipeMasterDAO.php';
-
+require_once 'RegisteredFoodDAO.php';
 header("Content-Type: application/json");
 
 // リクエストデータの取得
@@ -28,6 +28,7 @@ if (!empty($missingFields)) {
 // DAOのインスタンスを作成
 $foodMasterDAO = new FoodMasterDAO();
 $recipeMasterDAO = new Recipe_MasterDAO();
+$registeredFoodDAO = new RegisteredFoodDAO();
 
 // レシピに必要な食材を取得
 $ingredients = $recipeMasterDAO->get_ingredients_by_recipe_id($recipeId);
@@ -86,6 +87,13 @@ foreach ($ingredients as $ingredient) {
             $updateResult = $foodMasterDAO->update_food_amount_by_lot($foodId, $food['lot_no'], $newAmount);
             if (!$updateResult) {
                 throw new Exception("ロット番号 {$food['lot_no']} の更新に失敗しました。");
+            }
+
+            if ($newAmount == 0) {
+                $deleteResult = $registeredFoodDAO->delete_food_by_lot_no($food['lot_no']);
+                if (!$deleteResult) {
+                    throw new Exception("ロット番号 {$food['lot_no']} の削除に失敗しました。");
+                }
             }
 
             $calculationUse -= $consume;

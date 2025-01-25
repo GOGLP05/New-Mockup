@@ -90,6 +90,10 @@ body {
     color: #333;
 }
 
+a:hover {
+    text-decoration: underline; /* リンクホバー時に下線を追加 */
+}
+
 .content {
     margin-top: 5%;
     margin-left: 15%;
