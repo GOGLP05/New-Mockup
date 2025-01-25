@@ -11,18 +11,21 @@ require_once 'helpers/RecipeMasterDAO.php';
 require_once 'helpers/RegisteredFoodDAO.php';
 require_once 'helpers/DAO.php';
 require_once 'helpers/RecipeChecker.php';
+require_once 'helpers/CategoryDAO.php';
 
 // ユーザーIDを取得
 $member_id = $_SESSION['member_id'];
 
 // RecipeCheckerインスタンスを作成し、作れるレシピを取得
 $recipeChecker = new RecipeChecker();
+$CategoryDAO = new CategoryDAO();
 list($available_recipes, $unavailable_recipes) = $recipeChecker->getAvailableRecipes($member_id);
 
 // ここで期限切れの食品を取得する
 $foodDAO = new RegisteredFoodDAO();
 $expiredFoods = $foodDAO->get_expired_foods_by_member($member_id);
 $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
+
 var_dump($expiredFoods);
 var_dump($expiringSoonFoods);
 ?>
@@ -89,7 +92,8 @@ var_dump($expiringSoonFoods);
                         <?php foreach ($expiringSoonFoods as $food) : ?>
                             <tr>
                                 <td><?= htmlspecialchars($food['food_name'] ?? '不明な食材', ENT_QUOTES, 'UTF-8') ?></td>
-                                <td><?= htmlspecialchars($food['total_amount'] ?? 0, ENT_QUOTES, 'UTF-8') ?> 個</td>
+                                <td><?= htmlspecialchars($food['total_amount'] ?? 0, ENT_QUOTES, 'UTF-8') ?> 
+                                    <?php echo htmlspecialchars($unit = $CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td>
                                     <?php
                                     // expire_date と現在の日付を比較して残り日数を計算
@@ -125,7 +129,8 @@ var_dump($expiringSoonFoods);
                         <?php foreach ($expiredFoods as $food) : ?>
                             <tr>
                                 <td><?= htmlspecialchars($food['food_name'] ?? '不明な食材', ENT_QUOTES, 'UTF-8') ?></td>
-                                <td><?= htmlspecialchars($food['total_amount'] ?? 0, ENT_QUOTES, 'UTF-8') ?> 個</td>
+                                <td><?= htmlspecialchars($food['total_amount'] ?? 0, ENT_QUOTES, 'UTF-8') ?> 
+                                    <?php echo htmlspecialchars($unit = $CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td>
                                     <?php
                                     // expire_date と現在の日付を比較して経過日数を計算

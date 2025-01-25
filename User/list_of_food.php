@@ -22,6 +22,7 @@ if ($food_name) {
   // 全食品を取得
   $foods = $RegisteredFood->get_all_foods_by_member($member_id);
 }
+var_dump($foods)
 ?>
 
 <!DOCTYPE html>
