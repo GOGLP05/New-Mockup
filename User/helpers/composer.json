@@ -1,0 +1,17 @@
+{
+    "name": "m0oun/helpers",
+    "autoload": {
+        "psr-4": {
+            "M0oun\\Helpers\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "宮内慎司",
+            "email": "23jn0338@jec.ac.jp"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

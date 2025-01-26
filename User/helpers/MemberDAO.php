@@ -34,6 +34,58 @@ class MemberDAO {
         return false;
     }
 
+    public function get_member_email() {
+        $dbh = DAO::get_db_connect();
+    
+        $sql = "SELECT email FROM member";  // Complete the SQL query
+    
+        $stmt = $dbh->prepare($sql);
+    
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to execute the query.');
+        }
+    
+        // Use fetchAll to retrieve all rows
+        $member_emails = $stmt->fetchAll(PDO::FETCH_OBJ);
+    
+        return $member_emails; // Return the array of results
+    }
+
+    public function update_password_by_email($email, $new_password) {
+        try {
+            $dbh = DAO::get_db_connect();
+            $sql = "UPDATE member SET password = :password WHERE email = :email";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':password', $new_password, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+
+            // パスワード更新処理が成功すれば true を返す
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception('データベースエラー');
+        }
+    }
+
+        public function update_notification($email, $notification) {
+            try {
+                $dbh = DAO::get_db_connect();
+                $sql = "UPDATE member SET message = :message WHERE email = :email";
+                $stmt = $dbh->prepare($sql);
+                $stmt->bindParam(':message', $notification, PDO::PARAM_INT);
+                $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                $stmt->execute();
+                return $stmt->rowCount() > 0; // 更新された行数が0より大きければ成功
+            } catch (PDOException $e) {
+                throw new Exception('データベースの更新に失敗しました: ' . $e->getMessage());
+            }
+        }
+    
+    
+    
+    
+
+
     // 新しいメンバーを登録するメソッド
     public function create_member($email, $password, $sex, $birthdate) {
         try {

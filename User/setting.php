@@ -5,32 +5,32 @@ session_start();
 $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
 
 // メッセージの状態を初期化
-$message = 0;  // デフォルトはオフ(0)
+$notification = 0;  // デフォルトはオフ(0)
 
 // POSTリクエストが送信された場合
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // トグルスイッチの状態が送信された場合
   if (isset($_POST['toggleSwitch'])) {
-      // スイッチがオンの場合、messageを1に設定
-      $message = 1;
+      // スイッチがオンの場合、notificationを1に設定
+      $notification = 1;
   } else {
-      // スイッチがオフの場合、messageを0に設定
-      $message = 0;
+      // スイッチがオフの場合、notificationを0に設定
+      $notification = 0;
   }
 
-  // DAOを使ってmessageの状態をデータベースに保存
+  // DAOを使ってnotificationの状態をデータベースに保存
   try {
       $memberDAO = new MemberDAO();
-      $result = $memberDAO->update_message($email, $message);
+      $result = $memberDAO->update_notification($email, $notification);
 
       if ($result) {
-          echo "<script>alert('設定が保存されました');</script>";
+          echo "<script>alert('通知設定が保存されました');</script>";
       } else {
-          echo "<script>alert('設定の保存に失敗しました');</script>";
+          echo "<script>alert('通知設定の保存に失敗しました');</script>";
       }
   } catch (Exception $e) {
       echo "<script>alert('エラーが発生しました');</script>";
-      error_log($e->getMessage()); // エラーログを記録
+      echo($e->getMessage()); // エラーログを記録
   }
 }
 
@@ -44,6 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="setting.css">
   <title>設定</title>
+  <script>
+    // トグルが変更された時にフォームを送信
+    function toggleChange() {
+        // フォームを送信
+        document.getElementById('notificationForm').submit();
+    }
+  </script>
 </head>
 <body>
   <div class="hamburger-menu">
@@ -71,9 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="notification">
-      <form method="post" action="" class="notification-form">
+      <!-- フォームのIDを設定し、submitボタンとしてトグルを利用 -->
+      <form method="post" action="" class="notification-form" id="notificationForm">
         <label class="switch">
-          <input type="checkbox" id="toggleSwitch" name="toggleSwitch" <?php if ($message == 1) echo 'checked'; ?>>
+          <input type="checkbox" id="toggleSwitch" name="toggleSwitch" onchange="toggleChange()" <?php if ($notification == 1) echo 'checked'; ?>>
           <span class="slider round"></span>
         </label>
       </form>

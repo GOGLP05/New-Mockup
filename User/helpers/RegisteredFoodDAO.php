@@ -26,11 +26,12 @@ class RegisteredFoodDAO
                    MAX(t1.expire_date) AS expire_date, 
                    SUM(t1.food_amount) AS total_amount,
                    SUM(t1.standard_gram) AS total_gram,
-                   fm.category_id
+                   fm.category_id,
+                   fm.standard_gram
             FROM registrated_food t1
             JOIN food_master fm ON t1.food_name = fm.food_name
             WHERE t1.member_id = :member_id
-            GROUP BY t1.food_name, fm.category_id
+            GROUP BY t1.food_name, fm.category_id, fm.standard_gram
             ORDER BY MAX(t1.registration_date) DESC
         ";
 
@@ -190,6 +191,7 @@ class RegisteredFoodDAO
                    f.category_id,
                    r.standard_gram,  -- standard_gramをregistrated_foodから取得
                    r.food_amount     -- food_amountもregistrated_foodから取得
+                   
             FROM registrated_food r
             JOIN food_master f ON r.food_name = f.food_name
             WHERE r.food_name = :food_name AND r.member_id = :member_id

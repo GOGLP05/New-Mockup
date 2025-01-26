@@ -1,6 +1,7 @@
 <?php
 require_once 'helpers/RegisteredFoodDAO.php';
 require_once 'helpers/CategoryDAO.php';
+require_once 'helpers/FoodMasterDAO.php';
 session_start();
 
 if (!isset($_SESSION['member_id'])) {
@@ -11,6 +12,7 @@ if (!isset($_SESSION['member_id'])) {
 $member_id = $_SESSION['member_id'];
 $RegisteredFood = new RegisteredFoodDAO();
 $CategoryDAO = new CategoryDAO();
+$FoodMasterDAO = new FoodMasterDAO();
 
 // 食品名が指定されている場合、その食品のみを取得
 $food_name = $_GET['food_name'] ?? null;
@@ -21,6 +23,46 @@ if ($food_name) {
 } else {
     // 全食品を取得
     $foods = $RegisteredFood->get_all_foods_by_member($member_id);
+}
+
+// 最大公約数 (GCD) を求める関数
+function gcd($a, $b) {
+    while ($b != 0) {
+        $temp = $b;
+        $b = $a % $b;
+        $a = $temp;
+    }
+    return $a;
+}
+
+// 割り算の結果を分数形式に変換（整数部分も扱えるように変更）
+function convertToFraction($numerator, $denominator) {
+    // GCDを求める
+    $gcd = gcd($numerator, $denominator);
+    
+    // 分子と分母を簡約化
+    $simplified_numerator = $numerator / $gcd;
+    $simplified_denominator = $denominator / $gcd;
+
+    // 分母が7以上の場合、小数表示にする
+    if ($simplified_denominator >= 7) {
+        return round($numerator / $denominator, 2) ; // 小数第2位まで表示
+    }
+
+    // 整数部分と分数部分を分ける
+    $integer_part = floor($simplified_numerator / $simplified_denominator);
+    $remainder_numerator = $simplified_numerator % $simplified_denominator;
+
+    // 整数部分があれば「個と」形式で、なければ単に分数を表示
+    if ($integer_part > 0 && $remainder_numerator > 0) {
+        return $integer_part . '個と' . $remainder_numerator . '/' . $simplified_denominator ;
+    } elseif ($integer_part > 0) {
+        return $integer_part ;
+    } elseif ($remainder_numerator > 0) {
+        return $remainder_numerator . '/' . $simplified_denominator ;
+    } else {
+        return '0個'; // 数量が0の場合
+    }
 }
 ?>
 
@@ -83,12 +125,19 @@ if ($food_name) {
                             <td>
                                 <?php
                                 // food_amount または standard_gram を選択
-                                $amount = $food['total_amount'] ?? $food['total_gram'];
+                                if ($food['total_amount'] == "") {
+                                    $amount = $food['total_gram'];
+                                } else {
+                                    $amount = $food['total_gram'] / $food['standard_gram'];
+                                }
 
                                 // 数値かつ整数であれば整数に切り捨て
-                                $formattedAmount = (is_numeric($amount) && floor($amount) == $amount) 
-                                    ? intval($amount)  // 整数に変換
-                                    : $amount;  // そのまま表示
+                                if (is_numeric($amount) && floor($amount) == $amount) {
+                                    $formattedAmount = intval($amount);  // 整数に変換
+                                } else {
+                                    // 分数形式に変換
+                                    $formattedAmount = convertToFraction($food['total_gram'], $food['standard_gram']);
+                                }
                                 ?>
                                 <?= htmlspecialchars($formattedAmount, ENT_QUOTES, 'UTF-8') ?>
                                 <?php echo htmlspecialchars($CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?>
