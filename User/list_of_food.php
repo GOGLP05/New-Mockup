@@ -122,22 +122,24 @@ function convertToFraction($numerator, $denominator)
                     <?php foreach ($foods as $food) : ?>
                         <tr>
                             <td>
-                                <a href="list_of_food.php?food_name=<?php echo urlencode($food['food_name'] ?? ''); ?>">
+                                <a href="food_details.php?food_name=<?php echo urlencode($food['food_name'] ?? ''); ?>&member_id=<?php echo $member_id; ?>">
                                     <?php echo htmlspecialchars($food['food_name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
                                 </a>
                             </td>
+
                             <td><?php echo htmlspecialchars($food['registration_date'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($food['expire_date'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                             <td>
                                 <?php
                                 // food_amount または standard_gram を選択
                                 if ($food['total_amount'] == "") {
-                                    $amount = $food['total_gram'];
+                                    $amount = $food['total_gram']; //登録されている食材の合計のグラム
                                 } else {
-                                    $amount = $food['total_gram'] / $food['standard_gram'];
+                                    $amount = $food['total_gram'] / $food['standard_gram']; //food_masterの
                                 }
 
                                 // 数値かつ整数であれば整数に切り捨て
+
                                 if (is_numeric($amount)) {
                                     if (floor($amount) == $amount) {
                                         $formattedAmount = intval($amount);  // 整数に変換
