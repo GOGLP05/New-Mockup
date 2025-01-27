@@ -133,26 +133,124 @@ function convertToFraction($numerator, $denominator)
             <button id="toggle-btn">すべて表示</button>
         <?php endif; ?>
 
-        <!-- 以下、期限が近い食材や期限切れ食材のテーブル部分は変更なし -->
-    </div>
+        <div>
+            <h1>使い切り期限が近い食材</h1>
+            <table class="expiring_soon">
+                <thead>
+                    <tr>
+                        <th>食材名</th>
+                        <th>数量</th>
+                        <th>残り日数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($expiringSoonFoods)) : ?>
+                        <?php foreach ($expiringSoonFoods as $food) : ?>
+                            <tr>
+                                <td><?= htmlspecialchars($food['food_name'] ?? '不明な食材', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td>
+                                    <?php
+                                    $amount = $food['food_amount'] ?? $food['standard_gram'];
+                                    $formattedAmount = (is_numeric($amount) && floor($amount) == $amount)
+                                        ? intval($amount)
+                                        : $amount;
+                                    ?>
+                                    <?= htmlspecialchars($formattedAmount, ENT_QUOTES, 'UTF-8') ?>
+                                    <?php echo htmlspecialchars($CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $expireDate = new DateTime($food['expire_date'] ?? 'now');
+                                    $today = new DateTime();
+                                    $interval = $expireDate->diff($today);
+                                    echo $interval->days . " 日";
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <tr>
+                            <td colspan="3">使い切り期限が近い食材はありません。</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const toggleBtn = document.getElementById("toggle-btn");
-            const hiddenItems = document.querySelectorAll(".dishes_can_make .hidden");
-            let isExpanded = false;
+        <div>
+            <h1>使い切り期限が過ぎた食材</h1>
+            <table class="expired">
+                <thead>
+                    <tr>
+                        <th>食材名</th>
+                        <th>数量</th>
+                        <th>経過日数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($expiredFoods)) : ?>
+                        <?php foreach ($expiredFoods as $food) : ?>
+                            <tr>
+                                <td><?= htmlspecialchars($food['food_name'] ?? '不明な食材', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td>
 
-            if (toggleBtn) {
-                toggleBtn.addEventListener("click", () => {
-                    hiddenItems.forEach(item => {
-                        item.style.display = isExpanded ? "none" : "block";
+                                    <?php
+                                    if ($food['food_amount'] == "") {
+                                        $amount = $food['standard_gram']; //登録されている食材の合計のグラム
+                                    } else {
+                                        $amount = $food['food_amount'] / $food['food_standard_gram']; //food_masterの
+                                    }
+
+                                    // 数値かつ整数であれば整数に切り捨て
+                                    if (is_numeric($amount)) {
+                                        if (floor($amount) == $amount) {
+                                            $formattedAmount = intval($amount);  // 整数に変換
+                                        } else {
+                                            // 分数形式に変換
+                                            $formattedAmount = convertToFraction($food['standard_gram'], $food['food_standard_gram']);
+                                        }
+                                    }
+                                    ?>
+                                    <?= htmlspecialchars($formattedAmount, ENT_QUOTES, 'UTF-8') ?>
+                                    <?php echo htmlspecialchars($CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $expireDate = new DateTime($food['expire_date'] ?? 'now');
+                                    $today = new DateTime();
+                                    $interval = $expireDate->diff($today);
+                                    echo $interval->days . " 日";
+                                    ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <tr>
+                            <td colspan="3">期限が過ぎた食材はありません。</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const toggleBtn = document.getElementById("toggle-btn");
+                const hiddenItems = document.querySelectorAll(".dishes_can_make .hidden");
+                let isExpanded = false;
+
+                if (toggleBtn) {
+                    toggleBtn.addEventListener("click", () => {
+                        hiddenItems.forEach(item => {
+                            item.style.display = isExpanded ? "none" : "block";
+                        });
+                        toggleBtn.textContent = isExpanded ? "すべて表示" : "折り畳む";
+                        isExpanded = !isExpanded;
                     });
-                    toggleBtn.textContent = isExpanded ? "すべて表示" : "折り畳む";
-                    isExpanded = !isExpanded;
-                });
-            }
-        });
-    </script>
+                }
+            });
+        </script>
+    </div>
 </body>
 
 </html>
