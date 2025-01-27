@@ -34,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="change_password_email.css">
     <title>ワンタイムパスワード認証</title>
 </head>
+
 <body class="content">
     <h1>ワンタイムパスワード認証</h1>
 
@@ -57,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button type="submit">認証する</button>
     </form>
 
-    <p>コードが届いていない場合、<a href="resend_otp.php">再送信</a>してください。</p>
+    <p>コードが届いていない場合、<a href="helpers/resend_otp.php">再送信</a>してください。</p>
 </body>
+
 </html>

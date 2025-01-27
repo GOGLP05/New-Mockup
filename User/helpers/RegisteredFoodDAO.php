@@ -182,35 +182,36 @@ class RegisteredFoodDAO
     public function get_foods_by_name_and_member(string $food_name, int $member_id): array
     {
         $dbh = DAO::get_db_connect();
-    
+
         $sql = "
-            SELECT r.food_name, 
-                   r.lot_no,
-                   r.registration_date, 
-                   r.expire_date, 
-                   SUM(r.food_amount) AS total_amount,
-                   f.category_id,
-                   r.standard_gram,  -- standard_gramをregistrated_foodから取得
-                   r.food_amount     -- food_amountもregistrated_foodから取得
-                   
-            FROM registrated_food r
-            JOIN food_master f ON r.food_name = f.food_name
-            WHERE r.food_name = :food_name AND r.member_id = :member_id
-            GROUP BY r.food_name, r.lot_no, r.registration_date, r.expire_date, f.category_id, r.standard_gram, r.food_amount
-            ORDER BY r.registration_date DESC
-        ";
-    
+        SELECT r.food_name, 
+               r.lot_no,
+               r.registration_date, 
+               r.expire_date, 
+               SUM(r.food_amount) AS total_amount,
+               f.category_id,
+               r.standard_gram,  -- standard_gramをregistrated_foodから取得
+               r.food_amount,     -- food_amountもregistrated_foodから取得
+               f.standard_gram AS food_standard_gram
+        FROM registrated_food r
+        JOIN food_master f ON r.food_name = f.food_name
+        WHERE r.food_name = :food_name AND r.member_id = :member_id
+        GROUP BY r.food_name, r.lot_no, r.registration_date, r.expire_date, f.category_id, r.standard_gram, r.food_amount, f.standard_gram
+        ORDER BY r.registration_date DESC
+    ";
+
+
         $stmt = $dbh->prepare($sql);
         $stmt->bindValue(':food_name', $food_name, PDO::PARAM_STR);
         $stmt->bindValue(':member_id', $member_id, PDO::PARAM_INT);
-    
+
         if (!$stmt->execute()) {
             throw new Exception('Failed to execute the query.');
         }
-    
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
 
     // 食品詳細データを取得する
     public function get_food_detail_by_name_and_lotno(string $food_name, string $lotno, int $member_id)
@@ -252,7 +253,8 @@ class RegisteredFoodDAO
                    t1.expire_date, 
                    t1.food_amount, 
                    t1.standard_gram,  -- standard_gram を取得
-                   fm.category_id
+                   fm.category_id,
+                   fm.standard_gram as food_standard_gram
             FROM registrated_food t1
             INNER JOIN food_master fm ON t1.food_name = fm.food_name  -- food_masterテーブルと結合
             WHERE t1.member_id = :member_id

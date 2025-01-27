@@ -26,7 +26,12 @@ if ($food_name) {
 }
 
 // 最大公約数 (GCD) を求める関数
-function gcd($a, $b) {
+function gcd($a, $b)
+{
+    // Cast $a and $b to integers
+    $a = (int)$a;
+    $b = (int)$b;
+
     while ($b != 0) {
         $temp = $b;
         $b = $a % $b;
@@ -36,17 +41,18 @@ function gcd($a, $b) {
 }
 
 // 割り算の結果を分数形式に変換（整数部分も扱えるように変更）
-function convertToFraction($numerator, $denominator) {
+function convertToFraction($numerator, $denominator)
+{
     // GCDを求める
     $gcd = gcd($numerator, $denominator);
-    
+
     // 分子と分母を簡約化
     $simplified_numerator = $numerator / $gcd;
     $simplified_denominator = $denominator / $gcd;
 
     // 分母が7以上の場合、小数表示にする
     if ($simplified_denominator >= 7) {
-        return round($numerator / $denominator, 2) ; // 小数第2位まで表示
+        return round($numerator / $denominator, 2); // 小数第2位まで表示
     }
 
     // 整数部分と分数部分を分ける
@@ -55,11 +61,11 @@ function convertToFraction($numerator, $denominator) {
 
     // 整数部分があれば「個と」形式で、なければ単に分数を表示
     if ($integer_part > 0 && $remainder_numerator > 0) {
-        return $integer_part . '個と' . $remainder_numerator . '/' . $simplified_denominator ;
+        return $integer_part . '個と' . $remainder_numerator . '/' . $simplified_denominator;
     } elseif ($integer_part > 0) {
-        return $integer_part ;
+        return $integer_part;
     } elseif ($remainder_numerator > 0) {
-        return $remainder_numerator . '/' . $simplified_denominator ;
+        return $remainder_numerator . '/' . $simplified_denominator;
     } else {
         return '0個'; // 数量が0の場合
     }
@@ -116,27 +122,31 @@ function convertToFraction($numerator, $denominator) {
                     <?php foreach ($foods as $food) : ?>
                         <tr>
                             <td>
-                                <a href="list_of_food.php?food_name=<?php echo urlencode($food['food_name'] ?? ''); ?>">
+                                <a href="food_details.php?food_name=<?php echo urlencode($food['food_name'] ?? ''); ?>&member_id=<?php echo $member_id; ?>">
                                     <?php echo htmlspecialchars($food['food_name'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
                                 </a>
                             </td>
+
                             <td><?php echo htmlspecialchars($food['registration_date'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($food['expire_date'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                             <td>
                                 <?php
                                 // food_amount または standard_gram を選択
                                 if ($food['total_amount'] == "") {
-                                    $amount = $food['total_gram'];
+                                    $amount = $food['total_gram']; //登録されている食材の合計のグラム
                                 } else {
-                                    $amount = $food['total_gram'] / $food['standard_gram'];
+                                    $amount = $food['total_gram'] / $food['standard_gram']; //food_masterの
                                 }
 
                                 // 数値かつ整数であれば整数に切り捨て
-                                if (is_numeric($amount) && floor($amount) == $amount) {
-                                    $formattedAmount = intval($amount);  // 整数に変換
-                                } else {
-                                    // 分数形式に変換
-                                    $formattedAmount = convertToFraction($food['total_gram'], $food['standard_gram']);
+
+                                if (is_numeric($amount)) {
+                                    if (floor($amount) == $amount) {
+                                        $formattedAmount = intval($amount);  // 整数に変換
+                                    } else {
+                                        // 分数形式に変換
+                                        $formattedAmount = convertToFraction($food['total_gram'], $food['standard_gram']);
+                                    }
                                 }
                                 ?>
                                 <?= htmlspecialchars($formattedAmount, ENT_QUOTES, 'UTF-8') ?>
