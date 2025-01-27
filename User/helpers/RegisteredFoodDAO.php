@@ -295,7 +295,7 @@ class RegisteredFoodDAO
             LEFT JOIN food_master fm ON t1.food_name = fm.food_name
             WHERE t1.member_id = :member_id
             AND t1.expire_date BETWEEN :today AND :sevenDaysLater
-            ORDER BY t1.registration_date DESC
+            ORDER BY t1.expire_date ASC
         ";
 
         $stmt = $dbh->prepare($sql);

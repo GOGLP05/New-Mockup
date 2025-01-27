@@ -7,31 +7,40 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'guest@example.com';
 // メッセージの状態を初期化
 $notification = 0;  // デフォルトはオフ(0)
 
+// データベースからnotificationの状態を取得して初期化
+try {
+    $memberDAO = new MemberDAO();
+    $notification = $memberDAO->get_notification($email); // get_notificationメソッドでDBから状態を取得
+} catch (Exception $e) {
+    // エラーハンドリング (例: ログに記録)
+    echo "<script>alert('通知設定の取得に失敗しました');</script>";
+    echo($e->getMessage());
+}
+
 // POSTリクエストが送信された場合
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // トグルスイッチの状態が送信された場合
-  if (isset($_POST['toggleSwitch'])) {
-      // スイッチがオンの場合、notificationを1に設定
-      $notification = 1;
-  } else {
-      // スイッチがオフの場合、notificationを0に設定
-      $notification = 0;
-  }
+    // トグルスイッチの状態が送信された場合
+    if (isset($_POST['toggleSwitch'])) {
+        // スイッチがオンの場合、notificationを1に設定
+        $notification = 1;
+    } else {
+        // スイッチがオフの場合、notificationを0に設定
+        $notification = 0;
+    }
 
-  // DAOを使ってnotificationの状態をデータベースに保存
-  try {
-      $memberDAO = new MemberDAO();
-      $result = $memberDAO->update_notification($email, $notification);
+    // DAOを使ってnotificationの状態をデータベースに保存
+    try {
+        $result = $memberDAO->update_notification($email, $notification);
 
-      if ($result) {
-          echo "<script>alert('通知設定が保存されました');</script>";
-      } else {
-          echo "<script>alert('通知設定の保存に失敗しました');</script>";
-      }
-  } catch (Exception $e) {
-      echo "<script>alert('エラーが発生しました');</script>";
-      echo($e->getMessage()); // エラーログを記録
-  }
+        if ($result) {
+            echo "<script>alert('通知設定が保存されました');</script>";
+        } else {
+            echo "<script>alert('通知設定の保存に失敗しました');</script>";
+        }
+    } catch (Exception $e) {
+        echo "<script>alert('エラーが発生しました');</script>";
+        echo($e->getMessage()); // エラーログを記録
+    }
 }
 
 ?>

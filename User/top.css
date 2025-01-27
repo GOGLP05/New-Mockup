@@ -15,33 +15,55 @@ img {
   object-fit: cover;
 }
 /* ログイン中のユーザー情報の表示部分 */
+/* ログイン中のユーザー情報の表示部分 */
 .user-info {
   background-color: #fff;  /* 薄いグレーの背景色 */
   border: 1px solid #ddd;  /* 薄いグレーの枠線 */
   border-radius: 10px;  /* 角を丸める */
-  padding: 15px;  /* 内側の余白 */
-  margin-bottom: 20px;  /* 下に余白 */
+  padding: 10px;  /* 内側の余白 */
+  margin-bottom: 15px;  /* 下に余白 */
   font-size: 18px;  /* フォントサイズ */
   color: #333;  /* フォントカラー */
-  display: flex;
   align-items: center;  /* 中央揃え */
-  width: auto;
+  width: 40%;
+}
+
+.tape {
+  display: flex; /* flexboxを有効にする */
+  align-items: center; /* 縦方向の中央揃え */
+  justify-content: space-between; /* 要素を左右に配置 */
+}
+
+h1 {
+  margin: 0; /* h1のデフォルトのマージンをリセット */
+}
+
+.user-info {
+  margin-left: 20px; /* h1との間に余白を追加 */
 }
 
 .user-info p {
+  text-align: center;
+ size: 3em;
   margin: 0;  /* パラグラフのデフォルトの余白をなくす */
-    /* 太字 */
   font-size: 20px;  /* ラベルのフォントサイズ */
+  font-weight: bold;  /* 太字 */
+  color: #555;  /* ラベルのカラー */
+
 }
 
 .user-info .email {
   font-size: 18px;  /* メールアドレスのフォントサイズ */
-  color: #333;  /* メールアドレスのカラー */
+  color: #4CAF50;  /* メールアドレスのカラーを緑色に */
   font-weight: normal;  /* メールアドレスは太字にしない */
+  text-transform: lowercase;  /* メールアドレスの大文字を小文字に */
+  transition: color 0.3s ease;  /* ホバー時の色変化を滑らかに */
+  cursor: pointer;  /* ポインターカーソルを表示 */
 }
 
 .user-info .email:hover {
   text-decoration: underline;  /* メールアドレスをホバーしたときに下線を表示 */
+  color: #2C9B44;  /* ホバー時に少し濃い緑に */
 }
 
 
@@ -142,3 +164,4 @@ button {
   color: white;
   border-radius: 5px;
 }
+

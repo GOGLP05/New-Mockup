@@ -55,24 +55,30 @@ if ($search_query) {
 
     <div class="content">
     <h1>食品登録</h1>
-    
-<div class="search-container">
-    <form method="GET" action="food_registration.php">
-        <input type="text" name="search" placeholder="食材名で検索" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-        <button type="submit">検索</button>
-    </form>
-</div>
+    <div class="search-and-recent-container">
+    <div class="search-container">
+        <form method="GET" action="food_registration.php">
+            <input type="text" name="search" placeholder="食品名で検索" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+            <button type="submit">検索</button>
+        </form>
+    </div>
 
 
     <div class="recent_registration">
         <button onclick="location.href='recent_food_registration.php'">最近登録した食材</button>
     </div>
+    </div>
 </div>
 
 
+
     <hr>
+
+
     <div class="content">
+
         <div class="foods">
+            
             <?php foreach ($foodmaster_list as $food): ?>
                 <?php
                 // category_idに基づいてuse_unitを取得

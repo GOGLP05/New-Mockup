@@ -66,6 +66,28 @@ class MemberDAO {
             throw new Exception('データベースエラー');
         }
     }
+    
+    public function get_notification($email) {
+        try {
+            $dbh = DAO::get_db_connect();
+            $sql = "SELECT message FROM member WHERE email = :email";  // emailに基づいてmessage（通知設定）を取得
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                return (int) $result['message'];  // notification設定（0または1）を返す
+            } else {
+                // 該当するメールアドレスが見つからない場合はデフォルトの0を返す
+                return 0;
+            }
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception('データベースエラー');
+        }
+    }
 
         public function update_notification($email, $notification) {
             try {

@@ -161,7 +161,7 @@ function convertToFraction($numerator, $denominator)
                         </td>
                         <td>
                             <!-- 編集ボタン -->
-                            <button class="change_amount"> 数量変更</button>
+                            <!--<button class="change_amount"> 数量変更</button>めんどくさそ-->
                             <!-- 削除ボタン -->
                             <button class="delete" onclick="confirmDelete('<?php echo htmlspecialchars($food['lot_no'], ENT_QUOTES, 'UTF-8'); ?>')">削除</button>
 

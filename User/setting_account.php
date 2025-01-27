@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         </form>
 
         <div class="bottom">
-            <input type="button" class="sub_content" onclick="history.back()" value="戻る">
+            <input type="button" class="sub_content" onclick="location.href='setting.php'" value="戻る">
             <input type="button" class="sub_content" onclick="confirmLogout()" value="ログアウト">
         </div>
     </div>

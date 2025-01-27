@@ -13,10 +13,56 @@ hr {
     height: 1px;
 }
 
+/* 新しいコンテナのスタイル */
+.search-and-recent-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* 検索コンテナのスタイル */
+.search-container {
+    flex: 1;
+    margin-right: 20px;
+}
+
+/* 検索ボックスのスタイル */
+.search-container input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.search-container input[type="text"]:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* 検索ボタンのスタイル */
+.search-container button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+    background-color: #45a049;
+}
+
 /* Recent registration button */
 .recent_registration {
-    text-align: right;
-    margin-right: 20px;
+    flex-shrink: 0;
 }
 
 .recent_registration button {
@@ -27,7 +73,7 @@ hr {
     background-color: #4CAF50;
     color: white;
     border-radius: 5px;
-    width: 30%;
+    width: 200px; /* ボタンの幅を調整 */
 }
 
 /* Tabs styles */
@@ -74,7 +120,6 @@ hr {
 .tab-panel.active {
     display: block;
 }
-
 
 /* Food container styles */
 .foods {
@@ -160,7 +205,6 @@ hr {
 .popup-close:hover {
     color: #d9534f;  /* ホバー時の色を赤に変更 */
 }
-
 
 .popup h2 {
     font-size: 20px;
