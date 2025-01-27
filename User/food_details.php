@@ -24,6 +24,22 @@ if (!$food_name) {
 // 特定の食品のデータを取得
 $foods = $RegisteredFood->get_foods_by_name_and_member($food_name, $member_id);
 
+// 表示するデータがない場合はlist_of_food.phpにリダイレクト
+if (empty($foods)) {
+    header('Location: list_of_food.php');
+    exit;
+}
+
+// 食品名が指定されている場合、その食品のみを取得
+$food_name = $_GET['food_name'] ?? null;
+if (!$food_name) {
+    header('Location: list_of_food.php'); // 食品名がない場合は一覧ページにリダイレクト
+    exit;
+}
+
+// 特定の食品のデータを取得
+$foods = $RegisteredFood->get_foods_by_name_and_member($food_name, $member_id);
+
 if (empty($foods)) {
     echo "該当する食品が見つかりませんでした。";
     exit;
@@ -106,6 +122,7 @@ function convertToFraction($numerator, $denominator)
                     <th>登録日時</th>
                     <th>使い切り期限</th>
                     <th>数量</th>
+                    <th>操作</th> <!-- 操作列を追加 -->
                 </tr>
             </thead>
             <tbody>
@@ -122,11 +139,9 @@ function convertToFraction($numerator, $denominator)
                             }
                             ?>
                         </td>
-
                         <td><?php echo htmlspecialchars($food['expire_date'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                         <td>
                             <?php
-
                             if ($food['food_amount'] == "") {
                                 $amount = $food['standard_gram'];
                             } else {
@@ -144,6 +159,13 @@ function convertToFraction($numerator, $denominator)
                             <?= htmlspecialchars($formattedAmount, ENT_QUOTES, 'UTF-8') ?>
                             <?php echo htmlspecialchars($CategoryDAO->get_use_unit_by_category_id($food['category_id']) ?? '', ENT_QUOTES, 'UTF-8'); ?>
                         </td>
+                        <td>
+                            <!-- 編集ボタン -->
+                            <button class="change_amount"> 数量変更</button>
+                            <!-- 削除ボタン -->
+                            <button class="delete" onclick="confirmDelete('<?php echo htmlspecialchars($food['lot_no'], ENT_QUOTES, 'UTF-8'); ?>')">削除</button>
+
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -155,3 +177,12 @@ function convertToFraction($numerator, $denominator)
 </body>
 
 </html>
+
+<script>
+function confirmDelete(lot_no) {
+    if (confirm("本当に削除しますか？")) {
+        // 削除処理を実行
+        window.location.href = `helpers/delete_food.php?lot_no=${lot_no}`;
+    }
+}
+</script>

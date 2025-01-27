@@ -8,7 +8,6 @@ table {
 
 th, td {
     padding: 15px;
-    text-align: left;
     border: 1px solid #ddd;
 }
 
@@ -16,11 +15,13 @@ th {
     background-color: #f2f2f2;
     font-weight: bold;
     color: #444;
+    text-align: center;
 }
 
 td {
     background-color: #ffffff;
     color: #333;
+    text-align: center;
 }
 
 tr:hover {
@@ -38,8 +39,32 @@ a {
     color: #3498db; /* リンクの色を変更 */
     font-weight: 600;
 }
-
-
+button {
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50; /* ボタン背景色 */
+    color: white; /* 文字色 */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 35%;
+  }
+  
+  button:hover {
+    transform: scale(1.05); /* ホバー時に少し大きくなる */
+  }
+  
+  button:active {
+    transform: scale(1); /* クリック時に元の大きさに戻る */
+  }
+  
+  button:focus {
+    outline: none; /* フォーカス時のアウトラインを削除 */
+  }
+.delete{
+    background-color: #e4332d;
+}
 
 .content {
     margin-top: 5%;

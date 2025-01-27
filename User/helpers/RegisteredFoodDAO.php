@@ -124,16 +124,15 @@ class RegisteredFoodDAO
         }
     }
 
-    // 食品データを削除する
-    public function delete_food_by_lot_no(string $lot_no)
+    public function delete_food_by_lot_no(string $lot_no): bool
     {
         try {
             $dbh = DAO::get_db_connect();
-
+    
             $sql = "DELETE FROM registrated_food WHERE lot_no = :lot_no";
             $stmt = $dbh->prepare($sql);
-            $stmt->bindValue(':lot_no', $lot_no, PDO::PARAM_INT);
-
+            $stmt->bindValue(':lot_no', $lot_no, PDO::PARAM_STR);
+    
             return $stmt->execute();
         } catch (PDOException $e) {
             error_log($e->getMessage());
