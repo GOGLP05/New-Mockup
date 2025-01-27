@@ -1,4 +1,5 @@
 <?php
+session_start(); // セッションを開始
 require_once 'helpers/MemberDAO.php';
 $memberDAO = new MemberDAO();
 $member_emails = $memberDAO->get_member_email();
@@ -18,6 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($email_exists) {
+        // メールアドレスをセッションに保存
+        $_SESSION['email'] = $input_email;
+
         // メールアドレスが存在した場合、そのまま送信（リダイレクト）
         header('Location: helpers/send_otp.php?email=' . urlencode($input_email));
         exit(); // 必ずスクリプトを終了する
@@ -33,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,20 +45,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="change_password_email.css">
     <title>パスワード再設定 - メールアドレス入力</title>
 </head>
+
 <body class="content">
     <h1>パスワード再設定</h1>
-    
+
     <?php
     // エラーメッセージを表示
     if (isset($error_message)) {
         echo "<p style='color:red;'>$error_message</p>";
     }
     ?>
-    
+
     <form action="" method="post">
         <label for="email">メールアドレス:</label>
         <input type="email" id="email" name="email" required>
         <button type="submit">送信</button>
     </form>
 </body>
+
 </html>
