@@ -4,21 +4,23 @@ require_once 'helpers/FoodMasterDAO.php';
 require_once 'helpers/CategoryDAO.php';
 
 session_start(); // セッションを開始
-if (!isset($_SESSION['member_id'])) {
-    die('ログインしてください。');
-}
 
-$member_id = $_SESSION['member_id']; // セッションからmember_idを取得
+// member_id がセッションに存在しているか確認
+if (!isset($_SESSION['member_id'])) {
+    // セッションがない場合はエラーメッセージを表示
+    echo "ログインが必要です。";
+    exit;
+}
+$FoodMasterDAO = new FoodMasterDAO();
+$member_id = $_SESSION['member_id'];
 $FoodMasterDAO = new FoodMasterDAO();
 $RegisteredFoodDAO = new RegisteredFoodDAO();
 $CategoryDAO = new CategoryDAO();
-
 try {
     $foodmaster_list = $RegisteredFoodDAO->get_registered_foods_with_images_by_member($member_id);
 } catch (Exception $e) {
     die('データの取得に失敗しました: ' . htmlspecialchars($e->getMessage()));
 }
-var_dump($foodmaster_list);
 ?>
 
 <!DOCTYPE html>
@@ -29,8 +31,7 @@ var_dump($foodmaster_list);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="food_registration.css">
-    <title>最近登録した食品</title>
-    <script src="pop_up.js" defer></script>
+    <title>食品登録</title>
 </head>
 
 <body>
@@ -47,8 +48,9 @@ var_dump($foodmaster_list);
     </ul>
 
     <div class="content">
-        <h1>最近登録した食品</h1>
+        <h1>最近登録した食材</h1>
         <div class="recent_registration"> <button onclick="location.href='food_registration.php'">戻る</button> </div>
+
     </div>
 
     <hr>
@@ -58,18 +60,20 @@ var_dump($foodmaster_list);
                 <?php
                 // category_idに基づいてuse_unitを取得
                 $use_unit = $CategoryDAO->get_use_unit_by_category_id($food->category_id);
-                echo $use_unit;
                 ?>
                 <div class="button-container">
-                    
-                    <button class="button" onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>','<?php echo $member_id; ?>', '<?php echo $use_unit; ?>')" title="<?php echo htmlspecialchars($food->food_name); ?>">
-                        <img src="<?php echo htmlspecialchars($food->food_file_path); ?>" alt="<?php echo htmlspecialchars($food->food_name); ?>" class="food-image">
+                <?php //echo htmlspecialchars($CategoryDAO->get_use_unit_by_category_id($food->category_id)); ?>
+                    <button class="button"
+                        onclick="showPopup('<?php echo htmlspecialchars($food->food_name); ?>', '<?php echo htmlspecialchars($food->food_id); ?>', '<?php echo $member_id; ?>', '<?php echo $use_unit; ?>')"
+                        title="<?php echo htmlspecialchars($food->food_name); ?>">
+                        <img src="<?php echo htmlspecialchars($food->food_file_path); ?>"
+                            alt="<?php echo htmlspecialchars($food->food_name); ?>"
+                            class="food-image">
                     </button>
                     <div class="food-name"><?php echo htmlspecialchars($food->food_name); ?></div>
                 </div>
             <?php endforeach; ?>
         </div>
-
     </div>
 
     <div id="popup" class="popup" style="display: none;">
@@ -83,7 +87,7 @@ var_dump($foodmaster_list);
                 
                 <input type="hidden" id="useUnit" name="useUnit">
                 <label for="count"><?php echo htmlspecialchars($use_unit); ?>:</label>
-                <input type="text" id="count" name="count" required><br><br>
+                <input type="number" id="count" name="count" required><br><br>
 
                 <label for="date">購入日:</label>
                 <input type="date" id="date" name="date" required><br><br>

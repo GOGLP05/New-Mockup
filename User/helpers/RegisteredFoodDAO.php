@@ -148,14 +148,15 @@ class RegisteredFoodDAO
 
         $sql = "
             SELECT DISTINCT 
-                fm.food_name, 
+                fm.food_name,
+                fm.food_id, 
                 fm.food_file_path, 
                 fm.category_id, -- category_idを追加
                 MAX(rf.lot_no) AS latest_lot_no
             FROM food_master fm
             INNER JOIN registrated_food rf ON fm.food_name = rf.food_name
             WHERE rf.member_id = :member_id
-            GROUP BY fm.food_name, fm.food_file_path, fm.category_id -- GROUP BYにcategory_idを追加
+            GROUP BY fm.food_name,fm.food_id, fm.food_file_path, fm.category_id -- GROUP BYにcategory_idを追加
             ORDER BY latest_lot_no DESC
             OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY;
         ";

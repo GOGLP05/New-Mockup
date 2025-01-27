@@ -45,7 +45,14 @@ class FoodMasterDAO
     }
 
 
-
+    public function get_foods_by_name($search) {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT * FROM food_master WHERE food_name LIKE :search";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
 
     public function update_food_amount_by_lot($foodId, $lotNo, $newAmount)

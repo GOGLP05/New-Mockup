@@ -146,14 +146,21 @@ hr {
     text-align: center;
 }
 
+/* Popup close button */
 .popup-close {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    top: 1px;  /* 上から10px */
+    right: 15px;  /* 右から15px */
     cursor: pointer;
-    font-size: 24px;
-    color: #333;
+    font-size: 28px;  /* ボタンのサイズを大きく */
+    color: #333;  /* 文字色 */
+    transition: color 0.3s ease;  /* 色の変化にトランジション効果 */
 }
+
+.popup-close:hover {
+    color: #d9534f;  /* ホバー時の色を赤に変更 */
+}
+
 
 .popup h2 {
     font-size: 20px;
@@ -176,7 +183,7 @@ hr {
 .popup form input {
     margin-bottom: 15px;
     padding: 10px;
-    width: 80%;
+    width: 60%;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;

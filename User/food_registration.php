@@ -15,8 +15,19 @@ $member_id = $_SESSION['member_id'];
 $FoodMasterDAO = new FoodMasterDAO();
 $CategoryDAO = new CategoryDAO();
 
-$foodmaster_list = $FoodMasterDAO->get_foods();
+// 検索ワードを取得（GETメソッド）
+$search_query = isset($_GET['search']) ? $_GET['search'] : '';
+
+// 食品のリストを取得
+if ($search_query) {
+    // 検索キーワードが存在する場合、キーワードを含む食品を取得
+    $foodmaster_list = $FoodMasterDAO->get_foods_by_name($search_query);
+} else {
+    // 検索キーワードがない場合は、すべての食品を取得
+    $foodmaster_list = $FoodMasterDAO->get_foods();
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -43,10 +54,21 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
     </ul>
 
     <div class="content">
-        <h1>食品登録</h1>
-        <div class="recent_registration"> <button onclick="location.href='recent_food_registration.php'">最近登録した食材</button> </div>
+    <h1>食品登録</h1>
+    
+<div class="search-container">
+    <form method="GET" action="food_registration.php">
+        <input type="text" name="search" placeholder="食材名で検索" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+        <button type="submit">検索</button>
+    </form>
+</div>
 
+
+    <div class="recent_registration">
+        <button onclick="location.href='recent_food_registration.php'">最近登録した食材</button>
     </div>
+</div>
+
 
     <hr>
     <div class="content">
@@ -82,7 +104,7 @@ $foodmaster_list = $FoodMasterDAO->get_foods();
                 
                 <input type="hidden" id="useUnit" name="useUnit">
                 <label for="count"><?php echo htmlspecialchars($use_unit); ?>:</label>
-                <input type="text" id="count" name="count" required><br><br>
+                <input type="number" id="count" name="count" required><br><br>
 
                 <label for="date">購入日:</label>
                 <input type="date" id="date" name="date" required><br><br>

@@ -12,9 +12,15 @@ require_once 'helpers/RegisteredFoodDAO.php';
 require_once 'helpers/DAO.php';
 require_once 'helpers/RecipeChecker.php';
 require_once 'helpers/CategoryDAO.php';
+require_once 'helpers/MemberDAO.php';  // MemberDAOをインクルード
 
 // ユーザーIDを取得
 $member_id = $_SESSION['member_id'];
+
+// MemberDAOインスタンスを作成し、ユーザー情報を取得
+$memberDAO = new MemberDAO();
+$member = $memberDAO->get_member_by_id($member_id);  // member_idを使って情報を取得
+$email = $member->email ?? 'メールアドレスが不明';  // メールアドレスが存在しない場合のデフォルトメッセージ
 
 // RecipeCheckerインスタンスを作成し、作れるレシピを取得
 $recipeChecker = new RecipeChecker();
@@ -53,6 +59,13 @@ $expiringSoonFoods = $foodDAO->get_expiring_soon_foods_by_member($member_id);
     </div>
 
     <div class="content">
+        <!-- メールアドレス表示 -->
+        <div class="user-info">
+    <p>ログイン中のユーザー:</p>
+    <span class="email"><?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8') ?></span>
+</div>
+
+
         <div class="tape">
             <h1>作れる料理</h1>
         </div>
