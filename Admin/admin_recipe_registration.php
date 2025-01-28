@@ -117,7 +117,7 @@ if (isset($_GET['id'])) {
                             <th>算出用値</th>
                         </tr>
                     </thead>
-                
+        
                         <tr>
                         <td>じゃがいも</td>
                             <td>1/4</td>
