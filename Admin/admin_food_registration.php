@@ -12,6 +12,27 @@ foreach ($categories as $category) {
     $category_ids[$category['category_name']] = $category['category_id'];
 }
 
+// アップロード先ディレクトリ
+$uploadDir = 'uploads/';
+
+// ディレクトリが存在しない場合、作成
+if (!file_exists($uploadDir)) {
+    mkdir($uploadDir, 0777, true); // フォルダの作成
+}
+
+// アップロードファイルの処理
+if (isset($_FILES['image'])) {
+    $fileName = $_FILES['image']['name'];
+    $fileTmpPath = $_FILES['image']['tmp_name'];
+    $fileDestPath = $uploadDir . $fileName;
+
+    // ファイルを指定したディレクトリに移動
+    if (move_uploaded_file($fileTmpPath, $fileDestPath)) {
+        echo "ファイルがアップロードされました。";
+    } else {
+        echo "ファイルのアップロードに失敗しました。";
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // フォームから送信されたデータを取得
@@ -37,21 +58,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // 「更新」ボタンが押された場合
-    if (isset($_POST['update'])) {
-        // 食品IDが存在する場合、更新処理
-        if ($food_id) {
-            $existing_food = $FoodMasterDAO->get_food_by_name($food_name);
-            if ($existing_food && $existing_food->food_id !== $food_id) {
-                echo "この食品名はすでに存在します。";
-            } else {
-                // 更新処理
-                $FoodMasterDAO->update_food($food_id, $food_name, $expiry_date, $food_file_path, $category_id, $standard_gram, $category_name);
-                header("Location: admin_list_of_food.php");
-                exit;
-            }
-        }
+// 「更新」ボタンが押された場合
+if (isset($_POST['update'])) {
+    // 食品IDが存在する場合、更新処理
+    if ($food_id) {
+        // 既存食品名の重複チェックを削除（必要ならコメントアウトしておいても良い）
+        // $existing_food = $FoodMasterDAO->get_food_by_name($food_name);
+        // if ($existing_food && $existing_food->food_id !== $food_id) {
+        //     echo "この食品名はすでに存在します。";
+        // } else {
+        // 更新処理
+        $FoodMasterDAO->update_food($food_id, $food_name, $expiry_date, $food_file_path, $category_id, $standard_gram, $category_name);
+        header("Location: admin_list_of_food.php");
+        exit;
+        // }
     }
+}
     // 「追加」ボタンが押された場合
     else if (isset($_POST['add'])) {
         // 新規追加処理

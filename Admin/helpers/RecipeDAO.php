@@ -20,6 +20,12 @@ class Recipe {
 }
 
 class RecipeDAO {
+        private $pdo; // プロパティを明示的に宣言
+    
+        public function __construct() {
+            $this->pdo = DAO::get_db_connect(); // 宣言済みプロパティを利用
+        }
+    
     // レシピ一覧を取得
     public function get_recipes() {
         $dbh = DAO::get_db_connect();
@@ -118,5 +124,22 @@ class RecipeDAO {
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['use_unit'] ?? '0'; // データがない場合はデフォルトで '0' を返す
+    }
+
+
+    // 食品リストを取得
+    public function get_all_foods() {
+        $sql = "SELECT food_id, food_name FROM food_master ORDER BY food_name";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 調味料リストを取得
+    public function get_all_seasonings() {
+        $sql = "SELECT seasoning_id, seasoning_name FROM seasoning_master ORDER BY seasoning_name";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
