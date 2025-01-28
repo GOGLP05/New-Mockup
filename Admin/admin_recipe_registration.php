@@ -117,7 +117,30 @@ if (isset($_GET['id'])) {
                             <th>算出用値</th>
                         </tr>
                     </thead>
-                    <tbody id="ingredientsTable">
+                
+                        <tr>
+                        <td>じゃがいも</td>
+                            <td>1/4</td>
+
+                            <td>
+                                <select>
+                                    <option>
+                                        g
+                                    </option>
+                                    <option>
+                                        個
+                                    </option>
+                                    <option>
+                                        本
+                                    </option>
+
+                                </select>
+                            </td>
+
+                            <td>50</td>
+                        </tr>
+
+<!--                    <tbody id="ingredientsTable">
                         <?php if ($recipe && !empty($recipe->ingredients)) : ?>
                             <?php foreach ($recipe->ingredients as $ingredient) : ?>
                                 <tr>
@@ -138,7 +161,7 @@ if (isset($_GET['id'])) {
                                         <select name="ingredient_unit[]">
                                             <option value="g" >g</option>
                                             <option value="個" >個</option>
-                                            <option value="本" >本</option>
+                                            <option value="ml" >ml</option>
                                         </select>
                                     </td>
                                     <td>
@@ -164,7 +187,7 @@ if (isset($_GET['id'])) {
                                         <select name="ingredient_unit[]">
                                             <option value="g">g</option>
                                             <option value="個">個</option>
-                                            <option value="本">本</option>
+                                            <option value="ml">ml</option>
                                         </select>
                                     </td>
                                     <td><input type="text" name="ingredient_value[]"></td>
@@ -172,9 +195,10 @@ if (isset($_GET['id'])) {
                             <?php endfor; ?>
                         <?php endif; ?>
                     </tbody>
+                    --->
                 </table>
-            <button type="button" class="add-row-button btn btn-primary">行を追加</button>
-
+            <!--<button type="button" class="add-row-button btn btn-primary">行を追加</button>
+                                            -->
             <h2>利用調味料</h2>
             <table class="ingredients-table">
                 <thead>
@@ -183,7 +207,27 @@ if (isset($_GET['id'])) {
                         <th>単位</th>
                     </tr>
                 </thead>
-                <tbody id="ingredientsTable2">
+                        <tr>
+                            <td>
+                                しょうゆ
+                            </td>
+                            <td>
+                                <select>
+                                    <option>
+                                        g
+                                    </option>
+                                    <option>
+                                        ml
+                                    </option>
+                                    <option>
+                                        枚
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+
+<!--                <tbody id="ingredientsTable2">
                     <?php if ($recipe && !empty($recipe->seasonings)) : ?>
                         <?php foreach ($recipe->seasonings as $seasoning) : ?>
                             <tr>
@@ -230,10 +274,11 @@ if (isset($_GET['id'])) {
                         <?php endfor; ?>
                     <?php endif; ?>
                 </tbody>
+                                        -->
             </table>
 
-                <button type="button" class="add-row-button2 btn btn-primary">行を追加</button>
-
+                <!--<button type="button" class="add-row-button2 btn btn-primary">行を追加</button>
+                                        -->
                 <!-- 手順 -->
                 <h2>手順</h2>
                 <div id="steps">
