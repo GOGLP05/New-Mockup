@@ -142,4 +142,13 @@ class RecipeDAO {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function update_recipe(){
+
+    }
+
+    public function add_recipe(){
+
+    }
+
 }
