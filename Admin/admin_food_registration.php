@@ -13,7 +13,7 @@ foreach ($categories as $category) {
 }
 
 // アップロード先ディレクトリ
-$uploadDir = 'uploads/';
+$uploadDir = 'img/foods/';
 
 // ディレクトリが存在しない場合、作成
 if (!file_exists($uploadDir)) {
@@ -46,32 +46,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // カテゴリIDを取得
     $category_id = isset($category_ids[$category_name]) ? $category_ids[$category_name] : '';
 
-    // 画像のアップロード処理
-    $food_file_path = '';
-    if (isset($_FILES['food_file_path']) && $_FILES['food_file_path']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = 'uploads/';
-        $file_name = basename($_FILES['food_file_path']['name']);
-        $file_path = $upload_dir . $file_name;
+// 画像のアップロード処理
+$food_file_path = $food_details->food_file_path ?? ''; // 既存のファイルパスを初期値として設定
+if (isset($_FILES['food_file_path']) && $_FILES['food_file_path']['error'] === UPLOAD_ERR_OK) {
+    $upload_dir = 'img/foods/';
+    $file_name = basename($_FILES['food_file_path']['name']);
+    $file_path = $upload_dir . $file_name;
 
-        if (move_uploaded_file($_FILES['food_file_path']['tmp_name'], $file_path)) {
-            $food_file_path = $file_path;
-        }
+    if (move_uploaded_file($_FILES['food_file_path']['tmp_name'], $file_path)) {
+        $food_file_path = $file_path; // 新しいファイルパスを設定
     }
+}
 
 // 「更新」ボタンが押された場合
 if (isset($_POST['update'])) {
     // 食品IDが存在する場合、更新処理
     if ($food_id) {
-        // 既存食品名の重複チェックを削除（必要ならコメントアウトしておいても良い）
-        // $existing_food = $FoodMasterDAO->get_food_by_name($food_name);
-        // if ($existing_food && $existing_food->food_id !== $food_id) {
-        //     echo "この食品名はすでに存在します。";
-        // } else {
-        // 更新処理
         $FoodMasterDAO->update_food($food_id, $food_name, $expiry_date, $food_file_path, $category_id, $standard_gram, $category_name);
         header("Location: admin_list_of_food.php");
         exit;
-        // }
     }
 }
     // 「追加」ボタンが押された場合

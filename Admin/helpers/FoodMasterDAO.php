@@ -115,22 +115,36 @@ public function insert_food($food_name, $expiry_date, $food_file_path, $category
     return $stmt->execute();
 }
 
-    // 更新メソッド
-    public function update_food($food_id, $food_name, $expiry_date, $food_file_path, $category_id, $standard_gram, $category_name) {
-        $query = "UPDATE food_master 
-                  SET food_name = ?, expiry_date = ?, food_file_path = ?, category_id = ?, standard_gram = ?, category_name = ? 
-                  WHERE food_id = ?";
-        // データベース操作
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(1, $food_name, PDO::PARAM_STR);
-        $stmt->bindValue(2, $expiry_date, PDO::PARAM_STR);
-        $stmt->bindValue(3, $food_file_path, PDO::PARAM_STR);
-        $stmt->bindValue(4, $category_id, PDO::PARAM_STR);
-        $stmt->bindValue(5, $standard_gram, PDO::PARAM_STR);
-        $stmt->bindValue(6, $category_name, PDO::PARAM_STR);
-        $stmt->bindValue(7, $food_id, PDO::PARAM_INT);
-        return $stmt->execute();
+public function update_food($food_id, $food_name, $expiry_date, $food_file_path, $category_id, $standard_gram, $category_name) {
+    // food_file_path を動的に更新するためのSQLクエリ
+    $query = "UPDATE food_master 
+              SET food_name = ?, expiry_date = ?, category_id = ?, standard_gram = ?, category_name = ?";
+    
+    // food_file_path が空でない場合に更新
+    if (!empty($food_file_path)) {
+        $query .= ", food_file_path = ?";
     }
+    
+    $query .= " WHERE food_id = ?";
+    
+    // データベース操作
+    $stmt = $this->pdo->prepare($query);
+    $stmt->bindValue(1, $food_name, PDO::PARAM_STR);
+    $stmt->bindValue(2, $expiry_date, PDO::PARAM_STR);
+    $stmt->bindValue(3, $category_id, PDO::PARAM_STR);
+    $stmt->bindValue(4, $standard_gram, PDO::PARAM_STR);
+    $stmt->bindValue(5, $category_name, PDO::PARAM_STR);
+    
+    // food_file_path が指定されている場合のみバインド
+    if (!empty($food_file_path)) {
+        $stmt->bindValue(6, $food_file_path, PDO::PARAM_STR);
+        $stmt->bindValue(7, $food_id, PDO::PARAM_INT);
+    } else {
+        $stmt->bindValue(6, $food_id, PDO::PARAM_INT);
+    }
+    
+    return $stmt->execute();
+}
 
     public function get_all_categories() {
         try {
