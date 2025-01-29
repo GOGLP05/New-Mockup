@@ -83,4 +83,89 @@ class CategoryDAO {
         $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function get_use_unit_by_category_id($categoryId)
+    {
+        try {
+            // DB接続を取得
+            $dbh = DAO::get_db_connect();
+            error_log("DB接続成功");
+
+            // SQL文の準備
+            $sql = "SELECT use_unit FROM category WHERE category_id = :category_id";
+            $stmt = $dbh->prepare($sql);
+
+            // パラメータをバインド
+            $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
+
+            // SQLを実行
+            $stmt->execute();
+            error_log("SQL実行成功: category_id = $categoryId");
+
+            // 結果をフェッチ
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                error_log("取得した結果: " . print_r($result, true));
+                $useUnit = $result['use_unit'];
+
+                if ($useUnit == 1) {
+                    return "個";
+                } elseif ($useUnit == 0) {
+                    return "g";
+                } elseif ($useUnit == 3) {
+                    return "ml";
+                } else {
+                    error_log("予期しないuse_unitの値: $useUnit");
+                    return 'エラーです';
+                }
+            } else {
+                error_log("カテゴリID $categoryId に対応する結果が見つかりません");
+                return 'エラーです';
+            }
+        } catch (PDOException $e) {
+            // 例外が発生した場合のログ出力
+            error_log("データベースエラー: " . $e->getMessage());
+            return 'エラーです';
+        } catch (Exception $e) {
+            // その他の例外
+            error_log("予期しないエラー: " . $e->getMessage());
+            return 'エラーです';
+        }
+    }
+
+    public function get_category_id_by_food_id($food_id) {
+        try {
+            // DB接続を取得
+            $dbh = DAO::get_db_connect();
+
+            // SQL文の準備
+            $sql = "SELECT category_id FROM category WHERE food_id = :food_id";
+            $stmt = $dbh->prepare($sql);
+
+            // パラメータをバインド
+            $stmt->bindValue(':food_id', $food_id, PDO::PARAM_INT);
+
+            // SQLを実行
+            $stmt->execute();
+
+            // 結果をフェッチ
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                return $result['category_id'];
+            } else {
+                error_log("食品ID $food_id に対応するカテゴリIDが見つかりません");
+                return null; // 見つからなかった場合はnullを返す
+            }
+        } catch (PDOException $e) {
+            // 例外が発生した場合のログ出力
+            error_log("データベースエラー: " . $e->getMessage());
+            return null; // エラー時はnullを返す
+        } catch (Exception $e) {
+            // その他の例外
+            error_log("予期しないエラー: " . $e->getMessage());
+            return null; // エラー時はnullを返す
+        }
+    }
 }

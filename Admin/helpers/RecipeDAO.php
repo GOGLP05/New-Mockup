@@ -76,7 +76,7 @@ class RecipeDAO {
     public function get_ingredients_by_recipe_id($recipeId) {
         $dbh = DAO::get_db_connect();
         $sql = "
-            SELECT fm.food_name, ri.calculation_use, ri.display_use
+            SELECT fm.food_id,fm.food_name, ri.calculation_use, ri.display_use
             FROM recipe_ingredients ri
             JOIN food_master fm ON ri.food_id = fm.food_id
             WHERE ri.recipe_id = :recipeId
@@ -90,7 +90,7 @@ class RecipeDAO {
             $ingredients[] = $row;
         }
 
-        return $ingredients ?: []; // データがない場合は空配列を返す
+        return $ingredients; // データがない場合は空配列を返す
     }
 
     // レシピに必要な調味料を取得

@@ -31,6 +31,30 @@ class FoodMasterDAO {
         return $data;
     }
 
+    public function get_category_by_food_id($food_id) {
+        $sql = "SELECT category_id FROM food_master WHERE food_id = :food_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':food_id', $food_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = [];
+        while ($row = $stmt->fetchObject('FoodMaster')) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    public function get_calculation_and_display_use_by_food_id($food_id) {
+        // SQLクエリを実行して結果を取得
+        $query = "SELECT calculation_use, display_use FROM foods WHERE food_id = :food_id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':food_id', $food_id, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        // 結果を返す
+        return $stmt->fetch(PDO::FETCH_ASSOC);  // calculation_use と display_use を含む連想配列
+    }
+    
+
     public function get_name_and_path() {
         $sql = "SELECT food_name, food_file_path FROM food_master";
         $stmt = $this->pdo->prepare($sql);
