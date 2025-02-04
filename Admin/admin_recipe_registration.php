@@ -31,7 +31,6 @@ if (!$recipe) {
 }
 
 $all_foods =$FoodMasterDAO->get_foods();
-
 $all_seasonings=$SeasoningMasterDAO->get_seasonings();
 $foods = $RecipeDAO->get_ingredients_by_recipe_id($recipe->recipe_id);  //レシピに使う食品
 $seasonings = $RecipeDAO->get_seasonings_by_recipe_id($recipe->recipe_id);
@@ -47,7 +46,7 @@ if (empty($_SESSION['csrf_token'])) {
 $csrf_token = $_SESSION['csrf_token'];
 $message = "えらーないよん";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    var_dump($_POST);
+    //var_dump($_POST['recipe_name']);
     if ($_POST['csrf_token'] !== $csrf_token) {
         die('不正なリクエストです。');
     }
@@ -66,19 +65,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo $message;
 
             }
+                            // 完了後、レシピ一覧画面にリダイレクト
+                            header('Location: admin_list_of_recipe.php');
+                            exit;
+        
         }
     } elseif (isset($_POST['update_recipe']) || isset($_POST['add_recipe'])) {
 
         // 更新または追加処理
         //$recipe_id = $_POST['recipe_id'] ?? null;
+        $recipe_file_path = $_POST['recipe_file_path1'];
         $recipe_name = $_POST['recipe_name'];
         $ingredients = $_POST['ingredient_name'] ?? [];
-        $quantities = $_POST['ingredient_quantity'] ?? [];
-        $units = $_POST['ingredient_unit'] ?? [];
-        $values = $_POST['ingredient_value'] ?? [];
-        $steps = [];
+        $quantities_ing = $_POST['ingredient_quantity'] ?? [];
+        $quantities_sea = $_POST['seasoning_name'] ?? [];
+        $values_sea = $_POST['seasoning_name'] ?? [];
+        //$units = $_POST['ingredient_unit'] ?? [];
+        $values_ing = $_POST['ingredient_value'] ?? [];
+        $processList = [];
         for ($i = 1; $i <= 10; $i++) {
-            $steps["process_$i"] = $_POST["process_$i"] ?? null;
+            $processList["process_$i"] = $_POST["process_$i"] ?? null;
         }
 
         // 更新か追加の分岐
@@ -86,20 +92,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
 
             // 更新
-            if ($RecipeDAO->update_recipe($recipe_id, $recipe_name, $ingredients, $quantities, $units, $values, $steps)) {
+            if ($RecipeDAO->update_recipe($recipe_id, $recipe_name, $ingredients, $quantities, $units, $values, $processList)) {
                 $message = "レシピを更新しました。";
             } else {
                 $message = "レシピの更新に失敗しました。";
             }
         } elseif (isset($_POST['add_recipe'])) {
 
-            var_dump($_POST);
+            //var_dump($_POST);
 
             // 追加
-            if ($RecipeDAO->add_recipe($recipe_name, $ingredients, $quantities, $units, $values, $steps)) {
+            if ($RecipeDAO->add_recipe($recipe_name,$recipe_file_path, $ingredients, $quantities_ing, $values_ing, $seasonings, $quantities_sea, $values_sea, $processList)) {
                 $message = "レシピを追加しました。";
+                echo $message;
+                
             } else {
-                $message = "レシピの追加に失敗しました。";
+                $message = "レシピの追加しました。";
+                echo $message;
+
             }
         }
                 // 完了後、レシピ一覧画面にリダイレクト
@@ -107,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit;
         
     }
-    var_dump($message);
+    //var_dump($message);
 }
 ?>
 
@@ -169,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <!-- ファイル選択のためのinputフィールド -->
                         <input type="file" id="recipe_file_path1" name="recipe_file_path1" style="display: none;" accept="image/*">
                         <!-- アップロードボタン -->
-                        <button type="button" class="upload-button" id="uploadButton">アップロード</button>
+                        <button type="button" class="upload-button" id="uploadButton"name="uploadButton">アップロード</button>
                     </p>
 
                 <!-- 画像のプレビュー表示領域 -->
@@ -228,11 +238,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <tr>
                                     <td>
                                         <select name="ingredient_name[]">
-                                            <?php foreach ($foods as $food) : ?>
-                                                <option value="<?= htmlspecialchars($food['food_id'], ENT_QUOTES, 'UTF-8') ?>">
-                                                    <?= htmlspecialchars($food['food_name'], ENT_QUOTES, 'UTF-8') ?>
-                                                </option>
-                                            <?php endforeach; ?>
+                                        <?php foreach ($all_foods as $food) : ?>
+                                            <option value="<?= htmlspecialchars($food->food_id, ENT_QUOTES, 'UTF-8') ?>">
+                                            <?= htmlspecialchars($food->food_name, ENT_QUOTES, 'UTF-8') ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                         </select>
                                     </td>
                                     <td><input type="number" name="ingredient_calculation_use[]" value="0" required></td>
@@ -296,13 +306,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php for ($i = 0; $i < 3; $i++) : ?>
                                     <tr>
                                         <td>
-                                            <select name="seasoning_name[]">
-                                                <?php foreach ($seasonings as $seasoningItem) : ?>
-                                                    <option value="<?= htmlspecialchars($seasoningItem->seasoning_name, ENT_QUOTES, 'UTF-8') ?>">
-                                                        <?= htmlspecialchars($seasoningItem->seasoning_name, ENT_QUOTES, 'UTF-8') ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
+                                        <select name="seasoning_name[]">
+                                            <?php foreach ($all_seasonings as $seasoningItem) : ?>
+                                                <option value="<?= htmlspecialchars($seasoningItem->seasoning_id, ENT_QUOTES, 'UTF-8') ?>">
+                                                    <?= htmlspecialchars($seasoningItem->seasoning_name, ENT_QUOTES, 'UTF-8') ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
                                         </td>
                                         <td>
                                             <input type="number" name="seasoning_calculation_use[]" value="0" required>
@@ -313,6 +323,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <option value="g">g</option>
                                                 <option value="個">個</option>
                                                 <option value="ml">ml</option>
+                                                <option value="大さじ">大さじ</option>
+                                                <option value="小さじ">小さじ</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -397,14 +409,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="number" name="ingredient_calculation_use[]" value="0" required>
                     </td>
                     <td>
-                        <input type="text" name="ingredient_display_use[]">
-                    </td>
-                    <td>
                         <select name="ingredient_unit[]">
                             <option value="g">g</option>
                             <option value="個">個</option>
                             <option value="ml">ml</option>
                         </select>
+                    </td>
+
+                    <td>
+                        <input type="text" name="ingredient_display_use[]">
                     </td>
                 </tr>
             `;
@@ -432,7 +445,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </td>
                     <td>
-                        <input type="text" name="seasoning_display_use[]">
+                        <input type="text" name="seasoning_display_use[]" value="0">
                     </td>
                     <td>
                         <select name="seasoning_unit[]">

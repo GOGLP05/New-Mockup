@@ -144,60 +144,87 @@ public function get_ingredients_by_recipe_id($recipeId) {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+                            //recipe_name,$recipe_file_path, $ingredients, $quantities_ing, $values_ing, $seasonings, $quantities_sea, $values_sea, $processList
+    public function add_recipe($recipe_name,$recipe_file_path,$ingredients, $quantities_ing, $values_ing,$seasonings, $quantities_sea, $values_sea,$processList) {
+        $i = 0;
+        $processListInsert = "";
+        $processListBind = "";
+        for($i = 1; $i <= count($processList);$i++){
+            $processListInsert .= ", process_".$i;
 
-// レシピを追加
-public function add_recipe($recipe_name, $ingredients, $quantities, $units, $values, $steps) {
-    try {
-        $sql = "INSERT INTO recipe (recipe_id,recipe_name) VALUES (:recipe_id,:recipe_name)";
+        }
+        for($i = 1; $i <= count($processList);$i++){
+            $processListBind .= ", :process_".$i;
+        }
+        //var_dump($processListInsert);
+        //var_dump($processListBind);
+
+        // 最新のレシピIDをselect
+        $recipe_id= $this->get_next_recipe_id();
+        $sql = "INSERT INTO recipe (recipe_id, recipe_name,recipe_file_path1".$processListInsert.") 
+        VALUES (:recipe_id,:recipe_name,'/image/aiueo.jpg'".$processListBind.");";
+        
         $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
         $stmt->bindParam(':recipe_name', $recipe_name, PDO::PARAM_STR);
+        //var_dump($processList);
+        for($i = 1; $i <= count($processList);$i++){
+            
+            $stmt->bindParam(':process_'.($i), $processList['process_'.($i)], PDO::PARAM_STR);
+
+        }
+
+
         $stmt->execute();
 
-        // SQL Server で IDENTITY を使用している場合は、SCOPE_IDENTITY() を使って新しく挿入されたIDを取得
-        $recipe_id = $this->pdo->query("SELECT SCOPE_IDENTITY()")->fetchColumn();
+        // 最新のレシピIDをselect
+        //$recipe_id= $this->get_next_recipe_id();
 
-        // 取得したrecipe_idがNULLでないことを確認
-        if (!$recipe_id) {
-            throw new Exception("レシピのID取得に失敗しました");
-        }
-
-        // 食品を追加
-        foreach ($ingredients as $index => $food_id) {
-            $sql = "INSERT INTO recipe_ingredients (recipe_id, food_id, display_use, calculation_use) 
-                    VALUES (:recipe_id, :food_id, :display_use, :calculation_use)";
-            $stmt = $this->pdo->prepare($sql);
+        //　食材リストにInsert
+        $sql1 = "INSERT INTO recipe_ingredients(recipe_id,food_id,display_use,calculation_use)
+                VALUES(:recipe_id,:food_id,:display_use,:calculation_use)";
+          $stmt = $this->pdo->prepare($sql1);
+          $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+          
+          for($i = 0;$i < count($ingredients);$i++){
+            $food_id = $ingredients[$i];  // 食材のIDを取得
             $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
             $stmt->bindParam(':food_id', $food_id, PDO::PARAM_INT);
-            $stmt->bindParam(':display_use', $quantities[$index], PDO::PARAM_STR);
-            $stmt->bindParam(':calculation_use', $values[$index], PDO::PARAM_STR);
+            $stmt->bindParam(':display_use', $values_ing[$i], PDO::PARAM_STR);
+            $stmt->bindParam(':calculation_use', $quantities_ing[$i], PDO::PARAM_INT);
             $stmt->execute();
-        }
 
-        // 調理手順を追加
-        $step_sql = "UPDATE recipe SET ";
-        $step_params = [];
-        for ($i = 1; $i <= 10; $i++) {
-            if (!empty($steps["process_$i"])) {
-                $step_sql .= "process_$i = :process_$i, ";
-                $step_params[":process_$i"] = $steps["process_$i"];
-            }
-        }
-        $step_sql = rtrim($step_sql, ', ') . " WHERE recipe_id = :recipe_id";
-        $step_params[":recipe_id"] = $recipe_id;
+          }
+          
+          
 
-        if (!empty($step_params)) {
-            $stmt = $this->pdo->prepare($step_sql);
-            $stmt->execute($step_params);
-        }
 
-        return true;
-    } catch (Exception $e) {
-        // エラーハンドリング
-        echo "エラー: " . $e->getMessage();
-        return false;
-    }
+        //調味料リストにInsert
+        $sql1 = "INSERT INTO Seasoning_Use(seasoning_id,recipe_id,display_use)
+                VALUES(:seasoning_id,:recipe_id,:display_use)";
+          $stmt = $this->pdo->prepare($sql1);
+          $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+
+          for($i = 0;$i < count($seasonings);$i++){
+            $seasoning_id = $seasonings[$i];  // IDを取得
+            $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+            $stmt->bindParam(':seasoning_id', $seasonings, PDO::PARAM_INT);
+            $stmt->bindParam(':display_use', $values_sea[$i], PDO::PARAM_STR);
+            $stmt->execute();
+
+          }
+
+
+        // SQL Server で IDENTITY を使用している場合は、SCOPE_IDENTITY() を使って新しく挿入されたIDを取得
+       // $recipe_id = $this->pdo->query("SELECT SCOPE_IDENTITY()")->fetchColumn();
+
+        // 取得したrecipe_idがNULLでないことを確認
+       // if (!$recipe_id) {
+      //      throw new Exception("レシピのID取得に失敗しました");
+
+   // }
 }
-
+    
     // レシピを削除
     public function delete_recipe($recipe_id) {
         try {
