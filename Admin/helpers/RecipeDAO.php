@@ -162,11 +162,12 @@ public function get_ingredients_by_recipe_id($recipeId) {
         // 最新のレシピIDをselect
         $recipe_id= $this->get_next_recipe_id();
         $sql = "INSERT INTO recipe (recipe_id, recipe_name,recipe_file_path1".$processListInsert.") 
-        VALUES (:recipe_id,:recipe_name,'/image/aiueo.jpg'".$processListBind.");";
+        VALUES (:recipe_id,:recipe_name,:recipe_file_path".$processListBind.");";
         
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
         $stmt->bindParam(':recipe_name', $recipe_name, PDO::PARAM_STR);
+        $stmt->bindParam(':recipe_file_path', $recipe_file_path, PDO::PARAM_STR); // ここでファイルパスをバインド
         //var_dump($processList);
         for($i = 1; $i <= count($processList);$i++){
             

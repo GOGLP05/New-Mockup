@@ -7,6 +7,8 @@ require_once 'helpers/CategoryDAO.php';
 $categoryDAO = new CategoryDAO();
 
 
+
+
 // レシピIDがURLに含まれている場合、そのレシピを取得
 $RecipeDAO = new RecipeDAO();
 $FoodMasterDAO = new FoodMasterDAO();
@@ -119,6 +121,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     //var_dump($message);
 }
+// アップロード先ディレクトリ
+$uploadDir = 'graduation_project/New-Mockup/User/img/recipe/';
+
+// アップロードされたファイルがあるかチェック
+if(!empty($_POST['recipe_file_path1'])) {
+    // ファイル名と拡張子を取得
+    $fileName = $_FILES['recipe_file']['name'];
+    $fileTmpName = $_FILES['recipe_file']['tmp_name'];
+
+    // アップロード先のパスを構築
+    $filePath = $uploadDir . $recipe_file_path;
+
+    // ファイルを指定のディレクトリに移動
+    if(move_uploaded_file($fileTmpName, $filePath)) {
+        // ファイルが正常にアップロードされた場合、パスをデータベースに保存
+        $recipe_file_path = $filePath;
+    } else {
+        // エラーハンドリング
+        echo "ファイルのアップロードに失敗しました。";
+        exit;
+    }
+} 
+
 ?>
 
 <!DOCTYPE html>
