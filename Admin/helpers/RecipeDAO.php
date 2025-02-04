@@ -72,26 +72,27 @@ class RecipeDAO {
         return $processes;
     }
 
-    // レシピIDに基づいて材料を取得
-    public function get_ingredients_by_recipe_id($recipeId) {
-        $dbh = DAO::get_db_connect();
-        $sql = "
-            SELECT fm.food_id,fm.food_name, ri.calculation_use, ri.display_use
-            FROM recipe_ingredients ri
-            JOIN food_master fm ON ri.food_id = fm.food_id
-            WHERE ri.recipe_id = :recipeId
-        ";
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindValue(':recipeId', $recipeId, PDO::PARAM_INT);
-        $stmt->execute();
+// レシピIDに基づいて材料を取得
+public function get_ingredients_by_recipe_id($recipeId) {
+    $dbh = DAO::get_db_connect();
+    $sql = "
+        SELECT food_name, display_use, calculation_use, use_unit 
+        FROM recipe_ingredients 
+        INNER JOIN food_master ON recipe_ingredients.food_id = food_master.food_id 
+        INNER JOIN category ON food_master.category_id = category.category_id 
+        WHERE recipe_ingredients.recipe_id = :recipeId
+    ";
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':recipeId', $recipeId, PDO::PARAM_INT); // recipe_idに基づいてバインド
+    $stmt->execute();
 
-        $ingredients = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $ingredients[] = $row;
-        }
-
-        return $ingredients; // データがない場合は空配列を返す
+    $ingredients = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $ingredients[] = $row;
     }
+
+    return $ingredients; // データがない場合は空配列を返す
+}
 
     // レシピに必要な調味料を取得
     public function get_seasonings_by_recipe_id($recipeId) {
@@ -143,12 +144,114 @@ class RecipeDAO {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function update_recipe(){
 
+// レシピを追加
+public function add_recipe($recipe_name, $ingredients, $quantities, $units, $values, $steps) {
+    try {
+        $sql = "INSERT INTO recipe (recipe_id,recipe_name) VALUES (:recipe_id,:recipe_name)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':recipe_name', $recipe_name, PDO::PARAM_STR);
+        $stmt->execute();
+
+        // SQL Server で IDENTITY を使用している場合は、SCOPE_IDENTITY() を使って新しく挿入されたIDを取得
+        $recipe_id = $this->pdo->query("SELECT SCOPE_IDENTITY()")->fetchColumn();
+
+        // 取得したrecipe_idがNULLでないことを確認
+        if (!$recipe_id) {
+            throw new Exception("レシピのID取得に失敗しました");
+        }
+
+        // 食品を追加
+        foreach ($ingredients as $index => $food_id) {
+            $sql = "INSERT INTO recipe_ingredients (recipe_id, food_id, display_use, calculation_use) 
+                    VALUES (:recipe_id, :food_id, :display_use, :calculation_use)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+            $stmt->bindParam(':food_id', $food_id, PDO::PARAM_INT);
+            $stmt->bindParam(':display_use', $quantities[$index], PDO::PARAM_STR);
+            $stmt->bindParam(':calculation_use', $values[$index], PDO::PARAM_STR);
+            $stmt->execute();
+        }
+
+        // 調理手順を追加
+        $step_sql = "UPDATE recipe SET ";
+        $step_params = [];
+        for ($i = 1; $i <= 10; $i++) {
+            if (!empty($steps["process_$i"])) {
+                $step_sql .= "process_$i = :process_$i, ";
+                $step_params[":process_$i"] = $steps["process_$i"];
+            }
+        }
+        $step_sql = rtrim($step_sql, ', ') . " WHERE recipe_id = :recipe_id";
+        $step_params[":recipe_id"] = $recipe_id;
+
+        if (!empty($step_params)) {
+            $stmt = $this->pdo->prepare($step_sql);
+            $stmt->execute($step_params);
+        }
+
+        return true;
+    } catch (Exception $e) {
+        // エラーハンドリング
+        echo "エラー: " . $e->getMessage();
+        return false;
     }
-
-    public function add_recipe(){
-
-    }
-
 }
+
+    // レシピを削除
+    public function delete_recipe($recipe_id) {
+        try {
+            // トランザクション開始
+            $this->pdo->beginTransaction();
+    
+            // 1. `recipe_ingredients` の関連データを削除
+            $sql = "DELETE FROM recipe_ingredients WHERE recipe_id = :recipe_id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // 2. `Seasoning_Use` の関連データを削除
+            $sql = "DELETE FROM Seasoning_Use WHERE recipe_id = :recipe_id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // 3. `recipe` テーブルから `recipe_id` を削除
+            $sql = "DELETE FROM recipe WHERE recipe_id = :recipe_id";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // トランザクションを確定（コミット）
+            $this->pdo->commit();
+    
+            return true; // 削除成功
+        } catch (PDOException $e) {
+            // エラーが発生した場合はロールバック（処理を取り消す）
+            $this->pdo->rollBack();
+    
+            // エラーメッセージをログに記録（本番環境ではechoではなくログ推奨）
+            error_log("Error deleting recipe: " . $e->getMessage());
+    
+            return false; // 削除失敗
+        }
+    }
+    
+//DELETE FROM recipe WHERE 
+
+
+    
+    public function get_next_recipe_id() {
+        $dbh = DAO::get_db_connect();
+        $sql = "SELECT MAX(recipe_id) + 1 AS next_id FROM recipe"; // セミコロンを追加
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute(); // クエリを実行
+        $row = $stmt->fetch();
+        return $row['next_id'] ?? 1; // NULLなら1を返す
+    }
+        
+}
+    /*// food_file_path が空でない場合に更新
+    if (!empty($food_file_path)) {
+        $query .= ", food_file_path = ?";
+    }*/
