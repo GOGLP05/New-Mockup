@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['email'])) {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; // GmailのSMTPサーバー
             $mail->SMTPAuth = true;
-            $mail->Username = '23jn0344@jec.ac.jp'; // 送信元のGmailアドレス
+            $mail->Username = 'sample@jec.ac.jp'; // 送信元メアド。スパム回避のため、ダミーメアド
             $mail->Password = 'fdag ebxw hayx ipwd'; // 環境変数からパスワードを取得
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
